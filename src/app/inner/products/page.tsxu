@@ -1,0 +1,24 @@
+import Banner from '@/sections/common/Banner';
+import ProductsMain from '@/sections/products/ProductsMain';
+import React from 'react';
+
+interface Props {
+    searchParams: { [key: string]: string | undefined };
+}
+
+export default async function Page({ searchParams }: Props) {
+    const resolvedParams = await searchParams;
+    const city = resolvedParams.city || "";
+    const status = resolvedParams.status || "";
+    const yard = resolvedParams.yard || "";
+    const brand = resolvedParams.brand || "";
+
+    return (
+        <>
+<ProductsMain filterBrand="{brand}" filterCity="{city}" filterStatus="{status}" filterYard="{yard}"/>
+            <Banner breadcrumb='Products' />
+            
+        </>
+    );
+}
+

@@ -37,9 +37,13 @@ const Header: React.FC = () => {
                                 <i className="icon-pin-2"></i>
                             </div>
                             <div className="text">
-                               <p style={{ fontSize: "11px" }}>
-    205 Ballarat Rd, Maidstone, VIC 3012 || 247 Boundary Road Mordialloc VIC 3195 || 33 Randall St Slacks Creek QLD 4127
-</p>
+                                <p style={{ fontSize: "11px" }}>
+                                    <a href="https://maps.app.goo.gl/mro1EoXZtAkH1udS8" target="_blank" rel="noopener noreferrer" style={{ color: 'inherit', textDecoration: 'none' }}>MAIDSTONE</a>
+                                    <span style={{ margin: '0 8px', opacity: 0.5 }}>|</span>
+                                    <a href="https://maps.app.goo.gl/akeweSjyWMvCT9ji8" target="_blank" rel="noopener noreferrer" style={{ color: 'inherit', textDecoration: 'none' }}>MORDIALLOC</a>
+                                    <span style={{ margin: '0 8px', opacity: 0.5 }}>|</span>
+                                    <a href="https://maps.app.goo.gl/JoZUKq7tq9RQTGiF6" target="_blank" rel="noopener noreferrer" style={{ color: 'inherit', textDecoration: 'none' }}>BRISBANE</a>
+                                </p>
                             </div>
                         </li>
                     </ul>

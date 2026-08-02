@@ -4,6 +4,7 @@ import logo from "../../../public/assets/images/resources/footer-logo1.png"
 import useGorentContext from "../context/useGorentContext";
 import Link from "next/link";
 import Image from "next/image";
+
 const SideBar: React.FC = () => {
     const { isSidebar, setIsSidebar } = useGorentContext();
     const handleCloceSideBar = () => {
@@ -33,8 +34,8 @@ const SideBar: React.FC = () => {
                                     <h4>About Us</h4>
                                     <div className="inner-text">
                                         <p>
-                                            Contrary to popular belief, Lorem Ipsum is not simply random text.
-                                            It has roots in a piece of classical Latin literature from 45 BC.
+                                            UKA Japan Motors is a trusted importer of premium Japanese vehicles since 1990. 
+                                            We deliver quality, reliability, and exceptional customer service across Australia.
                                         </p>
                                     </div>
                                 </div>
@@ -86,18 +87,22 @@ const SideBar: React.FC = () => {
                                     <ul className="list-unstyled">
                                         <li>
                                             <span className="icon-pin"></span>
-                                            88 Brooklyn Street, New York
+                                            <a href="https://maps.app.goo.gl/mro1EoXZtAkH1udS8" target="_blank" rel="noopener noreferrer" style={{ color: 'inherit', textDecoration: 'none' }}>MAIDSTONE</a>
+                                            <span style={{ margin: '0 6px', opacity: 0.5 }}>|</span>
+                                            <a href="https://maps.app.goo.gl/akeweSjyWMvCT9ji8" target="_blank" rel="noopener noreferrer" style={{ color: 'inherit', textDecoration: 'none' }}>MORDIALLOC</a>
+                                            <span style={{ margin: '0 6px', opacity: 0.5 }}>|</span>
+                                            <a href="https://maps.app.goo.gl/JoZUKq7tq9RQTGiF6" target="_blank" rel="noopener noreferrer" style={{ color: 'inherit', textDecoration: 'none' }}>BRISBANE</a>
                                         </li>
                                         <li>
                                             <span className="icon-call"></span>
-                                            <a href="tel:+15559990153">
-                                                +1 555-9990-153
+                                            <a href="tel:1800006256">
+                                                +1800 006 256
                                             </a>
                                         </li>
                                         <li>
                                             <span className="icon-envelope"></span>
-                                            <a href="mailto:info@example.com">
-                                                info@example.com
+                                            <a href="mailto:info@ukajapan.com.au">
+                                                info@ukajapan.com.au
                                             </a>
                                         </li>
                                     </ul>
@@ -116,7 +121,7 @@ const SideBar: React.FC = () => {
                                             <a href="#"><i className="icon-linkedin" /></a>
                                         </li>
                                         <li>
-                                            <a href="#"><i className="icon-dribble-big-logo" /></a>
+                                            <a href="#"><i className="icon-instagram" /></a>
                                         </li>
                                     </ul>
                                 </div>

@@ -12,27 +12,10 @@ interface ListingOneProps {
 
 const ListingOne: React.FC<ListingOneProps> = ({ filteredData }) => {
     const dataToDisplay = filteredData || productsList;
-    
+
     const validCars = dataToDisplay.filter((item: any) => {
         return item.image && item.price && item.price !== "Contact for Price" && item.price !== "";
     });
-
-    const getYardName = (item: any) => {
-        const yardId = String(item?.yard || "");
-        switch (yardId) {
-            case "1":
-            case "maidstone":
-                return "Maidstone Yard";
-            case "2":
-            case "mordialloc":
-                return "Mordialloc Yard";
-            case "3":
-            case "brisbane":
-                return "Brisbane Yard";
-            default:
-                return item?.yardName || "Main Yard";
-        }
-    };
 
     const formatPrice = (price: string | number) => {
         const num = typeof price === 'string' ? parseInt(price.replace(/,/g, '')) : price;
@@ -50,35 +33,6 @@ const ListingOne: React.FC<ListingOneProps> = ({ filteredData }) => {
         if (item.price && parseInt(String(item.price).replace(/,/g, '')) < 16000) return { label: 'HOT DEAL', icon: 'fa-fire' };
         if (item.bodyType?.toLowerCase().includes('hatch')) return { label: 'FUEL SAVER', icon: 'fa-gas-pump' };
         return { label: 'POPULAR', icon: 'fa-star' };
-    };
-
-    const getRating = (id: string) => {
-        const hash = id.split('').reduce((a, b) => a + b.charCodeAt(0), 0);
-        return (4.5 + (hash % 5) / 10).toFixed(1);
-    };
-
-    const getReviews = (id: string) => {
-        const hash = id.split('').reduce((a, b) => a + b.charCodeAt(0), 0);
-        return 50 + (hash % 150);
-    };
-
-    const renderStars = (rating: string) => {
-        const numRating = parseFloat(rating);
-        const fullStars = Math.floor(numRating);
-        const hasHalf = numRating - fullStars >= 0.5;
-        const stars = [];
-        
-        for (let i = 0; i < fullStars; i++) {
-            stars.push(<i key={`full-${i}`} className="fas fa-star" style={{ color: '#ffc107', fontSize: '13px' }}></i>);
-        }
-        if (hasHalf) {
-            stars.push(<i key="half" className="fas fa-star-half-alt" style={{ color: '#ffc107', fontSize: '13px' }}></i>);
-        }
-        const empty = 5 - fullStars - (hasHalf ? 1 : 0);
-        for (let i = 0; i < empty; i++) {
-            stars.push(<i key={`empty-${i}`} className="far fa-star" style={{ color: '#ffc107', fontSize: '13px' }}></i>);
-        }
-        return stars;
     };
 
     return (
@@ -151,9 +105,7 @@ const ListingOne: React.FC<ListingOneProps> = ({ filteredData }) => {
                         >
                             {validCars.map((item: any) => {
                                 const status = getStatusBadge(item);
-                                const rating = getRating(String(item.id));
-                                const reviews = getReviews(String(item.id));
-                                
+
                                 return (
                                     <SwiperSlide key={item.id}> 
                                         <div style={{ 
@@ -166,7 +118,7 @@ const ListingOne: React.FC<ListingOneProps> = ({ filteredData }) => {
                                             display: 'flex',
                                             flexDirection: 'column'
                                         }}>
-                                            {/* Image Area — NO overflow hidden so badge sits clearly below */}
+                                            {/* Image Area */}
                                             <div style={{ 
                                                 height: '190px', 
                                                 position: 'relative',
@@ -179,7 +131,7 @@ const ListingOne: React.FC<ListingOneProps> = ({ filteredData }) => {
                                                         style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }}
                                                     />
                                                 </Link>
-                                                
+
                                                 {/* Status Badge — top-left */}
                                                 <div style={{ 
                                                     position: 'absolute', 
@@ -221,7 +173,7 @@ const ListingOne: React.FC<ListingOneProps> = ({ filteredData }) => {
                                                 </button>
                                             </div>
 
-                                            {/* Brand Badge — BELOW image, clearly visible on white card */}
+                                            {/* Brand Badge */}
                                             <div style={{ padding: '0 16px', marginTop: '-10px', position: 'relative', zIndex: 2 }}>
                                                 <span style={{ 
                                                     display: 'inline-block',
@@ -252,13 +204,11 @@ const ListingOne: React.FC<ListingOneProps> = ({ filteredData }) => {
                                                     </Link>
                                                 </h4>
 
-                                                {/* Star Rating */}
+                                                {/* Yard / City */}
                                                 <div style={{ display: 'flex', alignItems: 'center', gap: '6px', marginBottom: '10px' }}>
-                                                    <div style={{ display: 'flex', gap: '2px' }}>
-                                                        {renderStars(rating)}
-                                                    </div>
-                                                    <span style={{ fontSize: '12px', color: '#666', fontWeight: '600' }}>
-                                                        {rating} ({reviews} reviews)
+                                                    <i className="fas fa-map-marker-alt" style={{ color: '#ffc107', fontSize: '12px' }}></i>
+                                                    <span style={{ fontSize: '13px', color: '#666', fontWeight: '600' }}>
+                                                        Yard: {item?.city || "N/A"}
                                                     </span>
                                                 </div>
 
@@ -331,7 +281,7 @@ const ListingOne: React.FC<ListingOneProps> = ({ filteredData }) => {
                                                     >
                                                         View Details <i className="fas fa-arrow-right" style={{ fontSize: '11px' }}></i>
                                                     </Link>
-                                                    
+
                                                     <Link 
                                                         href={`/inner/listing-single/${item?.id}`} 
                                                         style={{ 

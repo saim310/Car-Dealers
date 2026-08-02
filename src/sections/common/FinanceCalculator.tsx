@@ -1,4 +1,4 @@
-"use client"
+"use client";
 import React, { useState, useEffect } from 'react';
 import { motion } from "framer-motion";
 import Link from 'next/link';
@@ -41,21 +41,10 @@ const FinanceCalculatorSection: React.FC = () => {
         return ((value - min) / (max - min)) * 100;
     };
 
-    return (
-        <section style={{ background: '#0F0F1B', padding: '100px 0', position: 'relative', overflow: 'hidden' }}>
-            {/* Decorative elements */}
-            <div style={{
-                position: 'absolute',
-                top: '50%',
-                left: '50%',
-                transform: 'translate(-50%, -50%)',
-                width: '800px',
-                height: '800px',
-                borderRadius: '50%',
-                background: 'radial-gradient(circle, rgba(245,185,56,0.03) 0%, transparent 60%)',
-                pointerEvents: 'none'
-            }} />
+    const termOptions = [12, 24, 36, 48, 60, 72, 84];
 
+    return (
+        <section style={{ background: '#f8f9fa', padding: '80px 0', position: 'relative', overflow: 'hidden' }}>
             <div className="container" style={{ position: 'relative', zIndex: 1 }}>
                 {/* Section Header */}
                 <motion.div
@@ -64,40 +53,40 @@ const FinanceCalculatorSection: React.FC = () => {
                     transition={{ duration: 0.6 }}
                     viewport={{ once: true }}
                     className="text-center"
-                    style={{ marginBottom: '60px' }}
+                    style={{ marginBottom: '50px' }}
                 >
                     <span style={{
-                        color: '#f5b93c',
-                        fontWeight: 600,
+                        color: '#ffc107',
+                        fontWeight: 800,
                         textTransform: 'uppercase',
-                        fontSize: '13px',
-                        letterSpacing: '3px',
+                        fontSize: '12px',
+                        letterSpacing: '2px',
                         display: 'block',
-                        marginBottom: '12px'
+                        marginBottom: '10px'
                     }}>
                         Plan Your Purchase
                     </span>
                     <h2 style={{
-                        fontSize: 'clamp(28px, 4vw, 42px)',
-                        fontWeight: 800,
-                        color: '#ffffff',
+                        fontSize: 'clamp(26px, 3.5vw, 38px)',
+                        fontWeight: 900,
+                        color: '#1a1a2e',
                         textTransform: 'uppercase',
-                        marginBottom: '12px',
+                        marginBottom: '10px',
                         lineHeight: 1.2
                     }}>
-                        Finance <span style={{ color: '#f5b93c' }}>Calculator</span>
+                        Finance <span style={{ color: '#ffc107' }}>Calculator</span>
                     </h2>
                     <p style={{
                         color: '#888',
-                        fontSize: '16px',
-                        maxWidth: '500px',
+                        fontSize: '15px',
+                        maxWidth: '480px',
                         margin: '0 auto'
                     }}>
                         Adjust the sliders below to estimate your weekly and monthly repayments.
                     </p>
                 </motion.div>
 
-                <div className="row align-items-center">
+                <div className="row g-4 align-items-start">
                     {/* Left — Controls */}
                     <motion.div
                         className="col-lg-7"
@@ -107,44 +96,53 @@ const FinanceCalculatorSection: React.FC = () => {
                         viewport={{ once: true }}
                     >
                         <div style={{
-                            background: 'rgba(255,255,255,0.03)',
-                            borderRadius: '24px',
-                            padding: '40px',
-                            border: '1px solid rgba(255,255,255,0.06)',
-                            backdropFilter: 'blur(10px)'
+                            background: '#fff',
+                            borderRadius: '16px',
+                            padding: '36px',
+                            border: '1px solid #eee',
+                            boxShadow: '0 1px 4px rgba(0,0,0,0.04)'
                         }}>
                             {/* Loan Term */}
-                            <div style={{ marginBottom: '35px' }}>
-                                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '15px' }}>
-                                    <label style={controlLabelStyle}>
-                                        <span className="icon-calendar" style={{ marginRight: '8px', color: '#f5b93c' }}></span>
+                            <div style={{ marginBottom: '32px' }}>
+                                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px' }}>
+                                    <label style={{
+                                        color: '#1a1a2e',
+                                        fontSize: '13px',
+                                        fontWeight: 800,
+                                        textTransform: 'uppercase',
+                                        letterSpacing: '1px',
+                                        display: 'flex',
+                                        alignItems: 'center',
+                                        gap: '8px'
+                                    }}>
+                                        <i className="far fa-calendar-alt" style={{ color: '#ffc107', fontSize: '14px' }}></i>
                                         Loan Term
                                     </label>
                                     <div style={{
-                                        padding: '8px 20px',
-                                        background: '#f5b93c',
+                                        padding: '6px 16px',
+                                        background: '#ffc107',
                                         borderRadius: '8px',
-                                        color: '#1a1a1a',
-                                        fontWeight: 700,
-                                        fontSize: '14px'
+                                        color: '#1a1a2e',
+                                        fontWeight: 800,
+                                        fontSize: '13px'
                                     }}>
                                         {loanTerm} Months
                                     </div>
                                 </div>
                                 <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
-                                    {[12, 24, 36, 48, 60, 72, 84].map((term) => (
+                                    {termOptions.map((term) => (
                                         <button
                                             key={term}
                                             onClick={() => setLoanTerm(term)}
                                             style={{
-                                                padding: '10px 20px',
+                                                padding: '10px 18px',
                                                 borderRadius: '10px',
                                                 border: '2px solid',
-                                                borderColor: loanTerm === term ? '#f5b93c' : 'rgba(255,255,255,0.1)',
-                                                background: loanTerm === term ? '#f5b93c' : 'transparent',
-                                                color: loanTerm === term ? '#1a1a1a' : '#888',
-                                                fontWeight: 700,
-                                                fontSize: '13px',
+                                                borderColor: loanTerm === term ? '#ffc107' : '#f0f0f0',
+                                                background: loanTerm === term ? '#ffc107' : '#fff',
+                                                color: loanTerm === term ? '#1a1a2e' : '#888',
+                                                fontWeight: 800,
+                                                fontSize: '12px',
                                                 cursor: 'pointer',
                                                 transition: 'all 0.3s ease',
                                                 textTransform: 'uppercase',
@@ -158,15 +156,24 @@ const FinanceCalculatorSection: React.FC = () => {
                             </div>
 
                             {/* Loan Amount Slider */}
-                            <div style={{ marginBottom: '35px' }}>
-                                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '15px' }}>
-                                    <label style={controlLabelStyle}>
-                                        <span className="icon-money" style={{ marginRight: '8px', color: '#f5b93c' }}></span>
+                            <div style={{ marginBottom: '32px' }}>
+                                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '14px' }}>
+                                    <label style={{
+                                        color: '#1a1a2e',
+                                        fontSize: '13px',
+                                        fontWeight: 800,
+                                        textTransform: 'uppercase',
+                                        letterSpacing: '1px',
+                                        display: 'flex',
+                                        alignItems: 'center',
+                                        gap: '8px'
+                                    }}>
+                                        <i className="fas fa-dollar-sign" style={{ color: '#ffc107', fontSize: '14px' }}></i>
                                         Loan Amount
                                     </label>
                                     <span style={{
-                                        color: '#f5b93c',
-                                        fontWeight: 800,
+                                        color: '#1a1a2e',
+                                        fontWeight: 900,
                                         fontSize: '20px'
                                     }}>
                                         ${loanAmount.toLocaleString()}
@@ -175,14 +182,14 @@ const FinanceCalculatorSection: React.FC = () => {
                                 <div style={{ position: 'relative', padding: '10px 0' }}>
                                     <div style={{
                                         height: '6px',
-                                        background: 'rgba(255,255,255,0.1)',
+                                        background: '#f0f0f0',
                                         borderRadius: '3px',
                                         position: 'relative'
                                     }}>
                                         <div style={{
                                             height: '100%',
                                             width: `${getSliderProgress(loanAmount, 1000, 200000)}%`,
-                                            background: '#f5b93c',
+                                            background: '#ffc107',
                                             borderRadius: '3px',
                                             transition: isDraggingAmount ? 'none' : 'width 0.3s ease'
                                         }} />
@@ -210,38 +217,46 @@ const FinanceCalculatorSection: React.FC = () => {
                                             zIndex: 2
                                         }}
                                     />
-                                    {/* Custom thumb */}
                                     <div style={{
                                         position: 'absolute',
                                         top: '50%',
                                         left: `${getSliderProgress(loanAmount, 1000, 200000)}%`,
                                         transform: 'translate(-50%, -50%)',
-                                        width: '24px',
-                                        height: '24px',
+                                        width: '22px',
+                                        height: '22px',
                                         borderRadius: '50%',
-                                        background: '#f5b93c',
-                                        border: '4px solid #ffffff',
-                                        boxShadow: '0 2px 10px rgba(245,185,56,0.4)',
+                                        background: '#ffc107',
+                                        border: '3px solid #fff',
+                                        boxShadow: '0 2px 8px rgba(255,193,7,0.4)',
                                         pointerEvents: 'none',
                                         transition: isDraggingAmount ? 'none' : 'left 0.3s ease'
                                     }} />
                                 </div>
                                 <div style={{ display: 'flex', justifyContent: 'space-between', marginTop: '8px' }}>
-                                    <span style={{ fontSize: '12px', color: '#555' }}>$1,000</span>
-                                    <span style={{ fontSize: '12px', color: '#555' }}>$200,000</span>
+                                    <span style={{ fontSize: '12px', color: '#aaa', fontWeight: 600 }}>$1,000</span>
+                                    <span style={{ fontSize: '12px', color: '#aaa', fontWeight: 600 }}>$200,000</span>
                                 </div>
                             </div>
 
                             {/* Interest Rate Slider */}
                             <div>
-                                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '15px' }}>
-                                    <label style={controlLabelStyle}>
-                                        <span className="icon-percentage" style={{ marginRight: '8px', color: '#f5b93c' }}></span>
+                                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '14px' }}>
+                                    <label style={{
+                                        color: '#1a1a2e',
+                                        fontSize: '13px',
+                                        fontWeight: 800,
+                                        textTransform: 'uppercase',
+                                        letterSpacing: '1px',
+                                        display: 'flex',
+                                        alignItems: 'center',
+                                        gap: '8px'
+                                    }}>
+                                        <i className="fas fa-percentage" style={{ color: '#ffc107', fontSize: '14px' }}></i>
                                         Interest Rate
                                     </label>
                                     <span style={{
-                                        color: '#f5b93c',
-                                        fontWeight: 800,
+                                        color: '#1a1a2e',
+                                        fontWeight: 900,
                                         fontSize: '20px'
                                     }}>
                                         {interestRate.toFixed(2)}%
@@ -250,14 +265,14 @@ const FinanceCalculatorSection: React.FC = () => {
                                 <div style={{ position: 'relative', padding: '10px 0' }}>
                                     <div style={{
                                         height: '6px',
-                                        background: 'rgba(255,255,255,0.1)',
+                                        background: '#f0f0f0',
                                         borderRadius: '3px',
                                         position: 'relative'
                                     }}>
                                         <div style={{
                                             height: '100%',
                                             width: `${getSliderProgress(interestRate, 2.5, 5)}%`,
-                                            background: '#f5b93c',
+                                            background: '#ffc107',
                                             borderRadius: '3px',
                                             transition: isDraggingRate ? 'none' : 'width 0.3s ease'
                                         }} />
@@ -290,19 +305,19 @@ const FinanceCalculatorSection: React.FC = () => {
                                         top: '50%',
                                         left: `${getSliderProgress(interestRate, 2.5, 5)}%`,
                                         transform: 'translate(-50%, -50%)',
-                                        width: '24px',
-                                        height: '24px',
+                                        width: '22px',
+                                        height: '22px',
                                         borderRadius: '50%',
-                                        background: '#f5b93c',
-                                        border: '4px solid #ffffff',
-                                        boxShadow: '0 2px 10px rgba(245,185,56,0.4)',
+                                        background: '#ffc107',
+                                        border: '3px solid #fff',
+                                        boxShadow: '0 2px 8px rgba(255,193,7,0.4)',
                                         pointerEvents: 'none',
                                         transition: isDraggingRate ? 'none' : 'left 0.3s ease'
                                     }} />
                                 </div>
                                 <div style={{ display: 'flex', justifyContent: 'space-between', marginTop: '8px' }}>
-                                    <span style={{ fontSize: '12px', color: '#555' }}>2.5%</span>
-                                    <span style={{ fontSize: '12px', color: '#555' }}>5.0%</span>
+                                    <span style={{ fontSize: '12px', color: '#aaa', fontWeight: 600 }}>2.5%</span>
+                                    <span style={{ fontSize: '12px', color: '#aaa', fontWeight: 600 }}>5.0%</span>
                                 </div>
                             </div>
                         </div>
@@ -317,10 +332,11 @@ const FinanceCalculatorSection: React.FC = () => {
                         viewport={{ once: true }}
                     >
                         <div style={{
-                            background: '#ffffff',
-                            borderRadius: '24px',
-                            padding: '40px',
-                            boxShadow: '0 30px 80px rgba(0,0,0,0.3)',
+                            background: '#fff',
+                            borderRadius: '16px',
+                            padding: '36px',
+                            border: '1px solid #eee',
+                            boxShadow: '0 1px 4px rgba(0,0,0,0.04)',
                             position: 'relative',
                             overflow: 'hidden'
                         }}>
@@ -330,27 +346,28 @@ const FinanceCalculatorSection: React.FC = () => {
                                 top: 0,
                                 left: 0,
                                 right: 0,
-                                height: '5px',
-                                background: '#f5b93c'
+                                height: '4px',
+                                background: '#ffc107'
                             }} />
 
-                            <div style={{ textAlign: 'center', marginBottom: '35px' }}>
+                            <div style={{ textAlign: 'center', marginBottom: '30px' }}>
                                 <p style={{
-                                    color: '#888',
-                                    fontSize: '12px',
+                                    color: '#999',
+                                    fontSize: '11px',
                                     textTransform: 'uppercase',
-                                    letterSpacing: '3px',
-                                    fontWeight: 600,
-                                    marginBottom: '8px'
+                                    letterSpacing: '2px',
+                                    fontWeight: 700,
+                                    marginBottom: '6px'
                                 }}>
                                     Estimated Repayment
                                 </p>
                                 <h3 style={{
-                                    fontSize: '14px',
-                                    color: '#1a1a1a',
-                                    fontWeight: 700,
+                                    fontSize: '13px',
+                                    color: '#1a1a2e',
+                                    fontWeight: 800,
                                     textTransform: 'uppercase',
-                                    letterSpacing: '2px'
+                                    letterSpacing: '1.5px',
+                                    margin: 0
                                 }}>
                                     Based on your selections
                                 </h3>
@@ -358,11 +375,11 @@ const FinanceCalculatorSection: React.FC = () => {
 
                             {/* Weekly Repayment — Primary */}
                             <div style={{
-                                background: '#f5b93c',
-                                borderRadius: '16px',
-                                padding: '30px',
+                                background: '#ffc107',
+                                borderRadius: '14px',
+                                padding: '28px',
                                 textAlign: 'center',
-                                marginBottom: '20px',
+                                marginBottom: '16px',
                                 position: 'relative',
                                 overflow: 'hidden'
                             }}>
@@ -370,26 +387,26 @@ const FinanceCalculatorSection: React.FC = () => {
                                     position: 'absolute',
                                     top: '-20px',
                                     right: '-20px',
-                                    width: '100px',
-                                    height: '100px',
+                                    width: '80px',
+                                    height: '80px',
                                     borderRadius: '50%',
-                                    background: 'rgba(255,255,255,0.15)'
+                                    background: 'rgba(255,255,255,0.2)'
                                 }} />
                                 <p style={{
-                                    color: 'rgba(26,26,26,0.7)',
-                                    fontSize: '13px',
+                                    color: 'rgba(26,26,46,0.7)',
+                                    fontSize: '12px',
                                     textTransform: 'uppercase',
                                     letterSpacing: '2px',
-                                    fontWeight: 700,
-                                    marginBottom: '8px',
+                                    fontWeight: 800,
+                                    marginBottom: '6px',
                                     position: 'relative'
                                 }}>
                                     Per Week
                                 </p>
                                 <p style={{
-                                    color: '#1a1a1a',
-                                    fontSize: '48px',
-                                    fontWeight: 800,
+                                    color: '#1a1a2e',
+                                    fontSize: '42px',
+                                    fontWeight: 900,
                                     margin: 0,
                                     lineHeight: 1,
                                     position: 'relative'
@@ -400,26 +417,26 @@ const FinanceCalculatorSection: React.FC = () => {
 
                             {/* Monthly Repayment — Secondary */}
                             <div style={{
-                                background: '#1a1a1a',
-                                borderRadius: '16px',
-                                padding: '25px',
+                                background: '#1a1a2e',
+                                borderRadius: '14px',
+                                padding: '22px',
                                 textAlign: 'center',
-                                marginBottom: '30px'
+                                marginBottom: '28px'
                             }}>
                                 <p style={{
                                     color: '#888',
-                                    fontSize: '12px',
+                                    fontSize: '11px',
                                     textTransform: 'uppercase',
                                     letterSpacing: '2px',
-                                    fontWeight: 600,
-                                    marginBottom: '6px'
+                                    fontWeight: 700,
+                                    marginBottom: '4px'
                                 }}>
                                     Per Month
                                 </p>
                                 <p style={{
-                                    color: '#ffffff',
-                                    fontSize: '32px',
-                                    fontWeight: 700,
+                                    color: '#fff',
+                                    fontSize: '28px',
+                                    fontWeight: 800,
                                     margin: 0
                                 }}>
                                     ${monthlyRepayment.toFixed(2)}
@@ -429,7 +446,7 @@ const FinanceCalculatorSection: React.FC = () => {
                             {/* Summary Details */}
                             <div style={{
                                 borderTop: '1px solid #f0f0f0',
-                                paddingTop: '25px'
+                                paddingTop: '22px'
                             }}>
                                 {[
                                     { label: 'Loan Amount', value: `$${formatCurrency(loanAmount)}` },
@@ -444,14 +461,14 @@ const FinanceCalculatorSection: React.FC = () => {
                                         padding: '10px 0',
                                         borderBottom: i < 3 ? '1px solid #f5f5f5' : 'none'
                                     }}>
-                                        <span style={{ color: '#888', fontSize: '14px' }}>{item.label}</span>
-                                        <span style={{ color: '#1a1a1a', fontWeight: 700, fontSize: '14px' }}>{item.value}</span>
+                                        <span style={{ color: '#888', fontSize: '13px', fontWeight: 600 }}>{item.label}</span>
+                                        <span style={{ color: '#1a1a2e', fontWeight: 800, fontSize: '13px' }}>{item.value}</span>
                                     </div>
                                 ))}
                             </div>
 
                             {/* CTA */}
-                            <div style={{ marginTop: '30px' }}>
+                            <div style={{ marginTop: '28px' }}>
                                 <Link
                                     href="/finance/"
                                     target="_blank"
@@ -462,37 +479,39 @@ const FinanceCalculatorSection: React.FC = () => {
                                         justifyContent: 'center',
                                         gap: '10px',
                                         width: '100%',
-                                        padding: '18px',
-                                        background: '#f5b93c',
-                                        color: '#1a1a1a',
-                                        borderRadius: '12px',
+                                        padding: '16px',
+                                        background: '#ffc107',
+                                        color: '#1a1a2e',
+                                        borderRadius: '10px',
                                         textDecoration: 'none',
                                         fontWeight: 800,
-                                        fontSize: '14px',
+                                        fontSize: '13px',
                                         textTransform: 'uppercase',
-                                        letterSpacing: '2px',
+                                        letterSpacing: '1.5px',
                                         transition: 'all 0.3s ease',
-                                        boxShadow: '0 10px 30px rgba(245,185,56,0.3)'
+                                        border: 'none',
+                                        cursor: 'pointer'
                                     }}
                                     onMouseEnter={(e) => {
-                                        e.currentTarget.style.background = '#1a1a1a';
-                                        e.currentTarget.style.color = '#f5b93c';
+                                        e.currentTarget.style.background = '#1a1a2e';
+                                        e.currentTarget.style.color = '#ffc107';
                                         e.currentTarget.style.transform = 'translateY(-2px)';
                                     }}
                                     onMouseLeave={(e) => {
-                                        e.currentTarget.style.background = '#f5b93c';
-                                        e.currentTarget.style.color = '#1a1a1a';
+                                        e.currentTarget.style.background = '#ffc107';
+                                        e.currentTarget.style.color = '#1a1a2e';
                                         e.currentTarget.style.transform = 'translateY(0)';
                                     }}
                                 >
                                     Apply for Finance
-                                    <span className="icon-right-arrow" style={{ fontSize: '12px' }}></span>
+                                    <i className="fas fa-arrow-right" style={{ fontSize: '11px' }}></i>
                                 </Link>
                                 <p style={{
                                     textAlign: 'center',
-                                    margin: '15px 0 0',
-                                    fontSize: '12px',
-                                    color: '#aaa'
+                                    margin: '14px 0 0',
+                                    fontSize: '11px',
+                                    color: '#aaa',
+                                    fontWeight: 500
                                 }}>
                                     *This is an estimate only. Actual rates may vary.
                                 </p>
@@ -503,16 +522,6 @@ const FinanceCalculatorSection: React.FC = () => {
             </div>
         </section>
     );
-};
-
-const controlLabelStyle: React.CSSProperties = {
-    color: '#ffffff',
-    fontSize: '14px',
-    fontWeight: 600,
-    textTransform: 'uppercase',
-    letterSpacing: '1.5px',
-    display: 'flex',
-    alignItems: 'center'
 };
 
 export default FinanceCalculatorSection;

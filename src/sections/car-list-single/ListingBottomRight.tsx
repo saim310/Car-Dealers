@@ -18,19 +18,24 @@ const getReviews = (id: string | number) => {
     return 50 + (hash % 150);
 };
 
-const StarRating = ({ id }: { id: string | number }) => {
+const StarRating = ({ id, city }: { id: string | number; city?: string }) => {
     const rating = parseFloat(getRating(id));
-    const reviews = getReviews(id);
     const full = Math.floor(rating);
     const half = rating - full >= 0.5;
     const stars = [];
-    for (let i = 0; i < full; i++) stars.push(<i key={i} className="fas fa-star" style={{ color: '#ffc107', fontSize: '12px' }}></i>);
-    if (half) stars.push(<i key="h" className="fas fa-star-half-alt" style={{ color: '#ffc107', fontSize: '12px' }}></i>);
-    for (let i = full + (half ? 1 : 0); i < 5; i++) stars.push(<i key={`e${i}`} className="far fa-star" style={{ color: '#ffc107', fontSize: '12px' }}></i>);
+    for (let i = 0; i < full; i++) stars.push(<i key={i} className="fas fa-star" style={{ color: '#ffc107', fontSize: '13px' }}></i>);
+    if (half) stars.push(<i key="h" className="fas fa-star-half-alt" style={{ color: '#ffc107', fontSize: '13px' }}></i>);
+    for (let i = full + (half ? 1 : 0); i < 5; i++) stars.push(<i key={`e${i}`} className="far fa-star" style={{ color: '#ffc107', fontSize: '13px' }}></i>);
     return (
-        <div style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
             <div style={{ display: 'flex', gap: '1px' }}>{stars}</div>
-            <span style={{ fontSize: '12px', color: '#666', fontWeight: 600 }}>{rating} ({reviews} reviews)</span>
+            <span style={{ fontSize: '13px', color: '#666', fontWeight: 600 }}>{rating}</span>
+            {city && (
+                <span style={{ fontSize: '13px', color: '#888', fontWeight: 500, marginLeft: '4px' }}>
+                    <i className="fas fa-map-marker-alt" style={{ color: '#ffc107', fontSize: '11px', marginRight: '4px' }}></i>
+                    {city}
+                </span>
+            )}
         </div>
     );
 };
@@ -99,7 +104,7 @@ const CarImage = ({ car }: { car?: any }) => {
                 justifyContent: 'center',
                 borderRadius: '8px 8px 0 0',
                 color: '#999',
-                fontSize: '12px',
+                fontSize: '13px',
                 fontWeight: 600
             }}>
                 <i className="fas fa-image" style={{ marginRight: '6px', fontSize: '16px' }}></i>
@@ -148,33 +153,33 @@ const ModalSidebar = ({ car }: { car?: any }) => {
             }}>
                 <CarImage car={car} />
                 <div style={{ padding: '16px' }}>
-                    <h4 style={{ fontSize: '15px', fontWeight: 800, color: '#1a1a2e', margin: '0 0 10px 0' }}>{title}</h4>
-                    <div style={{ display: 'flex', flexDirection: 'column', gap: '6px', fontSize: '12px', color: '#666', marginBottom: '14px' }}>
+                    <h4 style={{ fontSize: '16px', fontWeight: 800, color: '#1a1a2e', margin: '0 0 10px 0' }}>{title}</h4>
+                    <div style={{ display: 'flex', flexDirection: 'column', gap: '6px', fontSize: '13px', color: '#666', marginBottom: '14px' }}>
                         <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                            <i className="fas fa-leaf" style={{ color: '#28a745', width: '14px', fontSize: '11px' }}></i>
+                            <i className="fas fa-leaf" style={{ color: '#28a745', width: '14px', fontSize: '12px' }}></i>
                             <span>{fuel}</span>
                         </div>
                         <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                            <i className="fas fa-cogs" style={{ color: '#888', width: '14px', fontSize: '11px' }}></i>
+                            <i className="fas fa-cogs" style={{ color: '#888', width: '14px', fontSize: '12px' }}></i>
                             <span>{engine}</span>
                         </div>
                         <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                            <i className="fas fa-car" style={{ color: '#888', width: '14px', fontSize: '11px' }}></i>
+                            <i className="fas fa-car" style={{ color: '#888', width: '14px', fontSize: '12px' }}></i>
                             <span>{transmission}</span>
                         </div>
                         <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                            <i className="fas fa-paint-brush" style={{ color: '#888', width: '14px', fontSize: '11px' }}></i>
+                            <i className="fas fa-paint-brush" style={{ color: '#888', width: '14px', fontSize: '12px' }}></i>
                             <span>{color}</span>
                         </div>
                     </div>
                     <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-                        <span style={{ fontSize: '18px', fontWeight: 900, color: '#1a1a2e' }}>
-                            ${formatPrice(price)} <span style={{ fontSize: '11px', fontWeight: 600, color: '#888' }}>AUD</span>
+                        <span style={{ fontSize: '20px', fontWeight: 900, color: '#1a1a2e' }}>
+                            ${formatPrice(price)} <span style={{ fontSize: '12px', fontWeight: 600, color: '#888' }}>AUD</span>
                         </span>
                         <span style={{
                             background: '#ffc107',
                             color: '#1a1a2e',
-                            fontSize: '10px',
+                            fontSize: '11px',
                             fontWeight: 800,
                             padding: '4px 10px',
                             borderRadius: '20px'
@@ -207,8 +212,8 @@ const ModalSidebar = ({ car }: { car?: any }) => {
                             <i className={`fas ${item.icon}`} style={{ color: '#1a1a2e', fontSize: '12px' }}></i>
                         </div>
                         <div>
-                            <div style={{ fontSize: '12px', fontWeight: 800, color: '#1a1a2e', marginBottom: '1px' }}>{item.title}</div>
-                            <div style={{ fontSize: '11px', color: '#888', lineHeight: 1.3 }}>{item.desc}</div>
+                            <div style={{ fontSize: '13px', fontWeight: 800, color: '#1a1a2e', marginBottom: '1px' }}>{item.title}</div>
+                            <div style={{ fontSize: '12px', color: '#888', lineHeight: 1.3 }}>{item.desc}</div>
                         </div>
                     </div>
                 ))}
@@ -216,11 +221,11 @@ const ModalSidebar = ({ car }: { car?: any }) => {
 
             {/* Need Help */}
             <div style={{ marginTop: 'auto' }}>
-                <h5 style={{ fontSize: '13px', fontWeight: 800, color: '#1a1a2e', margin: '0 0 10px 0' }}>Need Help?</h5>
-                <p style={{ fontSize: '11px', color: '#888', margin: '0 0 12px 0', lineHeight: 1.4 }}>
+                <h5 style={{ fontSize: '14px', fontWeight: 800, color: '#1a1a2e', margin: '0 0 10px 0' }}>Need Help?</h5>
+                <p style={{ fontSize: '12px', color: '#888', margin: '0 0 12px 0', lineHeight: 1.4 }}>
                     Our team is here to answer any questions.
                 </p>
-                <div style={{ display: 'flex', flexDirection: 'column', gap: '8px', fontSize: '12px', color: '#555' }}>
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '8px', fontSize: '13px', color: '#555' }}>
                     <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
                         <i className="fas fa-phone-alt" style={{ color: '#1a1a2e', width: '14px', fontSize: '11px' }}></i>
                         <span>+1800 006 256</span>
@@ -245,17 +250,17 @@ const ModalSidebar = ({ car }: { car?: any }) => {
 
 const inputStyle: React.CSSProperties = {
     width: '100%',
-    padding: '11px 14px',
+    padding: '12px 14px',
     borderRadius: '8px',
     border: '1px solid #e5e5e5',
-    fontSize: '13px',
+    fontSize: '14px',
     outline: 'none',
     color: '#1a1a2e',
     background: '#fff'
 };
 
 const labelStyle: React.CSSProperties = {
-    fontSize: '12px',
+    fontSize: '13px',
     fontWeight: 700,
     color: '#1a1a2e',
     marginBottom: '6px',
@@ -263,7 +268,7 @@ const labelStyle: React.CSSProperties = {
 };
 
 const sectionTitleStyle: React.CSSProperties = {
-    fontSize: '14px',
+    fontSize: '15px',
     fontWeight: 800,
     color: '#1a1a2e',
     marginBottom: '12px',
@@ -300,8 +305,8 @@ const TestDriveModal = ({ isOpen, onClose, car }: { isOpen: boolean; onClose: ()
                                 <i className="far fa-calendar-check" style={{ color: '#ffc107', fontSize: '20px' }}></i>
                             </div>
                             <div>
-                                <h3 style={{ fontSize: '20px', fontWeight: 800, color: '#1a1a2e', margin: '0 0 4px 0' }}>Book a Test Drive</h3>
-                                <p style={{ fontSize: '13px', color: '#888', margin: 0, lineHeight: 1.4 }}>
+                                <h3 style={{ fontSize: '22px', fontWeight: 800, color: '#1a1a2e', margin: '0 0 4px 0' }}>Book a Test Drive</h3>
+                                <p style={{ fontSize: '14px', color: '#888', margin: 0, lineHeight: 1.4 }}>
                                     Fill in the details below and we'll confirm your test drive.
                                 </p>
                             </div>
@@ -324,22 +329,22 @@ const TestDriveModal = ({ isOpen, onClose, car }: { isOpen: boolean; onClose: ()
                     {submitted ? (
                         <div style={{ textAlign: 'center', padding: '60px 0' }}>
                             <i className="fas fa-check-circle" style={{ color: '#28a745', fontSize: '48px', marginBottom: '16px' }}></i>
-                            <h4 style={{ fontSize: '18px', fontWeight: 800, color: '#1a1a2e', marginBottom: '8px' }}>Request Submitted!</h4>
-                            <p style={{ fontSize: '14px', color: '#666' }}>We will contact you shortly to confirm.</p>
+                            <h4 style={{ fontSize: '20px', fontWeight: 800, color: '#1a1a2e', marginBottom: '8px' }}>Request Submitted!</h4>
+                            <p style={{ fontSize: '15px', color: '#666' }}>We will contact you shortly to confirm.</p>
                         </div>
                     ) : (
                         <form onSubmit={handleSubmit}>
                             <div style={sectionTitleStyle}>Your Details</div>
-                            
+
                             <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px', marginBottom: '12px' }}>
                                 <div>
                                     <label style={labelStyle}>Full Name *</label>
-                                    <input style={inputStyle} placeholder="Enter your full name" required 
+                                    <input style={inputStyle} placeholder="Enter your full name" required
                                         value={form.name} onChange={e => setForm({...form, name: e.target.value})} />
                                 </div>
                                 <div>
                                     <label style={labelStyle}>Email Address *</label>
-                                    <input style={inputStyle} placeholder="Enter your email" type="email" required 
+                                    <input style={inputStyle} placeholder="Enter your email" type="email" required
                                         value={form.email} onChange={e => setForm({...form, email: e.target.value})} />
                                 </div>
                             </div>
@@ -348,10 +353,10 @@ const TestDriveModal = ({ isOpen, onClose, car }: { isOpen: boolean; onClose: ()
                                 <div>
                                     <label style={labelStyle}>Phone Number *</label>
                                     <div style={{ display: 'flex', border: '1px solid #e5e5e5', borderRadius: '8px', overflow: 'hidden' }}>
-                                        <span style={{ padding: '10px 8px', background: '#f8f9fa', borderRight: '1px solid #e5e5e5', fontSize: '13px', display: 'flex', alignItems: 'center', gap: '4px' }}>
+                                        <span style={{ padding: '10px 8px', background: '#f8f9fa', borderRight: '1px solid #e5e5e5', fontSize: '14px', display: 'flex', alignItems: 'center', gap: '4px' }}>
                                             🇦🇺 <i className="fas fa-chevron-down" style={{ fontSize: '8px', color: '#999' }}></i>
                                         </span>
-                                        <input style={{ ...inputStyle, border: 'none', borderRadius: 0 }} placeholder="04XX XXX XXX" required 
+                                        <input style={{ ...inputStyle, border: 'none', borderRadius: 0 }} placeholder="04XX XXX XXX" required
                                             value={form.phone} onChange={e => setForm({...form, phone: e.target.value})} />
                                     </div>
                                 </div>
@@ -372,7 +377,7 @@ const TestDriveModal = ({ isOpen, onClose, car }: { isOpen: boolean; onClose: ()
                                 <div>
                                     <label style={labelStyle}>Preferred Date *</label>
                                     <div style={{ position: 'relative' }}>
-                                        <input style={{ ...inputStyle, paddingRight: '40px' }} type="date" required 
+                                        <input style={{ ...inputStyle, paddingRight: '40px' }} type="date" required
                                             value={form.date} onChange={e => setForm({...form, date: e.target.value})} />
                                         <i className="far fa-calendar" style={{ position: 'absolute', right: '14px', top: '50%', transform: 'translateY(-50%)', color: '#999', fontSize: '14px', pointerEvents: 'none' }}></i>
                                     </div>
@@ -400,19 +405,19 @@ const TestDriveModal = ({ isOpen, onClose, car }: { isOpen: boolean; onClose: ()
 
                             <div style={{ marginBottom: '16px' }}>
                                 <label style={labelStyle}>Your Message (Optional)</label>
-                                <textarea style={{ ...inputStyle, minHeight: '80px', resize: 'vertical' }} placeholder="Anything specific you'd like us to know?" 
+                                <textarea style={{ ...inputStyle, minHeight: '80px', resize: 'vertical' }} placeholder="Anything specific you'd like us to know?"
                                     value={form.message} onChange={e => setForm({...form, message: e.target.value})}></textarea>
                             </div>
 
                             <div style={{ display: 'flex', alignItems: 'flex-start', gap: '8px', marginBottom: '16px' }}>
-                                <input 
-                                    type="checkbox" 
+                                <input
+                                    type="checkbox"
                                     id="td-agree"
                                     checked={form.agreed}
                                     onChange={e => setForm({...form, agreed: e.target.checked})}
                                     style={{ marginTop: '3px', accentColor: '#ffc107' }}
                                 />
-                                <label htmlFor="td-agree" style={{ fontSize: '12px', color: '#666', lineHeight: 1.4, cursor: 'pointer' }}>
+                                <label htmlFor="td-agree" style={{ fontSize: '13px', color: '#666', lineHeight: 1.4, cursor: 'pointer' }}>
                                     I agree to the <a href="#" style={{ color: '#ffc107', fontWeight: 700, textDecoration: 'none' }}>Privacy Policy</a> and <a href="#" style={{ color: '#ffc107', fontWeight: 700, textDecoration: 'none' }}>Terms & Conditions</a>.
                                 </label>
                             </div>
@@ -423,7 +428,7 @@ const TestDriveModal = ({ isOpen, onClose, car }: { isOpen: boolean; onClose: ()
                                 background: '#ffc107',
                                 color: '#1a1a2e',
                                 fontWeight: 800,
-                                fontSize: '14px',
+                                fontSize: '15px',
                                 borderRadius: '8px',
                                 border: 'none',
                                 cursor: 'pointer',
@@ -436,7 +441,7 @@ const TestDriveModal = ({ isOpen, onClose, car }: { isOpen: boolean; onClose: ()
                                 <i className="far fa-calendar-check"></i> Book Test Drive
                             </button>
 
-                            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '6px', fontSize: '11px', color: '#999' }}>
+                            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '6px', fontSize: '12px', color: '#999' }}>
                                 <i className="fas fa-lock" style={{ fontSize: '10px' }}></i>
                                 <span>Your information is safe with us and will never be shared.</span>
                             </div>
@@ -479,8 +484,8 @@ const FinanceModal = ({ isOpen, onClose, car }: { isOpen: boolean; onClose: () =
                                 <i className="fas fa-dollar-sign" style={{ color: '#ffc107', fontSize: '20px' }}></i>
                             </div>
                             <div>
-                                <h3 style={{ fontSize: '20px', fontWeight: 800, color: '#1a1a2e', margin: '0 0 4px 0' }}>Apply for Finance</h3>
-                                <p style={{ fontSize: '13px', color: '#888', margin: 0, lineHeight: 1.4 }}>
+                                <h3 style={{ fontSize: '22px', fontWeight: 800, color: '#1a1a2e', margin: '0 0 4px 0' }}>Apply for Finance</h3>
+                                <p style={{ fontSize: '14px', color: '#888', margin: 0, lineHeight: 1.4 }}>
                                     Quick and easy finance application. Get pre-approved in minutes.
                                 </p>
                             </div>
@@ -503,16 +508,16 @@ const FinanceModal = ({ isOpen, onClose, car }: { isOpen: boolean; onClose: () =
                     {submitted ? (
                         <div style={{ textAlign: 'center', padding: '60px 0' }}>
                             <i className="fas fa-check-circle" style={{ color: '#28a745', fontSize: '48px', marginBottom: '16px' }}></i>
-                            <h4 style={{ fontSize: '18px', fontWeight: 800, color: '#1a1a2e', marginBottom: '8px' }}>Application Submitted!</h4>
-                            <p style={{ fontSize: '14px', color: '#666' }}>Our finance team will contact you shortly.</p>
+                            <h4 style={{ fontSize: '20px', fontWeight: 800, color: '#1a1a2e', marginBottom: '8px' }}>Application Submitted!</h4>
+                            <p style={{ fontSize: '15px', color: '#666' }}>Our finance team will contact you shortly.</p>
                         </div>
                     ) : (
                         <form onSubmit={handleSubmit}>
                             <div style={sectionTitleStyle}>Personal Details</div>
-                            
+
                             <div style={{ marginBottom: '12px' }}>
                                 <label style={labelStyle}>Full Name *</label>
-                                <input style={inputStyle} placeholder="Enter your full name" required 
+                                <input style={inputStyle} placeholder="Enter your full name" required
                                     value={form.name} onChange={e => setForm({...form, name: e.target.value})} />
                             </div>
 
@@ -520,16 +525,16 @@ const FinanceModal = ({ isOpen, onClose, car }: { isOpen: boolean; onClose: () =
                                 <div>
                                     <label style={labelStyle}>Phone Number *</label>
                                     <div style={{ display: 'flex', border: '1px solid #e5e5e5', borderRadius: '8px', overflow: 'hidden' }}>
-                                        <span style={{ padding: '10px 8px', background: '#f8f9fa', borderRight: '1px solid #e5e5e5', fontSize: '13px', display: 'flex', alignItems: 'center', gap: '4px' }}>
+                                        <span style={{ padding: '10px 8px', background: '#f8f9fa', borderRight: '1px solid #e5e5e5', fontSize: '14px', display: 'flex', alignItems: 'center', gap: '4px' }}>
                                             🇦🇺 <i className="fas fa-chevron-down" style={{ fontSize: '8px', color: '#999' }}></i>
                                         </span>
-                                        <input style={{ ...inputStyle, border: 'none', borderRadius: 0 }} placeholder="04XX XXX XXX" required 
+                                        <input style={{ ...inputStyle, border: 'none', borderRadius: 0 }} placeholder="04XX XXX XXX" required
                                             value={form.phone} onChange={e => setForm({...form, phone: e.target.value})} />
                                     </div>
                                 </div>
                                 <div>
                                     <label style={labelStyle}>Email Address *</label>
-                                    <input style={inputStyle} placeholder="Enter your email" type="email" required 
+                                    <input style={inputStyle} placeholder="Enter your email" type="email" required
                                         value={form.email} onChange={e => setForm({...form, email: e.target.value})} />
                                 </div>
                             </div>
@@ -538,7 +543,7 @@ const FinanceModal = ({ isOpen, onClose, car }: { isOpen: boolean; onClose: () =
                                 <div>
                                     <label style={labelStyle}>Date of Birth *</label>
                                     <div style={{ position: 'relative' }}>
-                                        <input style={{ ...inputStyle, paddingRight: '40px' }} type="date" required 
+                                        <input style={{ ...inputStyle, paddingRight: '40px' }} type="date" required
                                             value={form.dob} onChange={e => setForm({...form, dob: e.target.value})} />
                                         <i className="far fa-calendar" style={{ position: 'absolute', right: '14px', top: '50%', transform: 'translateY(-50%)', color: '#999', fontSize: '14px', pointerEvents: 'none' }}></i>
                                     </div>
@@ -585,14 +590,14 @@ const FinanceModal = ({ isOpen, onClose, car }: { isOpen: boolean; onClose: () =
                             <div style={{ marginBottom: '16px' }}>
                                 <label style={labelStyle}>Deposit Amount (Optional)</label>
                                 <div style={{ position: 'relative' }}>
-                                    <span style={{ position: 'absolute', left: '14px', top: '50%', transform: 'translateY(-50%)', color: '#999', fontSize: '13px', fontWeight: 600 }}>$</span>
-                                    <input style={{ ...inputStyle, paddingLeft: '28px' }} placeholder="Enter deposit amount" 
+                                    <span style={{ position: 'absolute', left: '14px', top: '50%', transform: 'translateY(-50%)', color: '#999', fontSize: '14px', fontWeight: 600 }}>$</span>
+                                    <input style={{ ...inputStyle, paddingLeft: '28px' }} placeholder="Enter deposit amount"
                                         value={form.deposit} onChange={e => setForm({...form, deposit: e.target.value})} />
                                 </div>
                             </div>
 
                             <div style={{ marginBottom: '16px', padding: '14px', background: '#f8f9fa', borderRadius: '10px' }}>
-                                <h6 style={{ fontSize: '12px', fontWeight: 800, color: '#1a1a2e', margin: '0 0 10px 0' }}>Why choose finance with us?</h6>
+                                <h6 style={{ fontSize: '13px', fontWeight: 800, color: '#1a1a2e', margin: '0 0 10px 0' }}>Why choose finance with us?</h6>
                                 <ul style={{ listStyle: 'none', padding: 0, margin: 0, display: 'flex', flexDirection: 'column', gap: '8px' }}>
                                     {[
                                         'Competitive interest rates',
@@ -600,7 +605,7 @@ const FinanceModal = ({ isOpen, onClose, car }: { isOpen: boolean; onClose: () =
                                         'Flexible repayment options',
                                         'Trusted by 1000+ customers'
                                     ].map((item, i) => (
-                                        <li key={i} style={{ display: 'flex', alignItems: 'center', gap: '8px', fontSize: '12px', color: '#555' }}>
+                                        <li key={i} style={{ display: 'flex', alignItems: 'center', gap: '8px', fontSize: '13px', color: '#555' }}>
                                             <i className="fas fa-check" style={{ color: '#28a745', fontSize: '10px' }}></i>
                                             {item}
                                         </li>
@@ -614,7 +619,7 @@ const FinanceModal = ({ isOpen, onClose, car }: { isOpen: boolean; onClose: () =
                                 background: '#ffc107',
                                 color: '#1a1a2e',
                                 fontWeight: 800,
-                                fontSize: '14px',
+                                fontSize: '15px',
                                 borderRadius: '8px',
                                 border: 'none',
                                 cursor: 'pointer',
@@ -665,8 +670,8 @@ const EnquiryModal = ({ isOpen, onClose, car }: { isOpen: boolean; onClose: () =
                                 <i className="far fa-comment-dots" style={{ color: '#ffc107', fontSize: '20px' }}></i>
                             </div>
                             <div>
-                                <h3 style={{ fontSize: '20px', fontWeight: 800, color: '#1a1a2e', margin: '0 0 4px 0' }}>Enquire Now</h3>
-                                <p style={{ fontSize: '13px', color: '#888', margin: 0, lineHeight: 1.4 }}>
+                                <h3 style={{ fontSize: '22px', fontWeight: 800, color: '#1a1a2e', margin: '0 0 4px 0' }}>Enquire Now</h3>
+                                <p style={{ fontSize: '14px', color: '#888', margin: 0, lineHeight: 1.4 }}>
                                     Have questions? We're here to help. Get in touch with our team.
                                 </p>
                             </div>
@@ -689,8 +694,8 @@ const EnquiryModal = ({ isOpen, onClose, car }: { isOpen: boolean; onClose: () =
                     {submitted ? (
                         <div style={{ textAlign: 'center', padding: '60px 0' }}>
                             <i className="fas fa-check-circle" style={{ color: '#28a745', fontSize: '48px', marginBottom: '16px' }}></i>
-                            <h4 style={{ fontSize: '18px', fontWeight: 800, color: '#1a1a2e', marginBottom: '8px' }}>Enquiry Sent!</h4>
-                            <p style={{ fontSize: '14px', color: '#666' }}>Our team will get back to you shortly.</p>
+                            <h4 style={{ fontSize: '20px', fontWeight: 800, color: '#1a1a2e', marginBottom: '8px' }}>Enquiry Sent!</h4>
+                            <p style={{ fontSize: '15px', color: '#666' }}>Our team will get back to you shortly.</p>
                         </div>
                     ) : (
                         <form onSubmit={handleSubmit}>
@@ -698,7 +703,7 @@ const EnquiryModal = ({ isOpen, onClose, car }: { isOpen: boolean; onClose: () =
 
                             <div style={{ marginBottom: '12px' }}>
                                 <label style={labelStyle}>Full Name *</label>
-                                <input style={inputStyle} placeholder="Enter your full name" required 
+                                <input style={inputStyle} placeholder="Enter your full name" required
                                     value={form.name} onChange={e => setForm({...form, name: e.target.value})} />
                             </div>
 
@@ -706,16 +711,16 @@ const EnquiryModal = ({ isOpen, onClose, car }: { isOpen: boolean; onClose: () =
                                 <div>
                                     <label style={labelStyle}>Phone Number *</label>
                                     <div style={{ display: 'flex', border: '1px solid #e5e5e5', borderRadius: '8px', overflow: 'hidden' }}>
-                                        <span style={{ padding: '10px 8px', background: '#f8f9fa', borderRight: '1px solid #e5e5e5', fontSize: '13px', display: 'flex', alignItems: 'center', gap: '4px' }}>
+                                        <span style={{ padding: '10px 8px', background: '#f8f9fa', borderRight: '1px solid #e5e5e5', fontSize: '14px', display: 'flex', alignItems: 'center', gap: '4px' }}>
                                             🇦🇺 <i className="fas fa-chevron-down" style={{ fontSize: '8px', color: '#999' }}></i>
                                         </span>
-                                        <input style={{ ...inputStyle, border: 'none', borderRadius: 0 }} placeholder="04XX XXX XXX" required 
+                                        <input style={{ ...inputStyle, border: 'none', borderRadius: 0 }} placeholder="04XX XXX XXX" required
                                             value={form.phone} onChange={e => setForm({...form, phone: e.target.value})} />
                                     </div>
                                 </div>
                                 <div>
                                     <label style={labelStyle}>Email Address *</label>
-                                    <input style={inputStyle} placeholder="Enter your email" type="email" required 
+                                    <input style={inputStyle} placeholder="Enter your email" type="email" required
                                         value={form.email} onChange={e => setForm({...form, email: e.target.value})} />
                                 </div>
                             </div>
@@ -756,7 +761,7 @@ const EnquiryModal = ({ isOpen, onClose, car }: { isOpen: boolean; onClose: () =
                                                 border: contactMethod === m.key ? '1.5px solid #ffc107' : '1.5px solid #e5e5e5',
                                                 background: contactMethod === m.key ? '#fff8e1' : '#fff',
                                                 color: contactMethod === m.key ? '#1a1a2e' : '#888',
-                                                fontSize: '12px',
+                                                fontSize: '13px',
                                                 fontWeight: 700,
                                                 cursor: 'pointer',
                                                 display: 'flex',
@@ -775,7 +780,7 @@ const EnquiryModal = ({ isOpen, onClose, car }: { isOpen: boolean; onClose: () =
 
                             <div style={{ display: 'flex', alignItems: 'flex-start', gap: '8px', marginBottom: '16px', padding: '10px 12px', background: '#fff8e1', borderRadius: '8px' }}>
                                 <i className="fas fa-shield-alt" style={{ color: '#ffc107', fontSize: '14px', marginTop: '2px' }}></i>
-                                <span style={{ fontSize: '11px', color: '#887744', lineHeight: 1.4 }}>
+                                <span style={{ fontSize: '12px', color: '#887744', lineHeight: 1.4 }}>
                                     We respect your privacy and will never spam you.
                                 </span>
                             </div>
@@ -786,7 +791,7 @@ const EnquiryModal = ({ isOpen, onClose, car }: { isOpen: boolean; onClose: () =
                                 background: '#1a1a2e',
                                 color: '#fff',
                                 fontWeight: 800,
-                                fontSize: '14px',
+                                fontSize: '15px',
                                 borderRadius: '8px',
                                 border: 'none',
                                 cursor: 'pointer',
@@ -837,7 +842,7 @@ export default function ListingBottomRight({ car }: { car?: any }) {
         width: '100%',
         padding: '12px',
         fontWeight: 800 as const,
-        fontSize: '13px',
+        fontSize: '14px',
         borderRadius: '8px',
         textDecoration: 'none',
         transition: 'all 0.3s ease',
@@ -848,35 +853,35 @@ export default function ListingBottomRight({ car }: { car?: any }) {
     return (
         <>
             <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
-                
+
                 {/* Price Box */}
-                <div style={{ background: '#fff', borderRadius: '12px', padding: '22px', boxShadow: '0 1px 4px rgba(0,0,0,0.04)', border: '1px solid #eee' }}>
-                    <div style={{ fontSize: '11px', color: '#999', fontWeight: 700, marginBottom: '4px', textTransform: 'uppercase', letterSpacing: '0.5px' }}>
+                <div style={{ background: '#fff', borderRadius: '12px', padding: '24px', boxShadow: '0 1px 4px rgba(0,0,0,0.04)', border: '1px solid #eee' }}>
+                    <div style={{ fontSize: '12px', color: '#999', fontWeight: 700, marginBottom: '4px', textTransform: 'uppercase', letterSpacing: '0.5px' }}>
                         Our Price
                     </div>
                     <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '8px' }}>
-                        <span style={{ fontSize: '28px', fontWeight: 900, color: '#1a1a2e' }}>
+                        <span style={{ fontSize: '30px', fontWeight: 900, color: '#1a1a2e' }}>
                             {hasPrice ? `$${formatPrice(price)}` : 'Contact for Price'}
                         </span>
                         {hasPrice && (
-                            <span style={{ background: '#ffc107', color: '#1a1a2e', fontSize: '9px', fontWeight: 800, padding: '3px 6px', borderRadius: '4px' }}>
+                            <span style={{ background: '#ffc107', color: '#1a1a2e', fontSize: '10px', fontWeight: 800, padding: '3px 6px', borderRadius: '4px' }}>
                                 AUD
                             </span>
                         )}
                     </div>
                     <div style={{ marginBottom: '14px' }}>
-                        <StarRating id={carId} />
+                        <StarRating id={carId} city={car?.city || car?.City} />
                     </div>
 
                     <ul style={{ listStyle: 'none', padding: 0, margin: '0 0 16px 0', display: 'flex', flexDirection: 'column', gap: '8px' }}>
                         {[
-                            { icon: 'fa-dollar-sign', text: 'Finance from $765/week*' },
+                            { icon: 'fa-dollar-sign', text: 'Finance from $165/week*' },
                             { icon: 'fa-shield-alt', text: '1-5 Year Warranty Options' },
                             { icon: 'fa-file-alt', text: 'Auction Sheet Verified' },
                             { icon: 'fa-truck', text: 'Australia Wide Delivery' },
                         ].map((item, i) => (
-                            <li key={i} style={{ display: 'flex', alignItems: 'center', gap: '10px', fontSize: '12px', color: '#555', fontWeight: 600 }}>
-                                <i className={`fas ${item.icon}`} style={{ color: '#ffc107', fontSize: '13px', width: '16px' }}></i>
+                            <li key={i} style={{ display: 'flex', alignItems: 'center', gap: '10px', fontSize: '13px', color: '#555', fontWeight: 600 }}>
+                                <i className={`fas ${item.icon}`} style={{ color: '#1a1a2e', fontSize: '14px', width: '16px' }}></i>
                                 <span>{item.text}</span>
                             </li>
                         ))}
@@ -884,44 +889,40 @@ export default function ListingBottomRight({ car }: { car?: any }) {
 
                     <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
                         <button onClick={() => setModal('testdrive')} style={{ ...btnBase, background: '#ffc107', color: '#1a1a2e' }}>
-                            <i className="far fa-calendar-check" style={{ fontSize: '13px' }}></i>
+                            <i className="far fa-calendar-check" style={{ fontSize: '14px' }}></i>
                             Schedule Test Drive
                         </button>
                         <button onClick={() => setModal('finance')} style={{ ...btnBase, background: '#fff', color: '#1a1a2e', border: '1.5px solid #e5e5e5' }}>
-                            <i className="far fa-file-alt" style={{ fontSize: '13px' }}></i>
+                            <i className="far fa-file-alt" style={{ fontSize: '14px' }}></i>
                             Apply for Finance
                         </button>
-                        <button style={{ ...btnBase, background: '#fff', color: '#1a1a2e', border: '1.5px solid #e5e5e5' }}>
-                            <i className="fas fa-exchange-alt" style={{ fontSize: '13px' }}></i>
-                            Trade-In Valuation
-                        </button>
                         <button onClick={() => setModal('enquiry')} style={{ ...btnBase, background: '#1a1a2e', color: '#fff' }}>
-                            <i className="far fa-envelope" style={{ fontSize: '13px' }}></i>
+                            <i className="far fa-envelope" style={{ fontSize: '14px' }}></i>
                             Enquire Now
                         </button>
                     </div>
                 </div>
 
                 {/* Finance Calculator */}
-                <div style={{ background: '#fff', borderRadius: '12px', padding: '22px', boxShadow: '0 1px 4px rgba(0,0,0,0.04)', border: '1px solid #eee' }}>
-                    <h4 style={{ fontSize: '13px', fontWeight: 800, color: '#1a1a2e', marginBottom: '14px', textTransform: 'uppercase', letterSpacing: '0.5px' }}>
+                <div style={{ background: '#fff', borderRadius: '12px', padding: '24px', boxShadow: '0 1px 4px rgba(0,0,0,0.04)', border: '1px solid #eee' }}>
+                    <h4 style={{ fontSize: '14px', fontWeight: 800, color: '#1a1a2e', marginBottom: '14px', textTransform: 'uppercase', letterSpacing: '0.5px' }}>
                         Finance Calculator
                     </h4>
-                    
+
                     <div style={{ marginBottom: '10px' }}>
-                        <div style={{ fontSize: '10px', color: '#999', fontWeight: 700, marginBottom: '3px', textTransform: 'uppercase' }}>Vehicle Price</div>
-                        <div style={{ fontSize: '14px', fontWeight: 800, color: '#1a1a2e' }}>${hasPrice ? formatPrice(price) : '45,995'}</div>
+                        <div style={{ fontSize: '11px', color: '#999', fontWeight: 700, marginBottom: '3px', textTransform: 'uppercase' }}>Vehicle Price</div>
+                        <div style={{ fontSize: '15px', fontWeight: 800, color: '#1a1a2e' }}>${hasPrice ? formatPrice(price) : '45,995'}</div>
                     </div>
 
                     <div style={{ marginBottom: '12px' }}>
-                        <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '10px', color: '#999', fontWeight: 700, marginBottom: '4px', textTransform: 'uppercase' }}>
+                        <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '11px', color: '#999', fontWeight: 700, marginBottom: '4px', textTransform: 'uppercase' }}>
                             <span>Deposit ({deposit}%)</span>
                             <span>${Math.round((Number(deposit) / 100) * (hasPrice ? Number(price) : 45000)).toLocaleString()}</span>
                         </div>
-                        <input 
-                            type="range" 
-                            min="0" 
-                            max="50" 
+                        <input
+                            type="range"
+                            min="0"
+                            max="50"
                             value={deposit}
                             onChange={(e) => setDeposit(e.target.value)}
                             style={{ width: '100%', accentColor: '#ffc107', height: '4px' }}
@@ -930,8 +931,8 @@ export default function ListingBottomRight({ car }: { car?: any }) {
 
                     <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '8px', marginBottom: '14px' }}>
                         <div>
-                            <div style={{ fontSize: '10px', color: '#999', fontWeight: 700, marginBottom: '3px', textTransform: 'uppercase' }}>Loan Term</div>
-                            <select 
+                            <div style={{ fontSize: '11px', color: '#999', fontWeight: 700, marginBottom: '3px', textTransform: 'uppercase' }}>Loan Term</div>
+                            <select
                                 value={loanTerm}
                                 onChange={(e) => setLoanTerm(e.target.value)}
                                 style={{
@@ -939,7 +940,7 @@ export default function ListingBottomRight({ car }: { car?: any }) {
                                     padding: '9px',
                                     borderRadius: '6px',
                                     border: '1px solid #e5e5e5',
-                                    fontSize: '12px',
+                                    fontSize: '13px',
                                     fontWeight: 700,
                                     outline: 'none',
                                     color: '#1a1a2e'
@@ -953,7 +954,7 @@ export default function ListingBottomRight({ car }: { car?: any }) {
                             </select>
                         </div>
                         <div>
-                            <div style={{ fontSize: '10px', color: '#999', fontWeight: 700, marginBottom: '3px', textTransform: 'uppercase' }}>Interest Rate</div>
+                            <div style={{ fontSize: '11px', color: '#999', fontWeight: 700, marginBottom: '3px', textTransform: 'uppercase' }}>Interest Rate</div>
                             <select
                                 value={interestRate}
                                 onChange={(e) => setInterestRate(e.target.value)}
@@ -962,7 +963,7 @@ export default function ListingBottomRight({ car }: { car?: any }) {
                                     padding: '9px',
                                     borderRadius: '6px',
                                     border: '1px solid #e5e5e5',
-                                    fontSize: '12px',
+                                    fontSize: '13px',
                                     fontWeight: 700,
                                     outline: 'none',
                                     color: '#1a1a2e'
@@ -976,18 +977,18 @@ export default function ListingBottomRight({ car }: { car?: any }) {
                         </div>
                     </div>
 
-                    <div style={{ 
-                        background: '#f8f9fa', 
-                        borderRadius: '8px', 
-                        padding: '14px', 
+                    <div style={{
+                        background: '#f8f9fa',
+                        borderRadius: '8px',
+                        padding: '14px',
                         textAlign: 'center',
                         marginBottom: '14px'
                     }}>
-                        <div style={{ fontSize: '10px', color: '#999', fontWeight: 700, marginBottom: '4px', textTransform: 'uppercase' }}>
+                        <div style={{ fontSize: '11px', color: '#999', fontWeight: 700, marginBottom: '4px', textTransform: 'uppercase' }}>
                             Estimated Repayment
                         </div>
-                        <div style={{ fontSize: '22px', fontWeight: 900, color: '#1a1a2e' }}>
-                            ${weeklyRepayment}<span style={{ fontSize: '12px', fontWeight: 600 }}> weekly*</span>
+                        <div style={{ fontSize: '24px', fontWeight: 900, color: '#1a1a2e' }}>
+                            ${weeklyRepayment}<span style={{ fontSize: '13px', fontWeight: 600 }}> weekly*</span>
                         </div>
                     </div>
 
@@ -997,23 +998,23 @@ export default function ListingBottomRight({ car }: { car?: any }) {
                 </div>
 
                 {/* Need Help */}
-                <div style={{ background: '#fff', borderRadius: '12px', padding: '22px', boxShadow: '0 1px 4px rgba(0,0,0,0.04)', border: '1px solid #eee' }}>
-                    <h4 style={{ fontSize: '13px', fontWeight: 800, color: '#1a1a2e', marginBottom: '12px', textTransform: 'uppercase', letterSpacing: '0.5px' }}>
+                <div style={{ background: '#fff', borderRadius: '12px', padding: '24px', boxShadow: '0 1px 4px rgba(0,0,0,0.04)', border: '1px solid #eee' }}>
+                    <h4 style={{ fontSize: '14px', fontWeight: 800, color: '#1a1a2e', marginBottom: '12px', textTransform: 'uppercase', letterSpacing: '0.5px' }}>
                         Need Help?
                     </h4>
-                    <p style={{ fontSize: '12px', color: '#666', marginBottom: '14px', lineHeight: 1.5 }}>
+                    <p style={{ fontSize: '13px', color: '#666', marginBottom: '14px', lineHeight: 1.5 }}>
                         Our friendly team is here to help you find your perfect car.
                     </p>
-                    
+
                     <ul style={{ listStyle: 'none', padding: 0, margin: '0 0 14px 0', display: 'flex', flexDirection: 'column', gap: '10px' }}>
                         {[
                             { icon: 'fa-phone-alt', text: '1800 006 256' },
                             { icon: 'fa-comments', text: 'WhatsApp Us' },
-                            { icon: 'fa-envelope', text: 'info@uka.com.au' },
+                            { icon: 'fa-envelope', text: 'info@ukajapan.com.au' },
                             { icon: 'fa-clock', text: 'Mon - Sun: 9:00 AM - 6:00 PM' },
                         ].map((item, i) => (
-                            <li key={i} style={{ display: 'flex', alignItems: 'center', gap: '10px', fontSize: '12px', color: '#555', fontWeight: 600 }}>
-                                <i className={`fas ${item.icon}`} style={{ color: '#1a1a2e', fontSize: '13px', width: '16px' }}></i>
+                            <li key={i} style={{ display: 'flex', alignItems: 'center', gap: '10px', fontSize: '13px', color: '#555', fontWeight: 600 }}>
+                                <i className={`fas ${item.icon}`} style={{ color: '#1a1a2e', fontSize: '14px', width: '16px' }}></i>
                                 <span>{item.text}</span>
                             </li>
                         ))}
@@ -1021,20 +1022,20 @@ export default function ListingBottomRight({ car }: { car?: any }) {
 
                     <div style={{ display: 'flex', gap: '8px' }}>
                         <div style={{ flex: 1, padding: '10px', background: '#f8f9fa', borderRadius: '8px', textAlign: 'center' }}>
-                            <div style={{ fontSize: '10px', color: '#999', marginBottom: '3px', fontWeight: 700 }}>Google</div>
+                            <div style={{ fontSize: '11px', color: '#999', marginBottom: '3px', fontWeight: 700 }}>Google</div>
                             <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '2px', marginBottom: '2px' }}>
                                 {[1,2,3,4].map(i => <i key={i} className="fas fa-star" style={{ color: '#ffc107', fontSize: '9px' }}></i>)}
                                 <i className="fas fa-star-half-alt" style={{ color: '#ffc107', fontSize: '9px' }}></i>
                             </div>
-                            <div style={{ fontSize: '11px', fontWeight: 800, color: '#1a1a2e' }}>4.9</div>
+                            <div style={{ fontSize: '12px', fontWeight: 800, color: '#1a1a2e' }}>4.9</div>
                         </div>
                         <div style={{ flex: 1, padding: '10px', background: '#f8f9fa', borderRadius: '8px', textAlign: 'center' }}>
-                            <div style={{ fontSize: '10px', color: '#999', marginBottom: '3px', fontWeight: 700 }}>Facebook</div>
+                            <div style={{ fontSize: '11px', color: '#999', marginBottom: '3px', fontWeight: 700 }}>Facebook</div>
                             <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '2px', marginBottom: '2px' }}>
                                 {[1,2,3,4].map(i => <i key={i} className="fas fa-star" style={{ color: '#ffc107', fontSize: '9px' }}></i>)}
                                 <i className="fas fa-star-half-alt" style={{ color: '#ffc107', fontSize: '9px' }}></i>
                             </div>
-                            <div style={{ fontSize: '11px', fontWeight: 800, color: '#1a1a2e' }}>4.8</div>
+                            <div style={{ fontSize: '12px', fontWeight: 800, color: '#1a1a2e' }}>4.8</div>
                         </div>
                     </div>
                 </div>

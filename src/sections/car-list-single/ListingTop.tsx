@@ -11,7 +11,10 @@ export default function ListingTop({ car }: ListingTopProps) {
     return (
         <div style={{ marginBottom: '16px' }}>
             <nav style={{ fontSize: '12px', color: '#999', marginBottom: '8px', display: 'flex', alignItems: 'center', gap: '6px' }}>
-                <span style={{ color: '#ffc107', fontWeight: 600, cursor: 'pointer' }}>Home</span>
+                <span style={{ color: '#ffc107', fontWeight: 600, cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '5px' }}>
+                    <i className="fas fa-home" style={{ fontSize: '10px' }}></i>
+                    Home
+                </span>
                 <i className="fas fa-chevron-right" style={{ fontSize: '8px', color: '#ccc' }}></i>
                 <span style={{ color: '#666' }}>Used Cars</span>
                 <i className="fas fa-chevron-right" style={{ fontSize: '8px', color: '#ccc' }}></i>

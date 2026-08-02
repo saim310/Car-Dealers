@@ -1,852 +1,547 @@
-"use client"
-import React, { useState } from 'react';
+"use client";
+
+import React, { useState } from "react";
 import { motion } from "framer-motion";
-import Link from 'next/link';
-import {
-    CheckCircle2,
-    FileText,
-    Phone,
-    Mail,
-    ShieldCheck,
-    Banknote,
-    ClipboardList,
-    Calculator,
-    ArrowRight,
-    Send,
-    Car
-} from 'lucide-react';
+import Link from "next/link";
 
-const benefits = [
-    "Budget-friendly monthly payments",
-    "Access to high quality Japanese import cars",
-    "Financial flexibility customized to your needs",
-    "Regular payment improves Credit History",
-    "Combined with warranties & insurance provides great value"
-];
+// =========================================
+// ICONS
+// =========================================
 
-const documents = [
-    "Proof of Income",
-    "Employment Status",
-    "Credit History",
-    "Regular payment improves Credit History",
-    "Combined with warranties & insurance provides great value"
-];
+const IconArrowRight = ({ className = "uka-icon" }: { className?: string }) => (
+  <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+    <path d="M5 12h14" /><path d="m12 5 7 7-7 7" />
+  </svg>
+);
 
-const featureCards = [
-    {
-        Icon: Banknote,
-        title: "Quick Finance Enquiry",
-        description: "Provide your name, contact number, email, and the used car finance amount you're looking for. This helps us quickly understand your needs and reach out with the next steps.",
-        link: "/finance-information/#financeenquiry",
-        buttonText: "Apply Now"
-    },
-    {
-        Icon: ClipboardList,
-        title: "Detailed Application Form",
-        description: "Fill out the full used car finance application, including your income, employment details, and any additional information. This allows us to perform an accurate financial assessment.",
-        link: "/finance-information/#financeenquiry",
-        buttonText: "Apply Now"
-    },
-    {
-        Icon: Calculator,
-        title: "Finance Calculator",
-        description: "Use our simple used car finance repayment calculator to quickly estimate your weekly, fortnightly, or monthly repayments with ease, accuracy, and complete confidence.",
-        link: "/#finance-calc",
-        buttonText: "Calculate Now"
-    }
-];
+const IconUpload = ({ className = "uka-icon" }: { className?: string }) => (
+  <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+    <polyline points="17 8 12 3 7 8" /><line x1="12" x2="12" y1="3" y2="15" />
+  </svg>
+);
+
+const IconCheck = ({ className = "uka-icon" }: { className?: string }) => (
+  <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+    <polyline points="20 6 9 17 4 12" />
+  </svg>
+);
+
+const IconExternal = ({ className = "uka-icon" }: { className?: string }) => (
+  <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+    <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6" />
+    <polyline points="15 3 21 3 21 9" /><line x1="10" x2="21" y1="14" y2="3" />
+  </svg>
+);
+
+// =========================================
+// ANIMATION
+// =========================================
+
+const FadeIn = ({ children, delay = 0 }: { children: React.ReactNode; delay?: number }) => (
+  <motion.div
+    initial={{ opacity: 0, y: 30 }}
+    whileInView={{ opacity: 1, y: 0 }}
+    transition={{ duration: 0.6, ease: [0.25, 0.46, 0.45, 0.94], delay }}
+    viewport={{ once: true, amount: 0.15 }}
+  >
+    {children}
+  </motion.div>
+);
+
+// =========================================
+// MAIN PAGE
+// =========================================
 
 const FinancePage: React.FC = () => {
-    const [formData, setFormData] = useState({
-        name: '',
-        phone: '',
-        email: '',
-        financeAmount: '',
-        employmentType: '',
-        income: '',
-        message: ''
-    });
+  const [formData, setFormData] = useState({
+    loanAmount: "", loanDuration: "", loanType: "", employmentStatus: "",
+    residencyStatus: "", propertyOwner: "", financeBefore: "", creditHistory: "",
+    name: "", phone: "", email: "", message: "",
+  });
 
-    const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
-        setFormData({ ...formData, [e.target.name]: e.target.value });
-    };
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
+    setFormData({ ...formData, [e.target.name]: e.target.value });
+  };
 
-    const handleSubmit = (e: React.FormEvent) => {
-        e.preventDefault();
-        alert('Finance enquiry submitted successfully! Our team will contact you shortly.');
-        setFormData({
-            name: '',
-            phone: '',
-            email: '',
-            financeAmount: '',
-            employmentType: '',
-            income: '',
-            message: ''
-        });
-    };
+  const partners = [
+    { name: "Magpie Finance", url: "https://www.magpiefinance.com.au/" },
+    { name: "Better Finance", url: "https://betterfinance.com.au/" },
+    { name: "Credit One", url: "https://www.creditone.com.au/" },
+  ];
 
-    const fadeInUp = {
-        initial: { y: 40, opacity: 0 },
-        whileInView: { y: 0, opacity: 1 },
-        transition: { duration: 0.6, ease: "easeOut" } as any,
-        viewport: { once: true }
-    };
+  return (
+    <main className="uka-finance">
+      <style jsx global>{`
+        .uka-finance {
+          --gold: #F5B818;
+          --navy: #0F0F1B;
+          --cream: #F5F0E6;
+          --white: #FFFFFF;
+          --text: #111111;
+          --text-secondary: #555555;
+          --text-muted: #8B8FA3;
+          --radius: 14px;
+        }
 
-    return (
-        <div className="finance-page">
-            {/* ===== HERO SECTION ===== */}
-            <section style={{
-                background: '#0F0F1B',
-                padding: '100px 0 80px',
-                position: 'relative',
-                overflow: 'hidden'
-            }}>
-                <div style={{
-                    position: 'absolute',
-                    top: '-100px',
-                    right: '-100px',
-                    width: '400px',
-                    height: '400px',
-                    borderRadius: '50%',
-                    background: 'radial-gradient(circle, rgba(245,185,56,0.08) 0%, transparent 70%)',
-                    pointerEvents: 'none'
-                }} />
-                <div style={{
-                    position: 'absolute',
-                    bottom: '-150px',
-                    left: '-150px',
-                    width: '500px',
-                    height: '500px',
-                    borderRadius: '50%',
-                    background: 'radial-gradient(circle, rgba(245,185,56,0.05) 0%, transparent 70%)',
-                    pointerEvents: 'none'
-                }} />
+        .uka-icon { width: 20px; height: 20px; display: block; flex-shrink: 0; }
 
-                <div className="container" style={{ position: 'relative', zIndex: 1 }}>
-                    <motion.div
-                        className="text-center"
-                        {...fadeInUp}
-                    >
-                        <span style={{
-                            color: '#f5b93c',
-                            fontWeight: 600,
-                            textTransform: 'uppercase',
-                            fontSize: '13px',
-                            letterSpacing: '3px',
-                            display: 'block',
-                            marginBottom: '15px'
-                        }}>
-                            Simple & Stress-Free
-                        </span>
-                        <h1 style={{
-                            fontSize: 'clamp(28px, 5vw, 48px)',
-                            fontWeight: 800,
-                            color: '#ffffff',
-                            textTransform: 'uppercase',
-                            lineHeight: 1.2,
-                            marginBottom: '20px',
-                            maxWidth: '800px',
-                            margin: '0 auto 20px'
-                        }}>
-                            Apply For Used Car <span style={{ color: '#f5b93c' }}>Finance Online</span>
-                        </h1>
-                        <p style={{
-                            fontSize: '18px',
-                            color: '#888',
-                            maxWidth: '700px',
-                            margin: '0 auto',
-                            lineHeight: 1.8
-                        }}>
-                            At UKA Japan Motors, we make car financing simple and stress-free. Our easy used car finance process ensures quick approvals, competitive interest rates, and tailored plans to suit your budget.
-                        </p>
-                    </motion.div>
-                </div>
-            </section>
+        /* HERO */
+        .uka-finance-hero {
+          background: var(--navy);
+          padding: 120px 0 80px;
+          text-align: center;
+        }
+        .uka-finance-hero__badge {
+          display: inline-flex;
+          align-items: center;
+          gap: 8px;
+          padding: 8px 18px;
+          background: rgba(245, 184, 24, 0.1);
+          border-radius: 30px;
+          border: 1px solid rgba(245, 184, 24, 0.2);
+          margin-bottom: 24px;
+        }
+        .uka-finance-hero__badge span {
+          font-size: 12px;
+          font-weight: 600;
+          color: var(--gold);
+          text-transform: uppercase;
+          letter-spacing: 1.5px;
+        }
+        .uka-finance-hero__title {
+          font-size: clamp(32px, 5vw, 56px);
+          font-weight: 800;
+          color: var(--white);
+          text-transform: uppercase;
+          line-height: 1.1;
+          margin: 0 0 20px;
+          letter-spacing: -1.5px;
+        }
+        .uka-finance-hero__title span { color: var(--gold); }
+        .uka-finance-hero__desc {
+          font-size: 17px;
+          color: #A1A1AA;
+          line-height: 1.8;
+          max-width: 600px;
+          margin: 0 auto 16px;
+        }
+        .uka-finance-hero__note {
+          font-size: 14px;
+          color: var(--text-muted);
+          max-width: 700px;
+          margin: 0 auto 32px;
+          line-height: 1.7;
+        }
 
-            {/* ===== CONTENT SECTION ===== */}
-            <section style={{ background: '#faf8f5', padding: '80px 0' }}>
-                <div className="container">
-                    <div className="row">
-                        {/* Left Content */}
-                        <motion.div
-                            className="col-lg-8"
-                            initial={{ x: -40, opacity: 0 }}
-                            whileInView={{ x: 0, opacity: 1 }}
-                            transition={{ duration: 0.6 }}
-                            viewport={{ once: true }}
-                        >
-                            <div style={{
-                                background: '#ffffff',
-                                borderRadius: '20px',
-                                padding: '45px',
-                                boxShadow: '0 10px 50px rgba(0,0,0,0.06)',
-                                marginBottom: '30px'
-                            }}>
-                                <h2 style={{
-                                    fontSize: '24px',
-                                    fontWeight: 700,
-                                    color: '#1a1a1a',
-                                    marginBottom: '20px',
-                                    textTransform: 'uppercase',
-                                    letterSpacing: '1px'
-                                }}>
-                                    Why Choose Used Car Financing with UKA Japan Motors
-                                </h2>
-                                <p style={{
-                                    fontSize: '16px',
-                                    color: '#555',
-                                    lineHeight: '1.8',
-                                    marginBottom: '25px'
-                                }}>
-                                    Used car finance options make it easier for you to buy your dream car sooner than expected. You can easily pay used car finance fees per month and have your dream car in the garage instead of saving money and waiting around to get a new vehicle. Here are some of the reasons why you should choose used car financing with us:
-                                </p>
+        /* PARTNERS */
+        .uka-finance-partners {
+          display: flex;
+          justify-content: center;
+          gap: 16px;
+          flex-wrap: wrap;
+          margin-top: 8px;
+        }
+        .uka-finance-partner {
+          display: flex;
+          align-items: center;
+          gap: 10px;
+          padding: 12px 24px;
+          background: rgba(255, 255, 255, 0.03);
+          border: 1px solid rgba(255, 255, 255, 0.08);
+          border-radius: var(--radius);
+          color: var(--white);
+          text-decoration: none;
+          font-size: 14px;
+          font-weight: 500;
+          transition: all 0.3s ease;
+        }
+        .uka-finance-partner:hover {
+          border-color: var(--gold);
+          background: rgba(245, 184, 24, 0.05);
+        }
+        .uka-finance-partner svg { color: var(--gold); }
 
-                                <ul style={{ listStyle: 'none', padding: 0, margin: 0 }}>
-                                    {benefits.map((benefit, i) => (
-                                        <motion.li
-                                            key={i}
-                                            initial={{ x: -20, opacity: 0 }}
-                                            whileInView={{ x: 0, opacity: 1 }}
-                                            transition={{ duration: 0.4, delay: i * 0.1 }}
-                                            viewport={{ once: true }}
-                                            style={{
-                                                display: 'flex',
-                                                alignItems: 'flex-start',
-                                                gap: '15px',
-                                                padding: '15px 0',
-                                                borderBottom: i < benefits.length - 1 ? '1px solid #f0f0f0' : 'none'
-                                            }}
-                                        >
-                                            <div style={{
-                                                width: '32px',
-                                                height: '32px',
-                                                borderRadius: '50%',
-                                                background: '#f5b93c',
-                                                display: 'flex',
-                                                alignItems: 'center',
-                                                justifyContent: 'center',
-                                                flexShrink: 0,
-                                                marginTop: '2px'
-                                            }}>
-                                                <CheckCircle2 size={16} color="#1a1a1a" strokeWidth={3} />
-                                            </div>
-                                            <span style={{
-                                                color: '#555',
-                                                fontSize: '15px',
-                                                lineHeight: '1.6',
-                                                fontWeight: 500
-                                            }}>
-                                                {benefit === "Access to high quality Japanese import cars" ? (
-                                                    <>
-                                                        Access to <Link href="/" style={{ color: '#f5b93c', textDecoration: 'none', fontWeight: 700 }}>high quality Japanese import cars</Link>
-                                                    </>
-                                                ) : (
-                                                    benefit
-                                                )}
-                                            </span>
-                                        </motion.li>
-                                    ))}
-                                </ul>
-                            </div>
+        /* FORM SECTION */
+        .uka-finance-form-wrap {
+          background: var(--cream);
+          padding: 60px 0 100px;
+        }
+        .uka-finance-form {
+          background: var(--white);
+          border-radius: var(--radius);
+          box-shadow: 0 20px 60px rgba(0, 0, 0, 0.06);
+          overflow: hidden;
+        }
+        .uka-finance-form__header {
+          background: var(--navy);
+          padding: 32px 40px;
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+        }
+        .uka-finance-form__header h2 {
+          font-size: 22px;
+          font-weight: 700;
+          color: var(--white);
+          text-transform: uppercase;
+          margin: 0;
+          letter-spacing: -0.5px;
+        }
+        .uka-finance-form__header p {
+          font-size: 13px;
+          color: var(--text-muted);
+          margin: 4px 0 0;
+        }
+        .uka-finance-form__body {
+          padding: 40px;
+        }
+        .uka-finance-form__grid {
+          display: grid;
+          grid-template-columns: 1fr 1fr;
+          gap: 16px;
+        }
+        .uka-finance-form__group { display: flex; flex-direction: column; gap: 6px; }
+        .uka-finance-form__group--full { grid-column: 1 / -1; }
+        .uka-finance-form__label {
+          font-size: 12px;
+          font-weight: 600;
+          color: var(--text);
+          text-transform: uppercase;
+          letter-spacing: 0.5px;
+        }
+        .uka-finance-form__input,
+        .uka-finance-form__select,
+        .uka-finance-form__textarea {
+          padding: 12px 16px;
+          border: 1px solid #E8E4DB;
+          border-radius: 10px;
+          font-size: 14px;
+          color: var(--text);
+          background: #FAFAF8;
+          outline: none;
+          transition: all 0.2s ease;
+          width: 100%;
+        }
+        .uka-finance-form__input:focus,
+        .uka-finance-form__select:focus,
+        .uka-finance-form__textarea:focus {
+          border-color: var(--gold);
+          background: var(--white);
+          box-shadow: 0 0 0 3px rgba(245, 184, 24, 0.1);
+        }
+        .uka-finance-form__select {
+          appearance: none;
+          background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='%23999' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+          background-repeat: no-repeat;
+          background-position: right 12px center;
+          background-size: 16px;
+          padding-right: 40px;
+        }
+        .uka-finance-form__textarea { min-height: 100px; resize: vertical; }
+        .uka-finance-form__note {
+          font-size: 12px;
+          color: var(--text-muted);
+          line-height: 1.6;
+          margin: 4px 0 0;
+        }
+        .uka-finance-form__note strong { color: var(--gold); }
 
-                            {/* Documents Required */}
-                            <div style={{
-                                background: '#1a1a1a',
-                                borderRadius: '20px',
-                                padding: '45px',
-                                position: 'relative',
-                                overflow: 'hidden'
-                            }}>
-                                <div style={{
-                                    position: 'absolute',
-                                    top: 0,
-                                    left: 0,
-                                    width: '5px',
-                                    height: '100%',
-                                    background: '#f5b93c'
-                                }} />
-                                <h2 style={{
-                                    fontSize: '24px',
-                                    fontWeight: 700,
-                                    color: '#ffffff',
-                                    marginBottom: '20px',
-                                    textTransform: 'uppercase',
-                                    letterSpacing: '1px'
-                                }}>
-                                    Documents Required
-                                </h2>
-                                <p style={{
-                                    fontSize: '15px',
-                                    color: '#aaa',
-                                    lineHeight: '1.8',
-                                    marginBottom: '25px'
-                                }}>
-                                    The requirement of documents varies based on lenders, but here is some general list of documents and conditions that need to be met to apply for the best used car finance in Melbourne:
-                                </p>
+        .uka-finance-form__upload {
+          border: 2px dashed #E0DDD6;
+          border-radius: 10px;
+          padding: 28px;
+          text-align: center;
+          cursor: pointer;
+          transition: all 0.3s ease;
+        }
+        .uka-finance-form__upload:hover {
+          border-color: var(--gold);
+          background: rgba(245, 184, 24, 0.02);
+        }
+        .uka-finance-form__upload-icon {
+          width: 44px;
+          height: 44px;
+          background: rgba(245, 184, 24, 0.08);
+          border-radius: 50%;
+          color: var(--gold);
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          margin: 0 auto 12px;
+        }
+        .uka-finance-form__upload-icon svg { width: 20px; height: 20px; }
+        .uka-finance-form__upload p { font-size: 14px; color: var(--text); font-weight: 500; margin: 0 0 4px; }
+        .uka-finance-form__upload span { font-size: 12px; color: #999; }
 
-                                <div className="row">
-                                    {documents.map((doc, i) => (
-                                        <motion.div
-                                            key={i}
-                                            className="col-md-6"
-                                            initial={{ y: 20, opacity: 0 }}
-                                            whileInView={{ y: 0, opacity: 1 }}
-                                            transition={{ duration: 0.4, delay: i * 0.08 }}
-                                            viewport={{ once: true }}
-                                            style={{ marginBottom: '15px' }}
-                                        >
-                                            <div style={{
-                                                display: 'flex',
-                                                alignItems: 'center',
-                                                gap: '12px',
-                                                padding: '15px 20px',
-                                                background: 'rgba(255,255,255,0.05)',
-                                                borderRadius: '12px',
-                                                border: '1px solid rgba(255,255,255,0.08)'
-                                            }}>
-                                                <div style={{
-                                                    width: '28px',
-                                                    height: '28px',
-                                                    borderRadius: '50%',
-                                                    background: 'rgba(245,185,56,0.2)',
-                                                    display: 'flex',
-                                                    alignItems: 'center',
-                                                    justifyContent: 'center',
-                                                    flexShrink: 0
-                                                }}>
-                                                    <FileText size={12} color="#f5b93c" strokeWidth={2.5} />
-                                                </div>
-                                                <span style={{ color: '#ccc', fontSize: '14px', fontWeight: 500 }}>{doc}</span>
-                                            </div>
-                                        </motion.div>
-                                    ))}
-                                </div>
-                            </div>
-                        </motion.div>
+        .uka-finance-form__details {
+          background: #FAFAF8;
+          border-radius: 10px;
+          padding: 24px 28px;
+          border: 1px solid #F0EDE6;
+        }
+        .uka-finance-form__details h4 {
+          font-size: 14px;
+          font-weight: 700;
+          color: var(--text);
+          text-transform: uppercase;
+          margin: 0 0 14px;
+        }
+        .uka-finance-form__details ul {
+          list-style: none;
+          padding: 0;
+          margin: 0;
+          display: flex;
+          flex-direction: column;
+          gap: 8px;
+        }
+        .uka-finance-form__details li {
+          display: flex;
+          align-items: flex-start;
+          gap: 8px;
+          font-size: 13px;
+          color: var(--text-secondary);
+          line-height: 1.5;
+        }
+        .uka-finance-form__details li svg {
+          width: 16px;
+          height: 16px;
+          color: var(--gold);
+          flex-shrink: 0;
+          margin-top: 2px;
+        }
 
-                        {/* Right — Quick Contact */}
-                        <motion.div
-                            className="col-lg-4"
-                            initial={{ x: 40, opacity: 0 }}
-                            whileInView={{ x: 0, opacity: 1 }}
-                            transition={{ duration: 0.6, delay: 0.2 }}
-                            viewport={{ once: true }}
-                        >
-                            <div style={{ position: 'sticky', top: '100px' }}>
-                                <div style={{
-                                    background: '#ffffff',
-                                    borderRadius: '20px',
-                                    padding: '35px',
-                                    boxShadow: '0 10px 50px rgba(0,0,0,0.08)',
-                                    marginBottom: '25px'
-                                }}>
-                                    <h3 style={{
-                                        fontSize: '20px',
-                                        fontWeight: 700,
-                                        color: '#1a1a1a',
-                                        marginBottom: '20px',
-                                        textTransform: 'uppercase',
-                                        letterSpacing: '1px'
-                                    }}>
-                                        Need Help?
-                                    </h3>
-                                    <p style={{
-                                        color: '#555',
-                                        fontSize: '15px',
-                                        lineHeight: '1.7',
-                                        marginBottom: '25px'
-                                    }}>
-                                        Our finance specialists are ready to assist you with your application. Call us or send an enquiry.
-                                    </p>
+        .uka-finance-form__submit {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          gap: 10px;
+          width: 100%;
+          padding: 16px;
+          background: var(--gold);
+          color: var(--navy);
+          font-size: 15px;
+          font-weight: 700;
+          text-transform: uppercase;
+          letter-spacing: 1px;
+          border: none;
+          border-radius: 10px;
+          cursor: pointer;
+          transition: all 0.3s ease;
+        }
+        .uka-finance-form__submit:hover {
+          transform: translateY(-2px);
+          box-shadow: 0 10px 30px rgba(245, 184, 24, 0.25);
+        }
 
-                                    <div style={{ display: 'flex', flexDirection: 'column', gap: '15px' }}>
-                                        <a
-                                            href="tel:1800006256"
-                                            style={{
-                                                display: 'flex',
-                                                alignItems: 'center',
-                                                gap: '12px',
-                                                padding: '16px 20px',
-                                                background: '#f5b93c',
-                                                color: '#1a1a1a',
-                                                borderRadius: '12px',
-                                                textDecoration: 'none',
-                                                fontWeight: 700,
-                                                fontSize: '14px',
-                                                textTransform: 'uppercase',
-                                                letterSpacing: '1px',
-                                                transition: 'all 0.3s ease'
-                                            }}
-                                            onMouseEnter={(e) => {
-                                                e.currentTarget.style.background = '#1a1a1a';
-                                                e.currentTarget.style.color = '#f5b93c';
-                                            }}
-                                            onMouseLeave={(e) => {
-                                                e.currentTarget.style.background = '#f5b93c';
-                                                e.currentTarget.style.color = '#1a1a1a';
-                                            }}
-                                        >
-                                            <Phone size={18} strokeWidth={2.5} />
-                                            1800 006 256
-                                        </a>
-                                        <a
-                                            href="mailto:info@ukajapan.com.au"
-                                            style={{
-                                                display: 'flex',
-                                                alignItems: 'center',
-                                                gap: '12px',
-                                                padding: '16px 20px',
-                                                background: '#fafafa',
-                                                color: '#1a1a1a',
-                                                borderRadius: '12px',
-                                                textDecoration: 'none',
-                                                fontWeight: 700,
-                                                fontSize: '14px',
-                                                textTransform: 'uppercase',
-                                                letterSpacing: '1px',
-                                                border: '2px solid #e0e0e0',
-                                                transition: 'all 0.3s ease'
-                                            }}
-                                            onMouseEnter={(e) => {
-                                                e.currentTarget.style.borderColor = '#f5b93c';
-                                                e.currentTarget.style.color = '#f5b93c';
-                                            }}
-                                            onMouseLeave={(e) => {
-                                                e.currentTarget.style.borderColor = '#e0e0e0';
-                                                e.currentTarget.style.color = '#1a1a1a';
-                                            }}
-                                        >
-                                            <Mail size={18} strokeWidth={2.5} />
-                                            Email Us
-                                        </a>
-                                    </div>
-                                </div>
+        @media (max-width: 767px) {
+          .uka-finance-hero { padding: 80px 0 60px; }
+          .uka-finance-hero__title { font-size: 28px; }
+          .uka-finance-form__grid { grid-template-columns: 1fr; }
+          .uka-finance-form__header { flex-direction: column; gap: 8px; text-align: center; }
+          .uka-finance-form__body { padding: 28px 20px; }
+          .uka-finance-partners { flex-direction: column; align-items: center; }
+        }
+      `}</style>
 
-                                {/* Trust Badge */}
-                                <div style={{
-                                    background: '#ffffff',
-                                    borderRadius: '20px',
-                                    padding: '30px',
-                                    boxShadow: '0 10px 50px rgba(0,0,0,0.08)',
-                                    textAlign: 'center'
-                                }}>
-                                    <div style={{
-                                        width: '60px',
-                                        height: '60px',
-                                        borderRadius: '50%',
-                                        background: '#f5b93c',
-                                        display: 'flex',
-                                        alignItems: 'center',
-                                        justifyContent: 'center',
-                                        margin: '0 auto 15px'
-                                    }}>
-                                        <ShieldCheck size={28} color="#1a1a1a" strokeWidth={2} />
-                                    </div>
-                                    <h4 style={{
-                                        fontSize: '16px',
-                                        fontWeight: 700,
-                                        color: '#1a1a1a',
-                                        marginBottom: '8px',
-                                        textTransform: 'uppercase'
-                                    }}>
-                                        Trusted Finance Partner
-                                    </h4>
-                                    <p style={{
-                                        color: '#888',
-                                        fontSize: '13px',
-                                        margin: 0
-                                    }}>
-                                        Licensed & regulated under Australian Consumer Law
-                                    </p>
-                                </div>
-                            </div>
-                        </motion.div>
-                    </div>
-                </div>
-            </section>
+      {/* =========================================
+          HERO — Content Only
+          ========================================= */}
+      <section className="uka-finance-hero">
+        <div className="container">
+          <FadeIn>
+            <div className="uka-finance-hero__badge">
+              <span>Vehicle Finance</span>
+            </div>
 
-            {/* ===== FEATURE CARDS ===== */}
-            <section style={{ background: '#0F0F1B', padding: '80px 0' }}>
-                <div className="container">
-                    <motion.div
-                        className="text-center"
-                        {...fadeInUp}
-                        style={{ marginBottom: '50px' }}
-                    >
-                        <span style={{
-                            color: '#f5b93c',
-                            fontWeight: 600,
-                            textTransform: 'uppercase',
-                            fontSize: '13px',
-                            letterSpacing: '3px',
-                            display: 'block',
-                            marginBottom: '12px'
-                        }}>
-                            Get Started
-                        </span>
-                        <h2 style={{
-                            fontSize: 'clamp(28px, 4vw, 42px)',
-                            fontWeight: 800,
-                            color: '#ffffff',
-                            textTransform: 'uppercase',
-                            lineHeight: 1.2
-                        }}>
-                            Choose Your <span style={{ color: '#f5b93c' }}>Path</span>
-                        </h2>
-                    </motion.div>
+            <h1 className="uka-finance-hero__title">
+              Quick & Easy <span>Vehicle Finance</span>
+            </h1>
 
-                    <div className="row">
-                        {featureCards.map((card, i) => {
-                            const IconComponent = card.Icon;
-                            return (
-                                <motion.div
-                                    key={card.title}
-                                    className="col-lg-4 col-md-6"
-                                    initial={{ y: 50, opacity: 0 }}
-                                    whileInView={{ y: 0, opacity: 1 }}
-                                    transition={{ duration: 0.5, delay: i * 0.15 }}
-                                    viewport={{ once: true }}
-                                    style={{ marginBottom: '30px' }}
-                                >
-                                    <div style={{
-                                        background: 'rgba(255,255,255,0.03)',
-                                        borderRadius: '20px',
-                                        padding: '40px 35px',
-                                        border: '1px solid rgba(255,255,255,0.06)',
-                                        height: '100%',
-                                        display: 'flex',
-                                        flexDirection: 'column',
-                                        textAlign: 'center',
-                                        transition: 'all 0.3s ease',
-                                        backdropFilter: 'blur(10px)'
-                                    }}
-                                    onMouseEnter={(e) => {
-                                        e.currentTarget.style.borderColor = 'rgba(245,185,56,0.3)';
-                                        e.currentTarget.style.transform = 'translateY(-8px)';
-                                        e.currentTarget.style.boxShadow = '0 20px 50px rgba(0,0,0,0.3)';
-                                    }}
-                                    onMouseLeave={(e) => {
-                                        e.currentTarget.style.borderColor = 'rgba(255,255,255,0.06)';
-                                        e.currentTarget.style.transform = 'translateY(0)';
-                                        e.currentTarget.style.boxShadow = 'none';
-                                    }}
-                                    >
-                                        <div style={{
-                                            width: '70px',
-                                            height: '70px',
-                                            borderRadius: '20px',
-                                            background: 'rgba(245,185,56,0.1)',
-                                            display: 'flex',
-                                            alignItems: 'center',
-                                            justifyContent: 'center',
-                                            margin: '0 auto 25px',
-                                            border: '2px solid rgba(245,185,56,0.2)'
-                                        }}>
-                                            <IconComponent size={32} color="#f5b93c" strokeWidth={1.5} />
-                                        </div>
-                                        <h3 style={{
-                                            fontSize: '20px',
-                                            fontWeight: 700,
-                                            color: '#ffffff',
-                                            marginBottom: '15px',
-                                            textTransform: 'uppercase',
-                                            letterSpacing: '1px'
-                                        }}>
-                                            {card.title}
-                                        </h3>
-                                        <p style={{
-                                            color: '#888',
-                                            fontSize: '15px',
-                                            lineHeight: '1.7',
-                                            marginBottom: '25px',
-                                            flex: 1
-                                        }}>
-                                            {card.description}
-                                        </p>
-                                        <Link
-                                            href={card.link}
-                                            style={{
-                                                display: 'inline-flex',
-                                                alignItems: 'center',
-                                                justifyContent: 'center',
-                                                gap: '8px',
-                                                padding: '14px 28px',
-                                                background: '#f5b93c',
-                                                color: '#1a1a1a',
-                                                borderRadius: '10px',
-                                                textDecoration: 'none',
-                                                fontWeight: 700,
-                                                fontSize: '13px',
-                                                textTransform: 'uppercase',
-                                                letterSpacing: '1.5px',
-                                                transition: 'all 0.3s ease',
-                                                margin: '0 auto'
-                                            }}
-                                            onMouseEnter={(e) => {
-                                                e.currentTarget.style.background = '#ffffff';
-                                                e.currentTarget.style.transform = 'translateY(-2px)';
-                                            }}
-                                            onMouseLeave={(e) => {
-                                                e.currentTarget.style.background = '#f5b93c';
-                                                e.currentTarget.style.transform = 'translateY(0)';
-                                            }}
-                                        >
-                                            {card.buttonText}
-                                            <ArrowRight size={14} strokeWidth={3} />
-                                        </Link>
-                                    </div>
-                                </motion.div>
-                            );
-                        })}
-                    </div>
-                </div>
-            </section>
+            <p className="uka-finance-hero__desc">
+              At UKA Group, we make vehicle financing simple and stress-free. Whether you are 
+              self-employed or work 9-5, we will tailor a finance package that fits your budget 
+              and lifestyle.
+            </p>
 
-            {/* ===== FINANCE ENQUIRY FORM ===== */}
-            <section id="financeenquiry" style={{ background: '#faf8f5', padding: '100px 0' }}>
-                <div className="container">
-                    <motion.div
-                        className="text-center"
-                        {...fadeInUp}
-                        style={{ marginBottom: '50px' }}
-                    >
-                        <span style={{
-                            color: '#f5b93c',
-                            fontWeight: 600,
-                            textTransform: 'uppercase',
-                            fontSize: '13px',
-                            letterSpacing: '3px',
-                            display: 'block',
-                            marginBottom: '12px'
-                        }}>
-                            Start Your Application
-                        </span>
-                        <h2 style={{
-                            fontSize: 'clamp(28px, 4vw, 42px)',
-                            fontWeight: 800,
-                            color: '#1a1a1a',
-                            textTransform: 'uppercase',
-                            lineHeight: 1.2,
-                            marginBottom: '12px'
-                        }}>
-                            Finance <span style={{ color: '#f5b93c' }}>Enquiry Form</span>
-                        </h2>
-                        <p style={{
-                            color: '#888',
-                            fontSize: '16px',
-                            maxWidth: '500px',
-                            margin: '0 auto'
-                        }}>
-                            Fill out the form below and our finance team will get back to you within 24 hours.
-                        </p>
-                    </motion.div>
+            <p className="uka-finance-hero__note">
+              We partner with trusted finance providers and are committed to responsible lending. 
+              Our goal is to help you make an informed choice that you are confident with. 
+              Each vehicle may show example repayment info including interest rate, deposit, and term 
+              so you can see how it all adds up.
+            </p>
 
-                    <motion.div
-                        initial={{ y: 50, opacity: 0 }}
-                        whileInView={{ y: 0, opacity: 1 }}
-                        transition={{ duration: 0.6 }}
-                        viewport={{ once: true }}
-                    >
-                        <div style={{
-                            maxWidth: '900px',
-                            margin: '0 auto',
-                            background: '#ffffff',
-                            borderRadius: '24px',
-                            padding: '50px',
-                            boxShadow: '0 20px 60px rgba(0,0,0,0.08)'
-                        }}>
-                            <form onSubmit={handleSubmit}>
-                                <div className="row" style={{ marginBottom: '8px' }}>
-                                    <div className="col-md-6" style={{ marginBottom: '24px' }}>
-                                        <label style={formLabelStyle}>Full Name *</label>
-                                        <input
-                                            type="text"
-                                            name="name"
-                                            placeholder="John Smith"
-                                            value={formData.name}
-                                            onChange={handleChange}
-                                            required
-                                            style={formInputStyle}
-                                            onFocus={(e) => e.currentTarget.style.borderColor = '#f5b93c'}
-                                            onBlur={(e) => e.currentTarget.style.borderColor = '#e8e8e8'}
-                                        />
-                                    </div>
-                                    <div className="col-md-6" style={{ marginBottom: '24px' }}>
-                                        <label style={formLabelStyle}>Phone Number *</label>
-                                        <input
-                                            type="tel"
-                                            name="phone"
-                                            placeholder="04XX XXX XXX"
-                                            value={formData.phone}
-                                            onChange={handleChange}
-                                            required
-                                            style={formInputStyle}
-                                            onFocus={(e) => e.currentTarget.style.borderColor = '#f5b93c'}
-                                            onBlur={(e) => e.currentTarget.style.borderColor = '#e8e8e8'}
-                                        />
-                                    </div>
-                                    <div className="col-md-6" style={{ marginBottom: '24px' }}>
-                                        <label style={formLabelStyle}>Email Address *</label>
-                                        <input
-                                            type="email"
-                                            name="email"
-                                            placeholder="john@example.com"
-                                            value={formData.email}
-                                            onChange={handleChange}
-                                            required
-                                            style={formInputStyle}
-                                            onFocus={(e) => e.currentTarget.style.borderColor = '#f5b93c'}
-                                            onBlur={(e) => e.currentTarget.style.borderColor = '#e8e8e8'}
-                                        />
-                                    </div>
-                                    <div className="col-md-6" style={{ marginBottom: '24px' }}>
-                                        <label style={formLabelStyle}>Desired Finance Amount</label>
-                                        <input
-                                            type="text"
-                                            name="financeAmount"
-                                            placeholder="$20,000"
-                                            value={formData.financeAmount}
-                                            onChange={handleChange}
-                                            style={formInputStyle}
-                                            onFocus={(e) => e.currentTarget.style.borderColor = '#f5b93c'}
-                                            onBlur={(e) => e.currentTarget.style.borderColor = '#e8e8e8'}
-                                        />
-                                    </div>
-                                    <div className="col-md-6" style={{ marginBottom: '24px' }}>
-                                        <label style={formLabelStyle}>Employment Type</label>
-                                        <select
-                                            name="employmentType"
-                                            value={formData.employmentType}
-                                            onChange={handleChange}
-                                            style={formSelectStyle}
-                                            onFocus={(e) => e.currentTarget.style.borderColor = '#f5b93c'}
-                                            onBlur={(e) => e.currentTarget.style.borderColor = '#e8e8e8'}
-                                        >
-                                            <option value="">Select Employment Type</option>
-                                            <option value="Full-time">Full-time Employed</option>
-                                            <option value="Part-time">Part-time Employed</option>
-                                            <option value="Self-employed">Self-employed</option>
-                                            <option value="Casual">Casual</option>
-                                            <option value="Retired">Retired</option>
-                                        </select>
-                                    </div>
-                                    <div className="col-md-6" style={{ marginBottom: '24px' }}>
-                                        <label style={formLabelStyle}>Annual Income</label>
-                                        <select
-                                            name="income"
-                                            value={formData.income}
-                                            onChange={handleChange}
-                                            style={formSelectStyle}
-                                            onFocus={(e) => e.currentTarget.style.borderColor = '#f5b93c'}
-                                            onBlur={(e) => e.currentTarget.style.borderColor = '#e8e8e8'}
-                                        >
-                                            <option value="">Select Income Range</option>
-                                            <option value="under30k">Under $30,000</option>
-                                            <option value="30k-50k">$30,000 - $50,000</option>
-                                            <option value="50k-75k">$50,000 - $75,000</option>
-                                            <option value="75k-100k">$75,000 - $100,000</option>
-                                            <option value="over100k">Over $100,000</option>
-                                        </select>
-                                    </div>
-                                </div>
-
-                                <div style={{ marginBottom: '30px' }}>
-                                    <label style={formLabelStyle}>Additional Message</label>
-                                    <textarea
-                                        name="message"
-                                        placeholder="Tell us about the car you're interested in or any specific requirements..."
-                                        value={formData.message}
-                                        onChange={handleChange}
-                                        rows={4}
-                                        style={{ ...formInputStyle, resize: 'vertical', fontFamily: 'inherit' }}
-                                        onFocus={(e) => e.currentTarget.style.borderColor = '#f5b93c'}
-                                        onBlur={(e) => e.currentTarget.style.borderColor = '#e8e8e8'}
-                                    />
-                                </div>
-
-                                <div style={{
-                                    marginBottom: '30px',
-                                    padding: '20px',
-                                    background: '#f5f5f5',
-                                    borderRadius: '12px',
-                                    textAlign: 'center',
-                                    fontSize: '13px',
-                                    color: '#888'
-                                }}>
-                                    reCAPTCHA verification required
-                                </div>
-
-                                <div style={{ textAlign: 'center' }}>
-                                    <button
-                                        type="submit"
-                                        style={{
-                                            padding: '18px 60px',
-                                            background: '#f5b93c',
-                                            color: '#1a1a1a',
-                                            border: 'none',
-                                            borderRadius: '12px',
-                                            fontSize: '15px',
-                                            fontWeight: 800,
-                                            textTransform: 'uppercase',
-                                            letterSpacing: '2px',
-                                            cursor: 'pointer',
-                                            transition: 'all 0.3s ease',
-                                            display: 'inline-flex',
-                                            alignItems: 'center',
-                                            gap: '12px',
-                                            boxShadow: '0 10px 30px rgba(245,185,56,0.3)'
-                                        }}
-                                        onMouseEnter={(e) => {
-                                            e.currentTarget.style.background = '#1a1a1a';
-                                            e.currentTarget.style.color = '#f5b93c';
-                                            e.currentTarget.style.transform = 'translateY(-2px)';
-                                        }}
-                                        onMouseLeave={(e) => {
-                                            e.currentTarget.style.background = '#f5b93c';
-                                            e.currentTarget.style.color = '#1a1a1a';
-                                            e.currentTarget.style.transform = 'translateY(0)';
-                                        }}
-                                    >
-                                        <Send size={18} strokeWidth={2.5} />
-                                        Submit Application
-                                    </button>
-                                </div>
-                            </form>
-                        </div>
-                    </motion.div>
-                </div>
-            </section>
+            <div className="uka-finance-partners">
+              {partners.map((p) => (
+                <Link key={p.name} href={p.url} target="_blank" rel="noopener noreferrer" className="uka-finance-partner">
+                  {p.name}
+                  <IconExternal className="uka-icon" />
+                </Link>
+              ))}
+            </div>
+          </FadeIn>
         </div>
-    );
-};
+      </section>
 
-const formLabelStyle: React.CSSProperties = {
-    display: 'block',
-    fontSize: '12px',
-    fontWeight: 700,
-    color: '#1a1a1a',
-    textTransform: 'uppercase',
-    letterSpacing: '1.5px',
-    marginBottom: '10px'
-};
+      {/* =========================================
+          FORM
+          ========================================= */}
+      <section className="uka-finance-form-wrap">
+        <div className="container">
+          <FadeIn delay={0.1}>
+            <div className="uka-finance-form">
+              <div className="uka-finance-form__header">
+                <div>
+                  <h2>Finance Enquiry</h2>
+                  <p>Complete all fields for faster approval</p>
+                </div>
+              </div>
 
-const formInputStyle: React.CSSProperties = {
-    width: '100%',
-    padding: '16px 20px',
-    border: '2px solid #e8e8e8',
-    borderRadius: '12px',
-    fontSize: '14px',
-    outline: 'none',
-    transition: 'border-color 0.3s ease',
-    background: '#fafafa',
-    color: '#1a1a1a'
-};
+              <div className="uka-finance-form__body">
+                <form onSubmit={(e) => e.preventDefault()}>
+                  <div className="uka-finance-form__grid">
+                    {/* Row 1 */}
+                    <div className="uka-finance-form__group">
+                      <label className="uka-finance-form__label">Loan Amount</label>
+                      <input type="text" name="loanAmount" placeholder="How much to borrow?" value={formData.loanAmount} onChange={handleChange} className="uka-finance-form__input" />
+                    </div>
+                    <div className="uka-finance-form__group">
+                      <label className="uka-finance-form__label">Duration</label>
+                      <select name="loanDuration" value={formData.loanDuration} onChange={handleChange} className="uka-finance-form__select" required>
+                        <option value="">Years</option>
+                        {[1,2,3,4,5,6].map(y => <option key={y} value={y}>{y} year{y>1?"s":""}</option>)}
+                      </select>
+                    </div>
 
-const formSelectStyle: React.CSSProperties = {
-    ...formInputStyle,
-    appearance: 'none',
-    WebkitAppearance: 'none',
-    cursor: 'pointer'
+                    {/* Row 2 */}
+                    <div className="uka-finance-form__group">
+                      <label className="uka-finance-form__label">Loan Type</label>
+                      <select name="loanType" value={formData.loanType} onChange={handleChange} className="uka-finance-form__select" required>
+                        <option value="">Personal or Business?</option>
+                        <option value="Personal">Personal</option>
+                        <option value="Business">Business</option>
+                      </select>
+                    </div>
+                    <div className="uka-finance-form__group">
+                      <label className="uka-finance-form__label">Employment</label>
+                      <select name="employmentStatus" value={formData.employmentStatus} onChange={handleChange} className="uka-finance-form__select" required>
+                        <option value="">Employment status</option>
+                        <option value="Employed">Employed</option>
+                        <option value="Self employed">Self employed</option>
+                        <option value="Financially supported by partner">Supported by partner</option>
+                        <option value="Centrelink - Family Tax Benefits/Other">Centrelink - Family Tax</option>
+                        <option value="Centrelink - Newstart only">Centrelink - Newstart</option>
+                        <option value="Unemployed">Unemployed</option>
+                      </select>
+                    </div>
+
+                    {/* Row 3 */}
+                    <div className="uka-finance-form__group">
+                      <label className="uka-finance-form__label">Residency</label>
+                      <select name="residencyStatus" value={formData.residencyStatus} onChange={handleChange} className="uka-finance-form__select" required>
+                        <option value="">Residency status</option>
+                        <option value="Australian Citizen">Australian Citizen</option>
+                        <option value="Permanent Resident">Permanent Resident</option>
+                        <option value="Working Visa">Working Visa</option>
+                        <option value="Bridging Visa">Bridging Visa</option>
+                        <option value="Spouse Visa">Spouse Visa</option>
+                        <option value="Temporary Visa">Temporary Visa</option>
+                        <option value="Student Visa">Student Visa</option>
+                      </select>
+                    </div>
+                    <div className="uka-finance-form__group">
+                      <label className="uka-finance-form__label">Property Owner</label>
+                      <select name="propertyOwner" value={formData.propertyOwner} onChange={handleChange} className="uka-finance-form__select" required>
+                        <option value="">Property owner?</option>
+                        <option value="Yes">Yes</option>
+                        <option value="No">No</option>
+                      </select>
+                    </div>
+
+                    {/* Row 4 */}
+                    <div className="uka-finance-form__group">
+                      <label className="uka-finance-form__label">Previous Finance</label>
+                      <select name="financeBefore" value={formData.financeBefore} onChange={handleChange} className="uka-finance-form__select" required>
+                        <option value="">Had finance before?</option>
+                        <option value="Yes">Yes</option>
+                        <option value="No">No</option>
+                      </select>
+                    </div>
+                    <div className="uka-finance-form__group">
+                      <label className="uka-finance-form__label">Credit History</label>
+                      <select name="creditHistory" value={formData.creditHistory} onChange={handleChange} className="uka-finance-form__select" required>
+                        <option value="">Credit history</option>
+                        <option value="Excellent - No issues">Excellent</option>
+                        <option value="Average - Defaults under $1000">Average</option>
+                        <option value="Poor - Multiple defaults">Poor</option>
+                        <option value="Current/Discharged Bankrupt (Part 10)">Bankrupt (Part 10)</option>
+                        <option value="Current/Discharged Debt Agreement (Part 9)">Debt Agreement (Part 9)</option>
+                        <option value="Not sure">Not sure</option>
+                      </select>
+                      <p className="uka-finance-form__note">
+                        <strong>No credit score impact</strong> — this quote is obligation-free
+                      </p>
+                    </div>
+
+                    {/* Contact */}
+                    <div className="uka-finance-form__group">
+                      <label className="uka-finance-form__label">Full Name</label>
+                      <input type="text" name="name" placeholder="Your name" value={formData.name} onChange={handleChange} className="uka-finance-form__input" required />
+                    </div>
+                    <div className="uka-finance-form__group">
+                      <label className="uka-finance-form__label">Phone</label>
+                      <input type="tel" name="phone" placeholder="Phone number" value={formData.phone} onChange={handleChange} className="uka-finance-form__input" required />
+                    </div>
+                    <div className="uka-finance-form__group">
+                      <label className="uka-finance-form__label">Email</label>
+                      <input type="email" name="email" placeholder="Email address" value={formData.email} onChange={handleChange} className="uka-finance-form__input" required />
+                    </div>
+                    <div className="uka-finance-form__group">
+                      <label className="uka-finance-form__label">Message</label>
+                      <textarea name="message" placeholder="Additional info..." value={formData.message} onChange={handleChange} className="uka-finance-form__textarea" />
+                    </div>
+
+                    {/* Upload */}
+                    <div className="uka-finance-form__group uka-finance-form__group--full">
+                      <label className="uka-finance-form__label">Documents</label>
+                      <div className="uka-finance-form__upload">
+                        <div className="uka-finance-form__upload-icon"><IconUpload /></div>
+                        <p>Upload Driving License, Payslips, Visa / ID</p>
+                        <span>PNG, JPEG, HEIC, PDF, GIF</span>
+                      </div>
+                    </div>
+
+                    {/* Details */}
+                    <div className="uka-finance-form__group uka-finance-form__group--full">
+                      <div className="uka-finance-form__details">
+                        <h4>Required Documents</h4>
+                        <ul>
+                          <li><IconCheck /><span>Driving License (Front & Back)</span></li>
+                          <li><IconCheck /><span>Last 3 months payslips</span></li>
+                          <li><IconCheck /><span>Visa approval / Proof of ID</span></li>
+                          <li><IconCheck /><span>Down payment calculated after profile review (0 deposit may be available, T&Cs apply)</span></li>
+                          <li><IconCheck /><span>Finance broker will contact you after document review</span></li>
+                          <li><IconCheck /><span>Select a vehicle from our stock before applying</span></li>
+                        </ul>
+                      </div>
+                    </div>
+
+                    {/* Submit */}
+                    <div className="uka-finance-form__group uka-finance-form__group--full">
+                      <button type="submit" className="uka-finance-form__submit">
+                        Submit Application
+                        <IconArrowRight />
+                      </button>
+                    </div>
+                  </div>
+                </form>
+              </div>
+            </div>
+          </FadeIn>
+        </div>
+      </section>
+    </main>
+  );
 };
 
 export default FinancePage;

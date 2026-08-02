@@ -19,7 +19,7 @@ const getReviews = (id: string | number) => {
 };
 
 export default function ListingBottomLeft({ car }: { car?: any }) {
-    const featuresList = car?.StandardFeatures 
+    const featuresList = car?.StandardFeatures
         ? car.StandardFeatures.split(',').map((f: string) => f.trim()).filter(Boolean)
         : ['Power Steering', 'Air Conditioning', 'ABS Brakes', 'Bluetooth', 'Reverse Camera', 'Keyless Entry', 'Alloy Wheels', 'Navigation', 'Cruise Control', 'Power Windows', 'Central Locking', 'Immobilizer'];
 
@@ -47,19 +47,19 @@ export default function ListingBottomLeft({ car }: { car?: any }) {
 
     return (
         <div>
-            {/* Vehicle Overview */}
-            <div style={{ background: '#fff', borderRadius: '12px', padding: '24px', marginBottom: '16px', boxShadow: '0 1px 4px rgba(0,0,0,0.04)', border: '1px solid #eee' }}>
-                <h3 style={{ fontSize: '14px', fontWeight: 800, color: '#1a1a2e', marginBottom: '16px', textTransform: 'uppercase', letterSpacing: '0.5px' }}>
+            {/* Vehicle Overview - Exact match to reference image */}
+            <div style={{ background: '#fff', borderRadius: '12px', padding: '28px', marginBottom: '16px', boxShadow: '0 1px 4px rgba(0,0,0,0.04)', border: '1px solid #eee' }}>
+                <h3 style={{ fontSize: '14px', fontWeight: 800, color: '#1a1a2e', marginBottom: '24px', textTransform: 'uppercase', letterSpacing: '1px' }}>
                     Vehicle Overview
                 </h3>
-                <div className="row g-3">
+                <div className="row" style={{ rowGap: '20px' }}>
                     {overviewItems.map((item, i) => (
                         <div className="col-6" key={i}>
-                            <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-                                <i className={`fas ${item.icon}`} style={{ color: '#999', fontSize: '14px', width: '16px' }}></i>
+                            <div style={{ display: 'flex', alignItems: 'center', gap: '14px' }}>
+                                <i className={`fas ${item.icon}`} style={{ color: '#888', fontSize: '15px', width: '16px', textAlign: 'center', flexShrink: 0 }}></i>
                                 <div>
-                                    <div style={{ fontSize: '11px', color: '#999', marginBottom: '1px' }}>{item.label}</div>
-                                    <div style={{ fontSize: '13px', fontWeight: 700, color: '#1a1a2e' }}>{item.value}</div>
+                                    <div style={{ fontSize: '11px', color: '#999', marginBottom: '2px', fontWeight: 500, letterSpacing: '0.3px' }}>{item.label}</div>
+                                    <div style={{ fontSize: '14px', fontWeight: 700, color: '#1a1a2e', lineHeight: 1.3 }}>{item.value}</div>
                                 </div>
                             </div>
                         </div>
@@ -67,32 +67,30 @@ export default function ListingBottomLeft({ car }: { car?: any }) {
                 </div>
             </div>
 
-            {/* Vehicle Highlights */}
-            <div style={{ background: '#fff', borderRadius: '12px', padding: '24px', marginBottom: '16px', boxShadow: '0 1px 4px rgba(0,0,0,0.04)', border: '1px solid #eee' }}>
-                <h3 style={{ fontSize: '14px', fontWeight: 800, color: '#1a1a2e', marginBottom: '16px', textTransform: 'uppercase', letterSpacing: '0.5px' }}>
+            {/* Vehicle Highlights - Exact match to reference image */}
+            <div style={{ background: '#fff', borderRadius: '12px', padding: '28px', marginBottom: '16px', boxShadow: '0 1px 4px rgba(0,0,0,0.04)', border: '1px solid #eee' }}>
+                <h3 style={{ fontSize: '15px', fontWeight: 800, color: '#1a1a2e', marginBottom: '20px', textTransform: 'uppercase', letterSpacing: '0.5px' }}>
                     Vehicle Highlights
                 </h3>
-                <div style={{ display: 'flex', flexWrap: 'wrap', gap: '12px' }}>
+                <div style={{ display: 'flex', flexWrap: 'wrap', gap: '14px' }}>
                     {[
                         { icon: 'fa-gavel', label: 'Auction Grade', value: '4.5' },
                         { icon: 'fa-check-circle', label: 'Odometer', value: 'Certified' },
                         { icon: 'fa-user', label: 'One Owner', value: 'From Japan' },
-                        { icon: 'fa-smoking-ban', label: 'Non Smoker', value: 'Vehicle' },
-                        { icon: 'fa-clipboard-check', label: 'Regularly', value: 'Serviced' },
                     ].map((h, i) => (
-                        <div key={i} style={{ 
-                            display: 'flex', 
-                            alignItems: 'center', 
-                            gap: '10px', 
-                            padding: '10px 14px', 
-                            background: '#f8f9fa', 
-                            borderRadius: '8px',
+                        <div key={i} style={{
+                            display: 'flex',
+                            alignItems: 'center',
+                            gap: '12px',
+                            padding: '12px 16px',
+                            background: '#f8f9fa',
+                            borderRadius: '10px',
                             border: '1px solid #f0f0f0',
-                            flex: '1 1 140px'
+                            flex: '1 1 160px'
                         }}>
                             <div style={{
-                                width: '36px',
-                                height: '36px',
+                                width: '40px',
+                                height: '40px',
                                 borderRadius: '50%',
                                 background: '#fff',
                                 display: 'flex',
@@ -101,11 +99,11 @@ export default function ListingBottomLeft({ car }: { car?: any }) {
                                 boxShadow: '0 1px 4px rgba(0,0,0,0.06)',
                                 flexShrink: 0
                             }}>
-                                <i className={`fas ${h.icon}`} style={{ color: '#ffc107', fontSize: '14px' }}></i>
+                                <i className={`fas ${h.icon}`} style={{ color: '#ffc107', fontSize: '15px' }}></i>
                             </div>
                             <div>
-                                <div style={{ fontSize: '11px', color: '#999' }}>{h.label}</div>
-                                <div style={{ fontSize: '13px', fontWeight: 700, color: '#1a1a2e' }}>{h.value}</div>
+                                <div style={{ fontSize: '12px', color: '#999', marginBottom: '1px' }}>{h.label}</div>
+                                <div style={{ fontSize: '14px', fontWeight: 700, color: '#1a1a2e' }}>{h.value}</div>
                             </div>
                         </div>
                     ))}
@@ -113,13 +111,13 @@ export default function ListingBottomLeft({ car }: { car?: any }) {
             </div>
 
             {/* Description */}
-            <div style={{ background: '#fff', borderRadius: '12px', padding: '24px', marginBottom: '16px', boxShadow: '0 1px 4px rgba(0,0,0,0.04)', border: '1px solid #eee' }}>
-                <h3 style={{ fontSize: '14px', fontWeight: 800, color: '#1a1a2e', marginBottom: '14px', textTransform: 'uppercase', letterSpacing: '0.5px' }}>
+            <div style={{ background: '#fff', borderRadius: '12px', padding: '28px', marginBottom: '16px', boxShadow: '0 1px 4px rgba(0,0,0,0.04)', border: '1px solid #eee' }}>
+                <h3 style={{ fontSize: '15px', fontWeight: 800, color: '#1a1a2e', marginBottom: '16px', textTransform: 'uppercase', letterSpacing: '0.5px' }}>
                     Description
                 </h3>
-                <div style={{ color: '#555', fontSize: '13px', lineHeight: 1.7, marginBottom: '14px' }}
-                    dangerouslySetInnerHTML={{ 
-                        __html: car?.AdvDescription || car?.ShortDescription || 'This 2022 Toyota Alphard X is a premium 7-seater luxury MPV that combines comfort, space and advanced technology. Imported directly from Japan with verified auction sheet and compliance certificate for your peace of mind.' 
+                <div style={{ color: '#555', fontSize: '14px', lineHeight: 1.7, marginBottom: '16px' }}
+                    dangerouslySetInnerHTML={{
+                        __html: car?.AdvDescription || car?.ShortDescription || 'This 2022 Toyota Alphard X is a premium 7-seater luxury MPV that combines comfort, space and advanced technology. Imported directly from Japan with verified auction sheet and compliance certificate for your peace of mind.'
                     }}
                 />
                 <ul style={{ listStyle: 'none', padding: 0, margin: 0 }}>
@@ -130,29 +128,29 @@ export default function ListingBottomLeft({ car }: { car?: any }) {
                         'Spacious 8 passenger interior',
                         'Ideal for family or business use'
                     ].map((item, i) => (
-                        <li key={i} style={{ display: 'flex', alignItems: 'flex-start', gap: '10px', marginBottom: '8px', fontSize: '13px', color: '#555' }}>
-                            <i className="fas fa-check" style={{ color: '#ffc107', marginTop: '4px', fontSize: '11px', flexShrink: 0 }}></i>
+                        <li key={i} style={{ display: 'flex', alignItems: 'flex-start', gap: '10px', marginBottom: '10px', fontSize: '14px', color: '#555' }}>
+                            <i className="fas fa-check" style={{ color: '#ffc107', marginTop: '5px', fontSize: '12px', flexShrink: 0 }}></i>
                             <span>{item}</span>
                         </li>
                     ))}
                 </ul>
             </div>
 
-            {/* Features */}
-            <div style={{ background: '#fff', borderRadius: '12px', padding: '24px', marginBottom: '16px', boxShadow: '0 1px 4px rgba(0,0,0,0.04)', border: '1px solid #eee' }}>
-                <h3 style={{ fontSize: '14px', fontWeight: 800, color: '#1a1a2e', marginBottom: '18px', textTransform: 'uppercase', letterSpacing: '0.5px' }}>
+            {/* Features - Exact match to reference image */}
+            <div style={{ background: '#fff', borderRadius: '12px', padding: '28px', marginBottom: '16px', boxShadow: '0 1px 4px rgba(0,0,0,0.04)', border: '1px solid #eee' }}>
+                <h3 style={{ fontSize: '15px', fontWeight: 800, color: '#1a1a2e', marginBottom: '20px', textTransform: 'uppercase', letterSpacing: '0.5px' }}>
                     Features
                 </h3>
                 <div className="row g-4">
                     {featureCols.map((col, ci) => (
                         <div className="col-6 col-md-3" key={ci}>
-                            <h6 style={{ fontSize: '11px', fontWeight: 800, color: '#1a1a2e', marginBottom: '10px', textTransform: 'uppercase', letterSpacing: '0.5px' }}>
+                            <h6 style={{ fontSize: '12px', fontWeight: 800, color: '#1a1a2e', marginBottom: '12px', textTransform: 'uppercase', letterSpacing: '0.5px' }}>
                                 {categories[ci]}
                             </h6>
                             <ul style={{ listStyle: 'none', padding: 0, margin: 0 }}>
                                 {col.map((feat, fi) => (
-                                    <li key={fi} style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '8px', fontSize: '12px', color: '#555' }}>
-                                        <i className="fas fa-check-circle" style={{ color: '#28a745', fontSize: '11px', flexShrink: 0 }}></i>
+                                    <li key={fi} style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '10px', fontSize: '13px', color: '#555' }}>
+                                        <i className="fas fa-check-circle" style={{ color: '#28a745', fontSize: '12px', flexShrink: 0 }}></i>
                                         <span>{feat}</span>
                                     </li>
                                 ))}
@@ -162,13 +160,13 @@ export default function ListingBottomLeft({ car }: { car?: any }) {
                 </div>
             </div>
 
-            {/* You May Also Like */}
-            <div style={{ background: '#fff', borderRadius: '12px', padding: '24px', boxShadow: '0 1px 4px rgba(0,0,0,0.04)', border: '1px solid #eee' }}>
-                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '18px' }}>
-                    <h3 style={{ fontSize: '14px', fontWeight: 800, color: '#1a1a2e', margin: 0, textTransform: 'uppercase', letterSpacing: '0.5px' }}>
+            {/* You May Also Like - Full width proper grid */}
+            <div style={{ background: '#fff', borderRadius: '12px', padding: '28px', boxShadow: '0 1px 4px rgba(0,0,0,0.04)', border: '1px solid #eee' }}>
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px' }}>
+                    <h3 style={{ fontSize: '15px', fontWeight: 800, color: '#1a1a2e', margin: 0, textTransform: 'uppercase', letterSpacing: '0.5px' }}>
                         You May Also Like
                     </h3>
-                    <Link href="/inner/listing" style={{ fontSize: '12px', fontWeight: 700, color: '#1a1a2e', textDecoration: 'none' }}>
+                    <Link href="/inner/listing" style={{ fontSize: '13px', fontWeight: 700, color: '#1a1a2e', textDecoration: 'none' }}>
                         View All Cars →
                     </Link>
                 </div>
@@ -179,17 +177,17 @@ export default function ListingBottomLeft({ car }: { car?: any }) {
                         const rating = getRating(item.id);
                         const reviews = getReviews(item.id);
                         return (
-                            <div className="col-6 col-md-3" key={item.id}>
-                                <Link href={`/inner/listing-single/${item.id}`} style={{ textDecoration: 'none', color: 'inherit' }}>
-                                    <div style={{ borderRadius: '10px', overflow: 'hidden', border: '1px solid #f0f0f0', background: '#fff' }}>
-                                        <div style={{ height: '110px', overflow: 'hidden', background: '#f5f5f5', position: 'relative' }}>
-                                            <img src={item.image} alt={item.title} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                            <div className="col-12 col-sm-6 col-lg-3" key={item.id}>
+                                <Link href={`/inner/listing-single/${item.id}`} style={{ textDecoration: 'none', color: 'inherit', display: 'block' }}>
+                                    <div style={{ borderRadius: '12px', overflow: 'hidden', border: '1px solid #f0f0f0', background: '#fff' }}>
+                                        <div style={{ height: '140px', overflow: 'hidden', background: '#f5f5f5', position: 'relative' }}>
+                                            <img src={item.image} alt={item.title} style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }} />
                                             <button style={{
                                                 position: 'absolute',
-                                                top: '6px',
-                                                right: '6px',
-                                                width: '24px',
-                                                height: '24px',
+                                                top: '8px',
+                                                right: '8px',
+                                                width: '28px',
+                                                height: '28px',
                                                 borderRadius: '50%',
                                                 background: '#fff',
                                                 border: 'none',
@@ -199,29 +197,36 @@ export default function ListingBottomLeft({ car }: { car?: any }) {
                                                 cursor: 'pointer',
                                                 boxShadow: '0 1px 4px rgba(0,0,0,0.1)'
                                             }}>
-                                                <i className="far fa-heart" style={{ color: '#666', fontSize: '10px' }}></i>
+                                                <i className="far fa-heart" style={{ color: '#666', fontSize: '11px' }}></i>
                                             </button>
                                         </div>
-                                        <div style={{ padding: '10px' }}>
-                                            <h6 style={{ fontSize: '12px', fontWeight: 700, color: '#1a1a2e', marginBottom: '3px', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
+                                        <div style={{ padding: '12px' }}>
+                                            <h6 style={{ fontSize: '13px', fontWeight: 700, color: '#1a1a2e', marginBottom: '4px', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
                                                 {item.title}
                                             </h6>
-                                            <div style={{ display: 'flex', alignItems: 'center', gap: '4px', marginBottom: '4px' }}>
+                                            <div style={{ display: 'flex', alignItems: 'center', gap: '4px', marginBottom: '6px' }}>
                                                 {[1,2,3,4,5].map(i => (
-                                                    <i key={i} className={`${i <= Math.floor(parseFloat(rating)) ? 'fas' : 'far'} fa-star`} style={{ color: '#ffc107', fontSize: '8px' }}></i>
+                                                    <i key={i} className={`${i <= Math.floor(parseFloat(rating)) ? 'fas' : 'far'} fa-star`} style={{ color: '#ffc107', fontSize: '9px' }}></i>
                                                 ))}
-                                                <span style={{ fontSize: '10px', color: '#999' }}>({reviews})</span>
+                                                <span style={{ fontSize: '11px', color: '#999' }}>({reviews})</span>
                                             </div>
-                                            <div style={{ fontSize: '13px', fontWeight: 800, color: '#1a1a2e', marginBottom: '4px' }}>
+                                            <div style={{ fontSize: '14px', fontWeight: 800, color: '#1a1a2e', marginBottom: '8px' }}>
                                                 {hasPrice ? `$${formatNumber(price)}` : 'Contact for Price'}
-                                                {hasPrice && <span style={{ fontSize: '9px', color: '#999', marginLeft: '3px' }}>AUD</span>}
+                                                {hasPrice && <span style={{ fontSize: '10px', color: '#999', marginLeft: '3px' }}>AUD</span>}
                                             </div>
-                                            <div style={{ fontSize: '10px', color: '#999', display: 'flex', gap: '6px' }}>
-                                                <span>{item.year}</span>
-                                                <span>•</span>
-                                                <span>{item.transmission || 'Auto'}</span>
-                                                <span>•</span>
-                                                <span>{item.fuel || 'Petrol'}</span>
+                                            <div style={{ display: 'flex', gap: '4px', flexWrap: 'wrap' }}>
+                                                {[item.year, item.transmission || 'Auto', item.fuel || 'Petrol'].filter(Boolean).map((tag, ti) => (
+                                                    <span key={ti} style={{
+                                                        fontSize: '10px',
+                                                        fontWeight: 600,
+                                                        color: '#666',
+                                                        background: '#f5f5f5',
+                                                        padding: '3px 10px',
+                                                        borderRadius: '20px'
+                                                    }}>
+                                                        {tag}
+                                                    </span>
+                                                ))}
                                             </div>
                                         </div>
                                     </div>

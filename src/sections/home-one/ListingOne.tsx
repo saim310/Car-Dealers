@@ -325,7 +325,7 @@ const ListingOne: React.FC<ListingOneProps> = ({ filteredData }) => {
                 {/* View All Vehicles */}
                 <div className="text-center" style={{ marginTop: '20px' }}>
                     <Link 
-                        href="/inner/listing" 
+                        href="/inner/products" 
                         style={{ 
                             display: 'inline-flex',
                             alignItems: 'center',

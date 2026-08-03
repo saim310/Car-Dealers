@@ -13,16 +13,6 @@ const formatPrice = (price: number | string) => {
     return '$' + num.toLocaleString('en-US');
 };
 
-const getRating = (id: string | number) => {
-    const hash = String(id).split('').reduce((a, b) => a + b.charCodeAt(0), 0);
-    return (4.5 + (hash % 5) / 10).toFixed(1);
-};
-
-const getReviews = (id: string | number) => {
-    const hash = String(id).split('').reduce((a, b) => a + b.charCodeAt(0), 0);
-    return 50 + (hash % 150);
-};
-
 const getStatusBadge = (item: any) => {
     if (item.isNew || item.status === 'new') return { label: 'JUST ARRIVED', bg: '#ffc107', color: '#1a1a2e', icon: 'fa-bolt' };
     if (item.fuel === 'Hybrid') return { label: 'HYBRID', bg: '#28a745', color: '#fff', icon: 'fa-leaf' };
@@ -30,25 +20,6 @@ const getStatusBadge = (item: any) => {
     if (item.mileage && parseInt(String(item.mileage).replace(/,/g, '')) < 50000) return { label: 'LOW KM', bg: '#007bff', color: '#fff', icon: 'fa-tachometer-alt' };
     if (item.bodyType?.toLowerCase().includes('sedan') || item.Body?.toLowerCase().includes('sedan')) return { label: 'PREMIUM SEDAN', bg: '#6f42c1', color: '#fff', icon: 'fa-gem' };
     return { label: 'BEST SELLER', bg: '#ffc107', color: '#1a1a2e', icon: 'fa-star' };
-};
-
-const StarRating = ({ id }: { id: string | number }) => {
-    const rating = parseFloat(getRating(id));
-    const reviews = getReviews(id);
-    const full = Math.floor(rating);
-    const half = rating - full >= 0.5;
-    const stars = [];
-    
-    for (let i = 0; i < full; i++) stars.push(<i key={i} className="fas fa-star" style={{ color: '#ffc107', fontSize: '12px' }}></i>);
-    if (half) stars.push(<i key="h" className="fas fa-star-half-alt" style={{ color: '#ffc107', fontSize: '12px' }}></i>);
-    for (let i = full + (half ? 1 : 0); i < 5; i++) stars.push(<i key={`e${i}`} className="far fa-star" style={{ color: '#ffc107', fontSize: '12px' }}></i>);
-    
-    return (
-        <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
-            <div style={{ display: 'flex', gap: '2px' }}>{stars}</div>
-            <span style={{ fontSize: '12px', color: '#666', fontWeight: 600 }}>{rating} ({reviews} reviews)</span>
-        </div>
-    );
 };
 
 export default function ProductGridView({ product }: { product: any }) {
@@ -124,8 +95,12 @@ export default function ProductGridView({ product }: { product: any }) {
                         </Link>
                     </h4>
 
-                    <div style={{ marginBottom: '10px' }}>
-                        <StarRating id={carId} />
+                    {/* Location / Yard Info */}
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '6px', marginBottom: '10px' }}>
+                        <i className="fas fa-map-marker-alt" style={{ color: '#dc3545', fontSize: '13px' }}></i>
+                        <span style={{ fontSize: '13px', color: '#555', fontWeight: 600 }}>
+                            Yard {product.yard || 'N/A'}: {product.city || 'N/A'}
+                        </span>
                     </div>
 
                     <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '12px' }}>

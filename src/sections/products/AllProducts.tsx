@@ -185,7 +185,7 @@ export default function AllProducts() {
             let targetId = q;
             if (q.includes('maidstone')) targetId = '1';
             else if (q.includes('mordialloc')) targetId = '2';
-            else if (q.includes('slack') || q.includes('brisbane')) targetId = '3';
+            else if (q.includes('slack') || q.includes('brisbane')) targetId = '4';
 
             list = list.filter((item: any) => {
                 const yard = String(item.yard || item.Yard || "").toLowerCase().trim();

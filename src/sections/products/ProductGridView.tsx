@@ -99,8 +99,7 @@ export default function ProductGridView({ product }: { product: any }) {
                     <div style={{ display: 'flex', alignItems: 'center', gap: '6px', marginBottom: '10px' }}>
                         <i className="fas fa-map-marker-alt" style={{ color: '#dc3545', fontSize: '13px' }}></i>
                         <span style={{ fontSize: '13px', color: '#555', fontWeight: 600 }}>
-                            Yard {product.yard || 'N/A'}: {product.city || 'N/A'}
-                        </span>
+                            Yard {product.yard || product.Yard || 'N/A'}: {typeof window !== 'undefined' && window.location.search.includes('city=Melbourne') ? 'Melbourne' : typeof window !== 'undefined' && window.location.search.includes('city=Brisbane') ? 'Brisbane' : String(product.yard || product.Yard) === '1' ? 'Maidstone' : String(product.yard || product.Yard) === '2' ? 'Mordialloc' : String(product.yard || product.Yard) === '4' ? 'Slacks Creek' : product.city || 'N/A'}</span>
                     </div>
 
                     <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '12px' }}>

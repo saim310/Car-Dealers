@@ -148,7 +148,7 @@ export default function ListingBottomLeft({ car }: { car?: any }) {
                                 {categories[ci]}
                             </h6>
                             <ul style={{ listStyle: 'none', padding: 0, margin: 0 }}>
-                                {col.map((feat, fi) => (
+                                {col.map((feat: any, fi: any) => (
                                     <li key={fi} style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '10px', fontSize: '13px', color: '#555' }}>
                                         <i className="fas fa-check-circle" style={{ color: '#28a745', fontSize: '12px', flexShrink: 0 }}></i>
                                         <span>{feat}</span>

@@ -37,7 +37,7 @@ const FaqMain: React.FC = () => {
                                                 viewport={{ amount: 0.05 }}
                                                 className="accrodion-content" style={{ display: `${isActiveFaq === item.id ? "block" : "none"}` }}>
                                                 <div className="inner">
-                                                    <p> {item?.description}</p>
+                                                    <p> {(item as any)?.description}</p>
                                                 </div>
                                             </motion.div>
                                         </motion.div>
@@ -75,7 +75,7 @@ const FaqMain: React.FC = () => {
                                                 viewport={{ amount: 0.05 }}
                                                 className="accrodion-content" style={{ display: `${isActiveFaq === item.id ? "block" : "none"}` }}>
                                                 <div className="inner">
-                                                    <p> {item?.description}</p>
+                                                    <p> {(item as any)?.description}</p>
                                                 </div>
                                             </motion.div>
                                         </motion.div>

@@ -21,7 +21,7 @@ const MainManuList: React.FC<ComponentProps> = ({ onePageManuList }) => {
         <ul className="main-menu__list">
             {/* HOME - Single */}
             <li className={currentPath === "/" ? "current" : ""}>
-                <Link href="/">Home</Link>
+                <a href="/">Home</a>
             </li>
 
             {/* VIEW STOCK - With Nested Dropdown */}
@@ -30,26 +30,26 @@ const MainManuList: React.FC<ComponentProps> = ({ onePageManuList }) => {
                 <ul className="shadow-box">
                     {/* Melbourne Sub-dropdown */}
                     <li className={`dropdown ${currentPath.startsWith("/inner/view-stock/melbourne") ? "current" : ""}`}>
-                        <a href="/inner/products?city=Melbourne">Melbourne</a>
+                        <a href="/inner/products?city=Melbourne">Melbourne Stock</a>
                         <ul className="shadow-box">
                             <li className={currentPath === "/inner/view-stock/melbourne/all-melbourne-stock" ? "current" : ""}>
-                                <Link href="/inner/products?city=Melbourne">All Melbourne Stock</Link>
+                                <a href="/inner/products?city=Melbourne">All Melbourne Stock</a>
                             </li>
                             <li className={currentPath === "/inner/view-stock/melbourne/maidstone-yard" ? "current" : ""}>
-                                <Link href="/inner/products?yard=Maidstone">Maidstone Yard</Link>
+                                <a href="/inner/products?yard=Maidstone">Maidstone Yard</a>
                             </li>
                             <li className={currentPath === "/inner/view-stock/melbourne/mordialloc-yard" ? "current" : ""}>
-                                <Link href="/inner/products?yard=Mordialloc">Mordialloc Yard</Link>
+                                <a href="/inner/products?yard=Mordialloc">Mordialloc Yard</a>
                             </li>
                         </ul>
                     </li>
 
                     {/* Brisbane Sub-dropdown */}
                     <li className={`dropdown ${currentPath.startsWith("/inner/view-stock/brisbane") ? "current" : ""}`}>
-                        <a href="/inner/products?city=Brisbane">Brisbane</a>
+                        <a href="/inner/products?city=Brisbane">Brisbane Stock</a>
                         <ul className="shadow-box">
                             <li className={currentPath === "/inner/view-stock/brisbane/slack-creek" ? "current" : ""}>
-                                <Link href="/inner/products?yard=Slack%20Creek">Slack Creek</Link>
+                                <a href="/inner/products?yard=Slack%20Creek">Slack Creek</a>
                             </li>
                         </ul>
                     </li>
@@ -61,42 +61,42 @@ const MainManuList: React.FC<ComponentProps> = ({ onePageManuList }) => {
                 <a href="#">Finance</a>
                 <ul className="shadow-box">
                     <li className={currentPath === "/inner/finance/finance-calculator" ? "current" : ""}>
-                        <Link href="/inner/finance/finance-calculator">Finance Calculator</Link>
+                        <a href="/inner/finance/finance-calculator">Finance Calculator</a>
                     </li>
                     <li className={currentPath === "/inner/finance/apply-for-finance" ? "current" : ""}>
-                        <Link href="/inner/finance/apply-for-finance">Apply for Finance</Link>
+                        <a href="/inner/finance/apply-for-finance">Apply for Finance</a>
                     </li>
                     <li className={currentPath === "/inner/finance/finance-information" ? "current" : ""}>
-                        <Link href="/inner/finance/finance-information">Finance Information</Link>
+                        <a href="/inner/finance/finance-information">Finance Information</a>
                     </li>
                 </ul>
             </li>
 
             {/* ON SALE CARS - Single */}
             <li className={currentPath === "/inner/on-sale-cars" ? "current" : ""}>
-                <Link href="/inner/cars?sale=true">On Sale Cars</Link>
+                <a href="/inner/cars?sale=true">On Sale Cars</a>
             </li>
 
 
 
             {/* WHOLESALE - Single */}
             <li className={currentPath === "/inner/wholesale" ? "current" : ""}>
-                <Link href="/inner/wholesale">Wholesale</Link>
+                <a href="/inner/wholesale">Wholesale</a>
             </li>
 
             {/* WARRANTY - Single */}
             <li className={currentPath === "/inner/warranty" ? "current" : ""}>
-                <Link href="/inner/warranty">Warranty</Link>
+                <a href="/inner/warranty">Warranty</a>
             </li>
 
             {/* CONTACT US - Single */}
             <li className={currentPath === "/inner/contact" ? "current" : ""}>
-                <Link href="/inner/contact">Contact</Link>
+                <a href="/inner/contact">Contact</a>
             </li>
 
             {/* ABOUT US - Single */}
             <li className={currentPath === "/inner/about" ? "current" : ""}>
-                <Link href="/inner/about">About</Link>
+                <a href="/inner/about">About</a>
             </li>
 
             {/* MORE - With Dropdown */}
@@ -104,13 +104,13 @@ const MainManuList: React.FC<ComponentProps> = ({ onePageManuList }) => {
                 <a href="#">More</a>
                 <ul className="shadow-box">
                     <li className={currentPath === "/inner/blog" ? "current" : ""}>
-                        <Link href="/inner/blog">Blog</Link>
+                        <a href="/inner/blog">Blog</a>
                     </li>
                      <li className={currentPath === "/inner/TradeIn" ? "current" : ""}>
-                <Link href="/inner/TradeIn">TradeIn</Link>
+                <a href="/inner/TradeIn">TradeIn</a>
             </li>
                     <li className={currentPath === "/inner/faqs" ? "current" : ""}>
-                        <Link href="/inner/faq">FAQs</Link>
+                        <a href="/inner/faq">FAQs</a>
                       
                     </li>
                 </ul>

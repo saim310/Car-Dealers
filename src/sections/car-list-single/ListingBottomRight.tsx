@@ -2,6 +2,18 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import ReactDOM from 'react-dom';
 
+// ─── Responsive Hook ───
+const useIsMobile = (breakpoint = 768) => {
+    const [isMobile, setIsMobile] = useState(false);
+    useEffect(() => {
+        const check = () => setIsMobile(window.innerWidth < breakpoint);
+        check();
+        window.addEventListener('resize', check);
+        return () => window.removeEventListener('resize', check);
+    }, [breakpoint]);
+    return isMobile;
+};
+
 const formatPrice = (price: number | string) => {
     const num = typeof price === 'string' ? parseInt(price.replace(/,/g, '')) : price;
     if (!num || isNaN(num)) return '0';
@@ -27,7 +39,7 @@ const StarRating = ({ id, city }: { id: string | number; city?: string }) => {
     if (half) stars.push(<i key="h" className="fas fa-star-half-alt" style={{ color: '#ffc107', fontSize: '13px' }}></i>);
     for (let i = full + (half ? 1 : 0); i < 5; i++) stars.push(<i key={`e${i}`} className="far fa-star" style={{ color: '#ffc107', fontSize: '13px' }}></i>);
     return (
-        <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '6px', flexWrap: 'wrap' }}>
             <div style={{ display: 'flex', gap: '1px' }}>{stars}</div>
             <span style={{ fontSize: '13px', color: '#666', fontWeight: 600 }}>{rating}</span>
             {city && (
@@ -43,10 +55,15 @@ const StarRating = ({ id, city }: { id: string | number; city?: string }) => {
 // ─── Reusable Modal Shell with Portal ───
 const Modal = ({ isOpen, onClose, children }: { isOpen: boolean; onClose: () => void; children: React.ReactNode }) => {
     const [mounted, setMounted] = useState(false);
+    const isMobile = useIsMobile();
 
     useEffect(() => {
         setMounted(true);
-    }, []);
+        if (isOpen) {
+            document.body.style.overflow = 'hidden';
+        }
+        return () => { document.body.style.overflow = ''; };
+    }, [isOpen]);
 
     if (!mounted || !isOpen) return null;
 
@@ -56,9 +73,9 @@ const Modal = ({ isOpen, onClose, children }: { isOpen: boolean; onClose: () => 
             inset: 0,
             zIndex: 999999,
             display: 'flex',
-            alignItems: 'center',
+            alignItems: isMobile ? 'flex-end' : 'center',
             justifyContent: 'center',
-            padding: '16px'
+            padding: isMobile ? '0' : '16px'
         }}>
             <div style={{
                 position: 'absolute',
@@ -69,13 +86,18 @@ const Modal = ({ isOpen, onClose, children }: { isOpen: boolean; onClose: () => 
             <div style={{
                 position: 'relative',
                 background: '#fff',
-                borderRadius: '16px',
+                borderRadius: isMobile ? '16px 16px 0 0' : '16px',
                 width: '100%',
                 maxWidth: '980px',
-                maxHeight: '92vh',
+                maxHeight: isMobile ? '92vh' : '92vh',
                 overflowY: 'auto',
-                boxShadow: '0 20px 60px rgba(0,0,0,0.25)'
+                boxShadow: '0 20px 60px rgba(0,0,0,0.25)',
+                animation: isMobile ? 'slideUp 0.3s ease' : 'fadeIn 0.2s ease'
             }}>
+                <style>{`
+                    @keyframes slideUp { from { transform: translateY(100%); } to { transform: translateY(0); } }
+                    @keyframes fadeIn { from { opacity: 0; transform: scale(0.98); } to { opacity: 1; transform: scale(1); } }
+                `}</style>
                 {children}
             </div>
         </div>
@@ -87,6 +109,7 @@ const Modal = ({ isOpen, onClose, children }: { isOpen: boolean; onClose: () => 
 // ─── Car Image with Fallbacks ───
 const CarImage = ({ car }: { car?: any }) => {
     const [error, setError] = useState(false);
+    const isMobile = useIsMobile();
 
     const imageSrc = useMemo(() => {
         if (!car) return "/assets/images/shop/shop-product-1-1.jpg";
@@ -97,7 +120,7 @@ const CarImage = ({ car }: { car?: any }) => {
         return (
             <div style={{
                 width: '100%',
-                height: '160px',
+                height: isMobile ? '140px' : '160px',
                 background: '#f0f0f0',
                 display: 'flex',
                 alignItems: 'center',
@@ -117,7 +140,7 @@ const CarImage = ({ car }: { car?: any }) => {
         <img
             src={imageSrc}
             alt={car?.Title || car?.title || 'Car'}
-            style={{ width: '100%', height: '160px', objectFit: 'cover', display: 'block' }}
+            style={{ width: '100%', height: isMobile ? '140px' : '160px', objectFit: 'cover', display: 'block' }}
             onError={() => setError(true)}
         />
     );
@@ -125,6 +148,7 @@ const CarImage = ({ car }: { car?: any }) => {
 
 // ─── Right Sidebar: Car Details + Contact ───
 const ModalSidebar = ({ car }: { car?: any }) => {
+    const isMobile = useIsMobile();
     const price = car?.Price || car?.price || car?.SpecialPrice || 45995;
     const hasPrice = price > 0;
     const title = car?.Title || car?.title || 'Toyota Alphard X 2022';
@@ -136,13 +160,14 @@ const ModalSidebar = ({ car }: { car?: any }) => {
     return (
         <div style={{
             background: '#fafafa',
-            borderLeft: '1px solid #f0f0f0',
-            padding: '28px',
+            borderLeft: isMobile ? 'none' : '1px solid #f0f0f0',
+            borderTop: isMobile ? '1px solid #f0f0f0' : 'none',
+            padding: isMobile ? '20px' : '28px',
             display: 'flex',
             flexDirection: 'column',
             gap: '20px',
             height: '100%',
-            minWidth: '320px'
+            minWidth: isMobile ? 'auto' : '320px'
         }}>
             {/* Car Card */}
             <div style={{
@@ -220,27 +245,44 @@ const ModalSidebar = ({ car }: { car?: any }) => {
             </div>
 
             {/* Need Help */}
-            <div style={{ marginTop: 'auto' }}>
-                <h5 style={{ fontSize: '14px', fontWeight: 800, color: '#1a1a2e', margin: '0 0 10px 0' }}>Need Help?</h5>
-                <p style={{ fontSize: '12px', color: '#888', margin: '0 0 12px 0', lineHeight: 1.4 }}>
-                    Our team is here to answer any questions.
+            <div style={{ background: '#fff', borderRadius: '12px', padding: '24px', boxShadow: '0 1px 4px rgba(0,0,0,0.04)', border: '1px solid #eee' }}>
+                <h4 style={{ fontSize: '14px', fontWeight: 800, color: '#1a1a2e', marginBottom: '12px', textTransform: 'uppercase', letterSpacing: '0.5px' }}>
+                    Need Help?
+                </h4>
+                <p style={{ fontSize: '13px', color: '#666', marginBottom: '14px', lineHeight: 1.5 }}>
+                    Our friendly team is here to help you find your perfect car.
                 </p>
-                <div style={{ display: 'flex', flexDirection: 'column', gap: '8px', fontSize: '13px', color: '#555' }}>
-                    <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                        <i className="fas fa-phone-alt" style={{ color: '#1a1a2e', width: '14px', fontSize: '11px' }}></i>
-                        <span>+1800 006 256</span>
+
+                <ul style={{ listStyle: 'none', padding: 0, margin: '0 0 14px 0', display: 'flex', flexDirection: 'column', gap: '10px' }}>
+                    {[
+                        { icon: 'fa-phone-alt', text: '1800 006 256' },
+                        { icon: 'fa-comments', text: 'WhatsApp Us' },
+                        { icon: 'fa-envelope', text: 'info@ukajapan.com.au' },
+                        { icon: 'fa-clock', text: 'Mon - Sun: 9:00 AM - 6:00 PM' },
+                    ].map((item, i) => (
+                        <li key={i} style={{ display: 'flex', alignItems: 'center', gap: '10px', fontSize: '13px', color: '#555', fontWeight: 600 }}>
+                            <i className={`fas ${item.icon}`} style={{ color: '#1a1a2e', fontSize: '14px', width: '16px' }}></i>
+                            <span>{item.text}</span>
+                        </li>
+                    ))}
+                </ul>
+
+                <div style={{ display: 'flex', gap: '8px' }}>
+                    <div style={{ flex: 1, padding: '10px', background: '#f8f9fa', borderRadius: '8px', textAlign: 'center' }}>
+                        <div style={{ fontSize: '11px', color: '#999', marginBottom: '3px', fontWeight: 700 }}>Google</div>
+                        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '2px', marginBottom: '2px' }}>
+                            {[1,2,3,4].map(i => <i key={i} className="fas fa-star" style={{ color: '#ffc107', fontSize: '9px' }}></i>)}
+                            <i className="fas fa-star-half-alt" style={{ color: '#ffc107', fontSize: '9px' }}></i>
+                        </div>
+                        <div style={{ fontSize: '12px', fontWeight: 800, color: '#1a1a2e' }}>4.9</div>
                     </div>
-                    <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                        <i className="fas fa-envelope" style={{ color: '#1a1a2e', width: '14px', fontSize: '11px' }}></i>
-                        <span>sales.maidstone@ukajapan.com.au</span>
-                    </div>
-                    <div style={{ display: 'flex', alignItems: 'flex-start', gap: '8px' }}>
-                        <i className="fas fa-map-marker-alt" style={{ color: '#1a1a2e', width: '14px', fontSize: '11px', marginTop: '2px' }}></i>
-                        <span>205 Ballarat Rd, Maidstone,<br/>VIC 3012</span>
-                    </div>
-                    <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                        <i className="far fa-clock" style={{ color: '#1a1a2e', width: '14px', fontSize: '11px' }}></i>
-                        <span>Mon - Sun: 9:00 AM - 6:00 PM</span>
+                    <div style={{ flex: 1, padding: '10px', background: '#f8f9fa', borderRadius: '8px', textAlign: 'center' }}>
+                        <div style={{ fontSize: '11px', color: '#999', marginBottom: '3px', fontWeight: 700 }}>Facebook</div>
+                        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '2px', marginBottom: '2px' }}>
+                            {[1,2,3,4].map(i => <i key={i} className="fas fa-star" style={{ color: '#ffc107', fontSize: '9px' }}></i>)}
+                            <i className="fas fa-star-half-alt" style={{ color: '#ffc107', fontSize: '9px' }}></i>
+                        </div>
+                        <div style={{ fontSize: '12px', fontWeight: 800, color: '#1a1a2e' }}>4.8</div>
                     </div>
                 </div>
             </div>
@@ -277,6 +319,7 @@ const sectionTitleStyle: React.CSSProperties = {
 
 // ─── 1. Schedule Test Drive Modal ───
 const TestDriveModal = ({ isOpen, onClose, car }: { isOpen: boolean; onClose: () => void; car?: any }) => {
+    const isMobile = useIsMobile();
     const [form, setForm] = useState({ name: '', email: '', phone: '', contact: '', date: '', time: '', location: '', message: '', agreed: false });
     const [submitted, setSubmitted] = useState(false);
 
@@ -286,10 +329,14 @@ const TestDriveModal = ({ isOpen, onClose, car }: { isOpen: boolean; onClose: ()
         setTimeout(() => { setSubmitted(false); onClose(); }, 2000);
     };
 
+    const gridStyle: React.CSSProperties = isMobile
+        ? { display: 'flex', flexDirection: 'column', gap: '12px', marginBottom: '12px' }
+        : { display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px', marginBottom: '12px' };
+
     return (
         <Modal isOpen={isOpen} onClose={onClose}>
-            <div style={{ display: 'flex', minHeight: '600px' }}>
-                <div style={{ flex: 1, padding: '28px', minWidth: 0 }}>
+            <div style={{ display: 'flex', flexDirection: isMobile ? 'column' : 'row', minHeight: isMobile ? 'auto' : '600px' }}>
+                <div style={{ flex: 1, padding: isMobile ? '20px' : '28px', minWidth: 0 }}>
                     <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '20px' }}>
                         <div style={{ display: 'flex', gap: '12px', alignItems: 'flex-start' }}>
                             <div style={{
@@ -305,7 +352,7 @@ const TestDriveModal = ({ isOpen, onClose, car }: { isOpen: boolean; onClose: ()
                                 <i className="far fa-calendar-check" style={{ color: '#ffc107', fontSize: '20px' }}></i>
                             </div>
                             <div>
-                                <h3 style={{ fontSize: '22px', fontWeight: 800, color: '#1a1a2e', margin: '0 0 4px 0' }}>Book a Test Drive</h3>
+                                <h3 style={{ fontSize: isMobile ? '18px' : '22px', fontWeight: 800, color: '#1a1a2e', margin: '0 0 4px 0' }}>Book a Test Drive</h3>
                                 <p style={{ fontSize: '14px', color: '#888', margin: 0, lineHeight: 1.4 }}>
                                     Fill in the details below and we'll confirm your test drive.
                                 </p>
@@ -322,7 +369,8 @@ const TestDriveModal = ({ isOpen, onClose, car }: { isOpen: boolean; onClose: ()
                             alignItems: 'center',
                             justifyContent: 'center',
                             fontSize: '14px',
-                            color: '#666'
+                            color: '#666',
+                            flexShrink: 0
                         }}>✕</button>
                     </div>
 
@@ -336,7 +384,7 @@ const TestDriveModal = ({ isOpen, onClose, car }: { isOpen: boolean; onClose: ()
                         <form onSubmit={handleSubmit}>
                             <div style={sectionTitleStyle}>Your Details</div>
 
-                            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px', marginBottom: '12px' }}>
+                            <div style={gridStyle}>
                                 <div>
                                     <label style={labelStyle}>Full Name *</label>
                                     <input style={inputStyle} placeholder="Enter your full name" required
@@ -349,7 +397,7 @@ const TestDriveModal = ({ isOpen, onClose, car }: { isOpen: boolean; onClose: ()
                                 </div>
                             </div>
 
-                            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px', marginBottom: '16px' }}>
+                            <div style={gridStyle}>
                                 <div>
                                     <label style={labelStyle}>Phone Number *</label>
                                     <div style={{ display: 'flex', border: '1px solid #e5e5e5', borderRadius: '8px', overflow: 'hidden' }}>
@@ -373,7 +421,7 @@ const TestDriveModal = ({ isOpen, onClose, car }: { isOpen: boolean; onClose: ()
 
                             <div style={sectionTitleStyle}>Preferred Date & Time</div>
 
-                            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px', marginBottom: '12px' }}>
+                            <div style={gridStyle}>
                                 <div>
                                     <label style={labelStyle}>Preferred Date *</label>
                                     <div style={{ position: 'relative' }}>
@@ -456,6 +504,7 @@ const TestDriveModal = ({ isOpen, onClose, car }: { isOpen: boolean; onClose: ()
 
 // ─── 2. Apply for Finance Modal ───
 const FinanceModal = ({ isOpen, onClose, car }: { isOpen: boolean; onClose: () => void; car?: any }) => {
+    const isMobile = useIsMobile();
     const [form, setForm] = useState({ name: '', phone: '', email: '', dob: '', employment: '', income: '', term: '', deposit: '' });
     const [submitted, setSubmitted] = useState(false);
 
@@ -465,10 +514,14 @@ const FinanceModal = ({ isOpen, onClose, car }: { isOpen: boolean; onClose: () =
         setTimeout(() => { setSubmitted(false); onClose(); }, 2000);
     };
 
+    const gridStyle: React.CSSProperties = isMobile
+        ? { display: 'flex', flexDirection: 'column', gap: '12px', marginBottom: '12px' }
+        : { display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px', marginBottom: '12px' };
+
     return (
         <Modal isOpen={isOpen} onClose={onClose}>
-            <div style={{ display: 'flex', minHeight: '600px' }}>
-                <div style={{ flex: 1, padding: '28px', minWidth: 0 }}>
+            <div style={{ display: 'flex', flexDirection: isMobile ? 'column' : 'row', minHeight: isMobile ? 'auto' : '600px' }}>
+                <div style={{ flex: 1, padding: isMobile ? '20px' : '28px', minWidth: 0 }}>
                     <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '20px' }}>
                         <div style={{ display: 'flex', gap: '12px', alignItems: 'flex-start' }}>
                             <div style={{
@@ -484,7 +537,7 @@ const FinanceModal = ({ isOpen, onClose, car }: { isOpen: boolean; onClose: () =
                                 <i className="fas fa-dollar-sign" style={{ color: '#ffc107', fontSize: '20px' }}></i>
                             </div>
                             <div>
-                                <h3 style={{ fontSize: '22px', fontWeight: 800, color: '#1a1a2e', margin: '0 0 4px 0' }}>Apply for Finance</h3>
+                                <h3 style={{ fontSize: isMobile ? '18px' : '22px', fontWeight: 800, color: '#1a1a2e', margin: '0 0 4px 0' }}>Apply for Finance</h3>
                                 <p style={{ fontSize: '14px', color: '#888', margin: 0, lineHeight: 1.4 }}>
                                     Quick and easy finance application. Get pre-approved in minutes.
                                 </p>
@@ -501,7 +554,8 @@ const FinanceModal = ({ isOpen, onClose, car }: { isOpen: boolean; onClose: () =
                             alignItems: 'center',
                             justifyContent: 'center',
                             fontSize: '14px',
-                            color: '#666'
+                            color: '#666',
+                            flexShrink: 0
                         }}>✕</button>
                     </div>
 
@@ -521,7 +575,7 @@ const FinanceModal = ({ isOpen, onClose, car }: { isOpen: boolean; onClose: () =
                                     value={form.name} onChange={e => setForm({...form, name: e.target.value})} />
                             </div>
 
-                            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px', marginBottom: '12px' }}>
+                            <div style={gridStyle}>
                                 <div>
                                     <label style={labelStyle}>Phone Number *</label>
                                     <div style={{ display: 'flex', border: '1px solid #e5e5e5', borderRadius: '8px', overflow: 'hidden' }}>
@@ -539,7 +593,7 @@ const FinanceModal = ({ isOpen, onClose, car }: { isOpen: boolean; onClose: () =
                                 </div>
                             </div>
 
-                            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px', marginBottom: '16px' }}>
+                            <div style={gridStyle}>
                                 <div>
                                     <label style={labelStyle}>Date of Birth *</label>
                                     <div style={{ position: 'relative' }}>
@@ -563,7 +617,7 @@ const FinanceModal = ({ isOpen, onClose, car }: { isOpen: boolean; onClose: () =
 
                             <div style={sectionTitleStyle}>Finance Details</div>
 
-                            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px', marginBottom: '12px' }}>
+                            <div style={gridStyle}>
                                 <div>
                                     <label style={labelStyle}>Approx. Annual Income *</label>
                                     <select style={inputStyle} required value={form.income} onChange={e => setForm({...form, income: e.target.value})}>
@@ -641,6 +695,7 @@ const FinanceModal = ({ isOpen, onClose, car }: { isOpen: boolean; onClose: () =
 
 // ─── 3. Enquire Now Modal ───
 const EnquiryModal = ({ isOpen, onClose, car }: { isOpen: boolean; onClose: () => void; car?: any }) => {
+    const isMobile = useIsMobile();
     const [form, setForm] = useState({ name: '', phone: '', email: '', interest: '', message: '' });
     const [contactMethod, setContactMethod] = useState<'phone' | 'email' | 'whatsapp'>('phone');
     const [submitted, setSubmitted] = useState(false);
@@ -651,10 +706,14 @@ const EnquiryModal = ({ isOpen, onClose, car }: { isOpen: boolean; onClose: () =
         setTimeout(() => { setSubmitted(false); onClose(); }, 2000);
     };
 
+    const gridStyle: React.CSSProperties = isMobile
+        ? { display: 'flex', flexDirection: 'column', gap: '12px', marginBottom: '12px' }
+        : { display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px', marginBottom: '12px' };
+
     return (
         <Modal isOpen={isOpen} onClose={onClose}>
-            <div style={{ display: 'flex', minHeight: '600px' }}>
-                <div style={{ flex: 1, padding: '28px', minWidth: 0 }}>
+            <div style={{ display: 'flex', flexDirection: isMobile ? 'column' : 'row', minHeight: isMobile ? 'auto' : '600px' }}>
+                <div style={{ flex: 1, padding: isMobile ? '20px' : '28px', minWidth: 0 }}>
                     <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '20px' }}>
                         <div style={{ display: 'flex', gap: '12px', alignItems: 'flex-start' }}>
                             <div style={{
@@ -670,7 +729,7 @@ const EnquiryModal = ({ isOpen, onClose, car }: { isOpen: boolean; onClose: () =
                                 <i className="far fa-comment-dots" style={{ color: '#ffc107', fontSize: '20px' }}></i>
                             </div>
                             <div>
-                                <h3 style={{ fontSize: '22px', fontWeight: 800, color: '#1a1a2e', margin: '0 0 4px 0' }}>Enquire Now</h3>
+                                <h3 style={{ fontSize: isMobile ? '18px' : '22px', fontWeight: 800, color: '#1a1a2e', margin: '0 0 4px 0' }}>Enquire Now</h3>
                                 <p style={{ fontSize: '14px', color: '#888', margin: 0, lineHeight: 1.4 }}>
                                     Have questions? We're here to help. Get in touch with our team.
                                 </p>
@@ -687,7 +746,8 @@ const EnquiryModal = ({ isOpen, onClose, car }: { isOpen: boolean; onClose: () =
                             alignItems: 'center',
                             justifyContent: 'center',
                             fontSize: '14px',
-                            color: '#666'
+                            color: '#666',
+                            flexShrink: 0
                         }}>✕</button>
                     </div>
 
@@ -707,7 +767,7 @@ const EnquiryModal = ({ isOpen, onClose, car }: { isOpen: boolean; onClose: () =
                                     value={form.name} onChange={e => setForm({...form, name: e.target.value})} />
                             </div>
 
-                            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px', marginBottom: '12px' }}>
+                            <div style={gridStyle}>
                                 <div>
                                     <label style={labelStyle}>Phone Number *</label>
                                     <div style={{ display: 'flex', border: '1px solid #e5e5e5', borderRadius: '8px', overflow: 'hidden' }}>
@@ -744,7 +804,7 @@ const EnquiryModal = ({ isOpen, onClose, car }: { isOpen: boolean; onClose: () =
 
                             <div style={{ marginBottom: '14px' }}>
                                 <label style={{ ...labelStyle, marginBottom: '8px' }}>Preferred Contact Method</label>
-                                <div style={{ display: 'flex', gap: '8px' }}>
+                                <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
                                     {([
                                         { key: 'phone', label: 'Phone Call', icon: 'fa-phone-alt' },
                                         { key: 'email', label: 'Email', icon: 'fa-envelope' },
@@ -756,6 +816,7 @@ const EnquiryModal = ({ isOpen, onClose, car }: { isOpen: boolean; onClose: () =
                                             onClick={() => setContactMethod(m.key)}
                                             style={{
                                                 flex: 1,
+                                                minWidth: '90px',
                                                 padding: '10px 6px',
                                                 borderRadius: '8px',
                                                 border: contactMethod === m.key ? '1.5px solid #ffc107' : '1.5px solid #e5e5e5',
@@ -813,6 +874,7 @@ const EnquiryModal = ({ isOpen, onClose, car }: { isOpen: boolean; onClose: () =
 
 // ─── Main Sidebar Component ───
 export default function ListingBottomRight({ car }: { car?: any }) {
+    const isMobile = useIsMobile();
     const price = car?.Price || car?.price || car?.SpecialPrice || 0;
     const hasPrice = price > 0;
     const carId = car?.id || car?.StockNumber || '1';
@@ -859,7 +921,7 @@ export default function ListingBottomRight({ car }: { car?: any }) {
                     <div style={{ fontSize: '12px', color: '#999', fontWeight: 700, marginBottom: '4px', textTransform: 'uppercase', letterSpacing: '0.5px' }}>
                         Our Price
                     </div>
-                    <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '8px' }}>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '8px', flexWrap: 'wrap' }}>
                         <span style={{ fontSize: '30px', fontWeight: 900, color: '#1a1a2e' }}>
                             {hasPrice ? `$${formatPrice(price)}` : 'Contact for Price'}
                         </span>
@@ -929,7 +991,7 @@ export default function ListingBottomRight({ car }: { car?: any }) {
                         />
                     </div>
 
-                    <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '8px', marginBottom: '14px' }}>
+                    <div style={{ display: 'grid', gridTemplateColumns: isMobile ? '1fr' : '1fr 1fr', gap: '8px', marginBottom: '14px' }}>
                         <div>
                             <div style={{ fontSize: '11px', color: '#999', fontWeight: 700, marginBottom: '3px', textTransform: 'uppercase' }}>Loan Term</div>
                             <select

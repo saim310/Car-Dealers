@@ -30,13 +30,13 @@ const Modal = ({ isOpen, onClose, children }: { isOpen: boolean; onClose: () => 
         <div style={{
             position: 'fixed', inset: 0, zIndex: 999999,
             display: 'flex', alignItems: 'center', justifyContent: 'center',
-            padding: '16px'
+            padding: '12px'
         }}>
             <div style={{
                 position: 'absolute', inset: 0,
                 background: 'rgba(0,0,0,0.6)', backdropFilter: 'blur(4px)'
             }} onClick={onClose} />
-            <div style={{
+            <div className="modal-panel" style={{
                 position: 'relative', background: '#fff', borderRadius: '16px',
                 width: '100%', maxWidth: '640px', maxHeight: '92vh',
                 overflowY: 'auto', boxShadow: '0 24px 80px rgba(0,0,0,0.35)'
@@ -77,8 +77,8 @@ const TestDriveModal = ({ isOpen, onClose }: { isOpen: boolean; onClose: () => v
 
     return (
         <Modal isOpen={isOpen} onClose={onClose}>
-            <div style={{ padding: '28px' }}>
-                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '20px' }}>
+            <div className="modal-body" style={{ padding: '28px' }}>
+                <div className="modal-header" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '20px' }}>
                     <div style={{ display: 'flex', gap: '12px', alignItems: 'flex-start' }}>
                         <div style={{
                             width: '44px', height: '44px', borderRadius: '12px',
@@ -109,7 +109,7 @@ const TestDriveModal = ({ isOpen, onClose }: { isOpen: boolean; onClose: () => v
                 ) : (
                     <form onSubmit={handleSubmit}>
                         <div style={sectionTitleStyle}>Your Details</div>
-                        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px', marginBottom: '12px' }}>
+                        <div className="form-grid" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px', marginBottom: '12px' }}>
                             <div>
                                 <label style={labelStyle}>Full Name *</label>
                                 <input style={inputStyle} placeholder="Enter your full name" required
@@ -122,7 +122,7 @@ const TestDriveModal = ({ isOpen, onClose }: { isOpen: boolean; onClose: () => v
                             </div>
                         </div>
 
-                        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px', marginBottom: '16px' }}>
+                        <div className="form-grid" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px', marginBottom: '16px' }}>
                             <div>
                                 <label style={labelStyle}>Phone Number *</label>
                                 <div style={{ display: 'flex', border: '1px solid #e5e5e5', borderRadius: '8px', overflow: 'hidden' }}>
@@ -145,7 +145,7 @@ const TestDriveModal = ({ isOpen, onClose }: { isOpen: boolean; onClose: () => v
                         </div>
 
                         <div style={sectionTitleStyle}>Preferred Date & Time</div>
-                        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px', marginBottom: '12px' }}>
+                        <div className="form-grid" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px', marginBottom: '12px' }}>
                             <div>
                                 <label style={labelStyle}>Preferred Date *</label>
                                 <div style={{ position: 'relative' }}>
@@ -184,13 +184,13 @@ const TestDriveModal = ({ isOpen, onClose }: { isOpen: boolean; onClose: () => v
                         <div style={{ display: 'flex', alignItems: 'flex-start', gap: '8px', marginBottom: '16px' }}>
                             <input type="checkbox" id="td-agree" checked={form.agreed}
                                 onChange={e => setForm({ ...form, agreed: e.target.checked })}
-                                style={{ marginTop: '3px', accentColor: '#ffc107' }} />
+                                style={{ marginTop: '3px', accentColor: '#ffc107', minWidth: '16px', minHeight: '16px' }} />
                             <label htmlFor="td-agree" style={{ fontSize: '13px', color: '#666', lineHeight: 1.4, cursor: 'pointer' }}>
                                 I agree to the <a href="#" style={{ color: '#ffc107', fontWeight: 700, textDecoration: 'none' }}>Privacy Policy</a> and <a href="#" style={{ color: '#ffc107', fontWeight: 700, textDecoration: 'none' }}>Terms & Conditions</a>.
                             </label>
                         </div>
 
-                        <button type="submit" style={{
+                        <button type="submit" className="btn-primary" style={{
                             width: '100%', padding: '14px', background: '#ffc107', color: '#1a1a2e',
                             fontWeight: 800, fontSize: '15px', borderRadius: '8px', border: 'none',
                             cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px', marginBottom: '12px'
@@ -222,8 +222,8 @@ const FinanceModal = ({ isOpen, onClose }: { isOpen: boolean; onClose: () => voi
 
     return (
         <Modal isOpen={isOpen} onClose={onClose}>
-            <div style={{ padding: '28px' }}>
-                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '20px' }}>
+            <div className="modal-body" style={{ padding: '28px' }}>
+                <div className="modal-header" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '20px' }}>
                     <div style={{ display: 'flex', gap: '12px', alignItems: 'flex-start' }}>
                         <div style={{
                             width: '44px', height: '44px', borderRadius: '12px',
@@ -260,7 +260,7 @@ const FinanceModal = ({ isOpen, onClose }: { isOpen: boolean; onClose: () => voi
                                 value={form.name} onChange={e => setForm({ ...form, name: e.target.value })} />
                         </div>
 
-                        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px', marginBottom: '12px' }}>
+                        <div className="form-grid" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px', marginBottom: '12px' }}>
                             <div>
                                 <label style={labelStyle}>Phone Number *</label>
                                 <div style={{ display: 'flex', border: '1px solid #e5e5e5', borderRadius: '8px', overflow: 'hidden' }}>
@@ -278,7 +278,7 @@ const FinanceModal = ({ isOpen, onClose }: { isOpen: boolean; onClose: () => voi
                             </div>
                         </div>
 
-                        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px', marginBottom: '16px' }}>
+                        <div className="form-grid" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px', marginBottom: '16px' }}>
                             <div>
                                 <label style={labelStyle}>Date of Birth *</label>
                                 <div style={{ position: 'relative' }}>
@@ -301,7 +301,7 @@ const FinanceModal = ({ isOpen, onClose }: { isOpen: boolean; onClose: () => voi
                         </div>
 
                         <div style={sectionTitleStyle}>Finance Details</div>
-                        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px', marginBottom: '12px' }}>
+                        <div className="form-grid" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px', marginBottom: '12px' }}>
                             <div>
                                 <label style={labelStyle}>Approx. Annual Income *</label>
                                 <select style={inputStyle} required value={form.income} onChange={e => setForm({ ...form, income: e.target.value })}>
@@ -345,7 +345,7 @@ const FinanceModal = ({ isOpen, onClose }: { isOpen: boolean; onClose: () => voi
                             </ul>
                         </div>
 
-                        <button type="submit" style={{
+                        <button type="submit" className="btn-primary" style={{
                             width: '100%', padding: '14px', background: '#ffc107', color: '#1a1a2e',
                             fontWeight: 800, fontSize: '15px', borderRadius: '8px', border: 'none',
                             cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px'
@@ -373,8 +373,8 @@ const EnquiryModal = ({ isOpen, onClose }: { isOpen: boolean; onClose: () => voi
 
     return (
         <Modal isOpen={isOpen} onClose={onClose}>
-            <div style={{ padding: '28px' }}>
-                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '20px' }}>
+            <div className="modal-body" style={{ padding: '28px' }}>
+                <div className="modal-header" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '20px' }}>
                     <div style={{ display: 'flex', gap: '12px', alignItems: 'flex-start' }}>
                         <div style={{
                             width: '44px', height: '44px', borderRadius: '12px',
@@ -411,7 +411,7 @@ const EnquiryModal = ({ isOpen, onClose }: { isOpen: boolean; onClose: () => voi
                                 value={form.name} onChange={e => setForm({ ...form, name: e.target.value })} />
                         </div>
 
-                        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px', marginBottom: '12px' }}>
+                        <div className="form-grid" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px', marginBottom: '12px' }}>
                             <div>
                                 <label style={labelStyle}>Phone Number *</label>
                                 <div style={{ display: 'flex', border: '1px solid #e5e5e5', borderRadius: '8px', overflow: 'hidden' }}>
@@ -448,7 +448,7 @@ const EnquiryModal = ({ isOpen, onClose }: { isOpen: boolean; onClose: () => voi
 
                         <div style={{ marginBottom: '14px' }}>
                             <label style={{ ...labelStyle, marginBottom: '8px' }}>Preferred Contact Method</label>
-                            <div style={{ display: 'flex', gap: '8px' }}>
+                            <div className="contact-method-row" style={{ display: 'flex', gap: '8px' }}>
                                 {([
                                     { key: 'phone', label: 'Phone Call', icon: 'fa-phone-alt' },
                                     { key: 'email', label: 'Email', icon: 'fa-envelope' },
@@ -476,7 +476,7 @@ const EnquiryModal = ({ isOpen, onClose }: { isOpen: boolean; onClose: () => voi
                             </span>
                         </div>
 
-                        <button type="submit" style={{
+                        <button type="submit" className="btn-primary" style={{
                             width: '100%', padding: '14px', background: '#1a1a2e', color: '#fff',
                             fontWeight: 800, fontSize: '15px', borderRadius: '8px', border: 'none',
                             cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px'
@@ -497,6 +497,28 @@ const BannerOne: React.FC = () => {
 
     return (
         <>
+            <style>{`
+                @media (max-width: 640px) {
+                    .main-slider .owl-nav { display: none !important; }
+                    .main-slider__carousel .swiper-slide .item { height: 70vh !important; min-height: 450px !important; }
+                    .cta-section { padding: 48px 16px !important; }
+                    .cta-heading { font-size: clamp(22px, 6vw, 28px) !important; }
+                    .cta-text { font-size: 14px !important; line-height: 1.7 !important; }
+                    .cta-btn-row { flex-direction: column !important; gap: 12px !important; }
+                    .cta-btn-row button { width: 100% !important; padding: 14px 20px !important; font-size: 13px !important; }
+                    .modal-body { padding: 20px 16px !important; }
+                    .modal-header h3 { font-size: 18px !important; }
+                    .form-grid { grid-template-columns: 1fr !important; }
+                    .contact-method-row { flex-direction: column !important; }
+                    .contact-method-row button { width: 100% !important; padding: 12px !important; }
+                    .btn-primary { padding: 14px !important; font-size: 14px !important; }
+                }
+                @media (max-width: 380px) {
+                    .main-slider__carousel .swiper-slide .item { min-height: 400px !important; }
+                    .cta-heading { font-size: 20px !important; }
+                }
+            `}</style>
+
             <section className="main-slider" id='home'>
                 <div className="main-slider__carousel owl-carousel owl-theme">
                     <Swiper
@@ -549,11 +571,11 @@ const BannerOne: React.FC = () => {
                 </div>
 
                 {/* Bottom CTA Section */}
-                <section style={{ background: "#0F0F1B", padding: "80px 0" }}>
+                <section className="cta-section" style={{ background: "#0F0F1B", padding: "80px 0" }}>
                     <div className="container">
                         <div className="row">
                             <div className="col-xl-12">
-                                <h1 style={{
+                                <h1 className="cta-heading" style={{
                                     fontSize: "clamp(28px, 4vw, 42px)",
                                     fontWeight: 800,
                                     color: "#fff",
@@ -564,7 +586,7 @@ const BannerOne: React.FC = () => {
                                     Premium Japanese Car for Sale in Australia
                                 </h1>
 
-                                <p style={{
+                                <p className="cta-text" style={{
                                     fontSize: "16px",
                                     lineHeight: 1.8,
                                     color: "#A1A1AA",
@@ -574,7 +596,7 @@ const BannerOne: React.FC = () => {
                                     At UKA Japan Motors, we offer a wide selection of premium Japanese cars for sale in Australia, including reliable used cars, fuel efficient vehicles, automatic cars, and compact Japanese small cars. Whether you are looking for a family SUV or an everyday city car, we help you find the perfect Japanese car to match your lifestyle and budget.
                                 </p>
 
-                                <div style={{
+                                <div className="cta-btn-row" style={{
                                     display: "flex",
                                     flexWrap: "wrap",
                                     gap: "15px"

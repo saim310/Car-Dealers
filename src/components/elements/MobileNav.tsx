@@ -37,11 +37,11 @@ const MobileNav: React.FC = () => {
                 <ul className="mobile-nav__contact list-unstyled">
                     <li>
                         <i className="fa fa-envelope"></i>
-                        <a href="mailto:needhelp@packageName__.com">needhelp@gorent.com</a>
+                        <a href="mailto:info@ukajapan.com.au">info@ukajapan.com.au</a>
                     </li>
                     <li>
                         <i className="fas fa-phone"></i>
-                        <a href="tel:666-888-0000">666 888 0000</a>
+                        <a href="tel:+1800006256">+1800 006 256</a>
                     </li>
                 </ul>
                 <div className="mobile-nav__top">

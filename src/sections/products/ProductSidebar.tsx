@@ -34,10 +34,14 @@ export default function ProductSidebar({ filters, onChange, resultCount }: Produ
         return ['ALL MAKES', ...Array.from(new Set(brands))];
     }, []);
 
+    // Dynamic models based on selected make
     const models = useMemo(() => {
-        const mods = productsList.map((car: any) => car.model).filter(Boolean);
+        const relevantProducts = (filters.make && filters.make !== 'ALL MAKES')
+            ? productsList.filter((car: any) => car.brand === filters.make)
+            : productsList;
+        const mods = relevantProducts.map((car: any) => car.model).filter(Boolean);
         return ['All Models', ...Array.from(new Set(mods))];
-    }, []);
+    }, [filters.make]);
 
     const years = useMemo(() => {
         const yrs = productsList.map((car: any) => car.year).filter(Boolean).sort((a: any, b: any) => parseInt(b) - parseInt(a));
@@ -62,7 +66,11 @@ export default function ProductSidebar({ filters, onChange, resultCount }: Produ
     const colours = ['All colours', 'White', 'Black', 'Silver', 'Grey', 'Red', 'Blue', 'Pearl', 'Gold', 'Green'];
 
     const handleChange = (field: keyof FilterState, value: string) => {
-        onChange({ ...filters, [field]: value });
+        if (field === 'make') {
+            onChange({ ...filters, make: value, model: '' });
+        } else {
+            onChange({ ...filters, [field]: value });
+        }
     };
 
     const handleReset = () => {

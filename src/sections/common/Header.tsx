@@ -38,11 +38,29 @@ const Header: React.FC = () => {
                             </div>
                             <div className="text">
                                 <p style={{ fontSize: "11px" }}>
-                                    <a href="https://maps.app.goo.gl/mro1EoXZtAkH1udS8" target="_blank" rel="noopener noreferrer" style={{ color: 'inherit', textDecoration: 'none' }}>MAIDSTONE</a>
+                                    <a 
+                                        href="https://maps.google.com/?cid=16261070224600729861&g_mp=CiVnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLkdldFBsYWNlEAMYASAF&hl=en&gl=AU&source=embed" 
+                                        target="_blank" 
+                                        rel="noopener noreferrer" 
+                                        style={{ color: 'inherit', textDecoration: 'none' }}
+                                        title="205 Ballarat Rd, Maidstone VIC 3012"
+                                    >MAIDSTONE</a>
                                     <span style={{ margin: '0 8px', opacity: 0.5 }}>|</span>
-                                    <a href="https://maps.app.goo.gl/akeweSjyWMvCT9ji8" target="_blank" rel="noopener noreferrer" style={{ color: 'inherit', textDecoration: 'none' }}>MORDIALLOC</a>
+                                    <a 
+                                        href="https://www.google.com/maps?cid=7477315702158422267&g_mp=CiVnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLkdldFBsYWNlEAMYASAF&hl=en&gl=AU&source=embed" 
+                                        target="_blank" 
+                                        rel="noopener noreferrer" 
+                                        style={{ color: 'inherit', textDecoration: 'none' }}
+                                        title="247 Boundary Rd, Mordialloc VIC 3195"
+                                    >MORDIALLOC</a>
                                     <span style={{ margin: '0 8px', opacity: 0.5 }}>|</span>
-                                    <a href="https://maps.app.goo.gl/JoZUKq7tq9RQTGiF6" target="_blank" rel="noopener noreferrer" style={{ color: 'inherit', textDecoration: 'none' }}>BRISBANE</a>
+                                    <a 
+                                        href="https://maps.google.com/?cid=16291292604318157259&g_mp=CiVnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLkdldFBsYWNlEAMYASAF&hl=en&gl=AU&source=embed" 
+                                        target="_blank" 
+                                        rel="noopener noreferrer" 
+                                        style={{ color: 'inherit', textDecoration: 'none' }}
+                                        title="33 Randall St, Slacks Creek QLD 4127"
+                                    >BRISBANE</a>
                                 </p>
                             </div>
                         </li>

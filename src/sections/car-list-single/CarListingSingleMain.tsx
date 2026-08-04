@@ -32,16 +32,35 @@ export default function CarListingSingleMain({ carId }: { carId: string }) {
     return (
         <section style={{ padding: '20px 0 50px', background: '#f5f5f5' }}>
             <div className="container">
-                <ListingTop car={car} />
-                
+                {/* Desktop Title — full width above the row */}
+                <div className="d-none d-lg-block">
+                    <ListingTop car={car} />
+                </div>
+
                 <div className="row g-4">
+                    {/* Left Column */}
                     <div className="col-lg-8">
+                        {/* 1. Image Slider */}
                         <ListingsSliders car={car} />
+
+                        {/* 2. Mobile Title — appears directly under the slider */}
+                        <div className="d-lg-none mt-3">
+                            <ListingTop car={car} />
+                        </div>
+
+                        {/* 3. Mobile Price & CTAs — appears after title */}
+                        <div className="d-lg-none mt-4">
+                            <ListingBottomRight car={car} />
+                        </div>
+
+                        {/* 4. Details — Overview, Highlights, Description, Features, etc. */}
                         <div className="mt-4">
                             <ListingBottomLeft car={car} />
                         </div>
                     </div>
-                    <div className="col-lg-4">
+
+                    {/* Right Column — Desktop Only, Sticky */}
+                    <div className="col-lg-4 d-none d-lg-block">
                         <div style={{ position: 'sticky', top: '20px' }}>
                             <ListingBottomRight car={car} />
                         </div>

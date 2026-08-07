@@ -6,7 +6,6 @@ import { useRouter } from "next/navigation";
 // =========================================
 // ICONS
 // =========================================
-
 const IconChevronDown = () => (
   <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
     <path d="m6 9 6 6 6-6" />
@@ -92,18 +91,14 @@ const IconSliders = () => (
 // =========================================
 // SELECT COMPONENT
 // =========================================
-
-const SearchSelect = ({
-  value,
-  options,
-  icon,
-  onChange,
-}: {
+interface SearchSelectProps {
   value: string;
   options: string[];
   icon: React.ReactNode;
   onChange: (val: string) => void;
-}) => {
+}
+
+const SearchSelect: React.FC<SearchSelectProps> = ({ value, options, icon, onChange }) => {
   const [isOpen, setIsOpen] = useState(false);
   const ref = useRef<HTMLDivElement>(null);
 
@@ -135,14 +130,24 @@ const SearchSelect = ({
           color: "#333",
           transition: "all 0.2s",
         }}
-        onMouseEnter={(e) => { e.currentTarget.style.borderColor = "#F5B818"; }}
-        onMouseLeave={(e) => { e.currentTarget.style.borderColor = "#ddd"; }}
+        onMouseEnter={(e) => {
+          e.currentTarget.style.borderColor = "#F5B818";
+        }}
+        onMouseLeave={(e) => {
+          e.currentTarget.style.borderColor = "#ddd";
+        }}
       >
         <span style={{ color: "#999", display: "flex" }}>{icon}</span>
         <span style={{ flex: 1, whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>
           {value}
         </span>
-        <span style={{ color: "#999", transition: "transform 0.2s", transform: isOpen ? "rotate(180deg)" : "rotate(0)" }}>
+        <span
+          style={{
+            color: "#999",
+            transition: "transform 0.2s",
+            transform: isOpen ? "rotate(180deg)" : "rotate(0)",
+          }}
+        >
           <IconChevronDown />
         </span>
       </div>
@@ -200,9 +205,21 @@ const SearchSelect = ({
 // =========================================
 // MAIN COMPONENT
 // =========================================
+export interface SearchFilterState {
+  bodyStyle: string;
+  make: string;
+  model: string;
+  minPrice: string;
+  maxPrice: string;
+  minYear: string;
+  maxYear: string;
+  location: string;
+  fuelType: string;
+  transmission: string;
+}
 
 interface SearchSectionProps {
-  onSearch?: (filters: any) => void;
+  onSearch?: (filters: SearchFilterState) => void;
   resultCount?: number;
 }
 
@@ -228,8 +245,8 @@ const SearchSection: React.FC<SearchSectionProps> = ({ onSearch, resultCount = 1
   const fuelTypes = ["All Fuel Types", "Petrol", "Diesel", "Hybrid", "Electric"];
   const transmissions = ["All Transmissions", "Automatic", "Manual", "CVT"];
 
-const handleSearch = () => {
-    const filters = {
+  const handleSearch = () => {
+    const filters: SearchFilterState = {
       bodyStyle: bodyStyle !== "All Body Styles" ? bodyStyle : "",
       make: make !== "All Makes" ? make : "",
       model: model !== "All Models" ? model : "",
@@ -244,10 +261,9 @@ const handleSearch = () => {
 
     if (onSearch) {
       onSearch(filters);
-      // Smooth scroll to listing cars section
-      const carsSection = document.getElementById('cars');
+      const carsSection = document.getElementById("cars");
       if (carsSection) {
-        carsSection.scrollIntoView({ behavior: 'smooth' });
+        carsSection.scrollIntoView({ behavior: "smooth" });
       }
     }
   };
@@ -269,6 +285,7 @@ const handleSearch = () => {
 
   const priceInputStyle: React.CSSProperties = {
     width: "100%",
+    boxSizing: "border-box",
     padding: "12px 14px 12px 32px",
     border: "1px solid #ddd",
     borderRadius: "50px",
@@ -283,13 +300,7 @@ const handleSearch = () => {
   return (
     <section style={{ background: "#f0f0f0", padding: "48px 0" }}>
       <div className="container">
-        <div
-          style={{
-            maxWidth: "900px",
-            margin: "0 auto",
-            padding: "0 16px",
-          }}
-        >
+        <div style={{ maxWidth: "900px", margin: "0 auto", padding: "0 16px" }}>
           {/* Title */}
           <h2
             style={{
@@ -326,8 +337,8 @@ const handleSearch = () => {
                   value={minPrice}
                   onChange={(e) => setMinPrice(e.target.value)}
                   style={priceInputStyle}
-                  onFocus={(e) => e.currentTarget.style.borderColor = "#F5B818"}
-                  onBlur={(e) => e.currentTarget.style.borderColor = "#ddd"}
+                  onFocus={(e) => (e.currentTarget.style.borderColor = "#F5B818")}
+                  onBlur={(e) => (e.currentTarget.style.borderColor = "#ddd")}
                 />
               </div>
               <span style={{ color: "#999", fontSize: "14px" }}>-</span>
@@ -341,8 +352,8 @@ const handleSearch = () => {
                   value={maxPrice}
                   onChange={(e) => setMaxPrice(e.target.value)}
                   style={priceInputStyle}
-                  onFocus={(e) => e.currentTarget.style.borderColor = "#F5B818"}
-                  onBlur={(e) => e.currentTarget.style.borderColor = "#ddd"}
+                  onFocus={(e) => (e.currentTarget.style.borderColor = "#F5B818")}
+                  onBlur={(e) => (e.currentTarget.style.borderColor = "#ddd")}
                 />
               </div>
             </div>
@@ -378,7 +389,7 @@ const handleSearch = () => {
             </div>
           </div>
 
-          {/* More Options */}
+          {/* More Options Button */}
           <div style={{ textAlign: "center", margin: "12px 0" }}>
             <button
               onClick={() => setShowMore(!showMore)}
@@ -432,8 +443,7 @@ const handleSearch = () => {
                 e.currentTarget.style.transform = "translateY(0)";
               }}
             >
-              <IconSearch />
-              Search ({resultCount})
+              <IconSearch /> Search ({resultCount})
             </button>
           </div>
         </div>

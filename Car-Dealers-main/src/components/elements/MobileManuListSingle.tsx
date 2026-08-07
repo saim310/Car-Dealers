@@ -3,6 +3,7 @@ import React from 'react';
 import useGorentContext from '../context/useGorentContext';
 import Link from 'next/link';
 import { ManuItemOnePage } from '../link-content/LinkType';
+
 interface ComponentProps {
     onePageManuListProp: ManuItemOnePage[]
 }
@@ -10,18 +11,32 @@ type ScrollToSection = (id: string) => void;
 
 const MobileManuListSingle: React.FC<ComponentProps> = ({ onePageManuListProp }) => {
     const { activeSection, setIsMobileManu } = useGorentContext();
+    
     const scrollToSection: ScrollToSection = (id: string) => {
         const element = document.getElementById(id);
         if (!element) return;
-        const offset = 70; // adgust height
+        const offset = 70; // adjust height
         const top = element.getBoundingClientRect().top + window.scrollY - offset;
         window.scrollTo({
             top,
             behavior: "smooth",
         });
     };
+
     return (
         <ul className="main-menu__list one-page-scroll-menu">
+            {/* All Cars Link */}
+            <li className="scrollToLink">
+                <Link
+                    href="/inner/products"
+                    onClick={() => {
+                        setIsMobileManu(false);
+                    }}
+                >
+                    All Cars
+                </Link>
+            </li>
+
             {
                 onePageManuListProp.map((item) => (
                     <li className={`scrollToLink ${activeSection === item?.linkId ? "current" : ""}`} key={item?.id}>
@@ -30,7 +45,7 @@ const MobileManuListSingle: React.FC<ComponentProps> = ({ onePageManuListProp })
                             onClick={(e) => {
                                 e.preventDefault();
                                 scrollToSection(item.linkId);
-                                setIsMobileManu(false)
+                                setIsMobileManu(false);
                             }}
                         >
                             {item?.link}

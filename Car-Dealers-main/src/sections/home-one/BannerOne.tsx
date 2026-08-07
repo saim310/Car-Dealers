@@ -498,9 +498,18 @@ const BannerOne: React.FC = () => {
     return (
         <>
             <style>{`
+                .main-slider__carousel .swiper-slide .item { 
+                    height: 600px !important; 
+                    min-height: 600px !important; 
+                }
+                .main-slider__bg { 
+                    height: 100% !important; 
+                    background-size: cover !important; 
+                    background-position: center !important; 
+                }
                 @media (max-width: 640px) {
                     .main-slider .owl-nav { display: none !important; }
-                    .main-slider__carousel .swiper-slide .item { height: 70vh !important; min-height: 450px !important; }
+                    .main-slider__carousel .swiper-slide .item { height: 400px !important; min-height: 400px !important; }
                     .cta-section { padding: 48px 16px !important; }
                     .cta-heading { font-size: clamp(22px, 6vw, 28px) !important; }
                     .cta-text { font-size: 14px !important; line-height: 1.7 !important; }
@@ -514,7 +523,7 @@ const BannerOne: React.FC = () => {
                     .btn-primary { padding: 14px !important; font-size: 14px !important; }
                 }
                 @media (max-width: 380px) {
-                    .main-slider__carousel .swiper-slide .item { min-height: 400px !important; }
+                    .main-slider__carousel .swiper-slide .item { height: 320px !important; min-height: 320px !important; }
                     .cta-heading { font-size: 20px !important; }
                 }
             `}</style>
@@ -538,7 +547,7 @@ const BannerOne: React.FC = () => {
                                 <div
                                     className={`item ${item.bgClass}`}
                                     style={{
-                                        height: '100vh',
+                                        height: '600px',
                                         minHeight: '600px',
                                         position: 'relative'
                                     }}

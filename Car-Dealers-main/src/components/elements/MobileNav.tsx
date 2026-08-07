@@ -12,12 +12,11 @@ import { onePageManuListOne, onePageManuListThree, onePageManuListTwo } from '..
 const MobileNav: React.FC = () => {
     const { isMobileManu, setIsMobileManu } = useGorentContext();
     const currentPath = usePathname();
-    const isOnePage = currentPath.includes("one-page")
+    const isOnePage = currentPath.includes("one-page");
 
     return (
         <div className={`mobile-nav__wrapper ${isMobileManu ? "expanded" : ""}`}>
             <div className="mobile-nav__overlay mobile-nav__toggler" onClick={() => setIsMobileManu((pre) => (!pre))}></div>
-            {/* <!-- /.mobile-nav__overlay --> */}
             <div className="mobile-nav__content">
                 <span className="mobile-nav__close mobile-nav__toggler" onClick={() => setIsMobileManu((pre) => (!pre))}><i className="fa fa-times"></i></span>
 
@@ -32,7 +31,6 @@ const MobileNav: React.FC = () => {
                             currentPath === "/index-one-page" ? onePageManuListOne : currentPath === "/index-two-one-page" ? onePageManuListTwo : onePageManuListThree} />
                             : <MobileManuList />
                     }
-
                 </div>
                 <ul className="mobile-nav__contact list-unstyled">
                     <li>

@@ -22759,7 +22759,40 @@ Product Description
 }
 
 
+/* Responsive Image Container */
+.banner-image-wrapper {
+  position: relative;
+  width: 100%;
+  height: 320px; /* Default Mobile Height */
+}
 
+@media (min-width: 640px) {
+  .banner-image-wrapper {
+    height: 450px; /* Tablet */
+  }
+}
+
+@media (min-width: 1024px) {
+  .banner-image-wrapper {
+    height: 600px; /* Desktop */
+  }
+}
+
+/* Mobile Responsive Typography & Buttons */
+@media (max-width: 639px) {
+  .cta-heading {
+    font-size: 22px !important;
+  }
+  .cta-btn-row {
+    flex-direction: column !important;
+  }
+  .cta-btn-row button {
+    width: 100% !important;
+  }
+  .slider-nav-arrows {
+    display: none !important; /* Mobile par arrows hide karke swipe allow karein */
+  }
+}
 
 
 

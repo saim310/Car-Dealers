@@ -1,5 +1,6 @@
 "use client";
 import React, { useState, useMemo, useEffect } from 'react';
+import { useSearchParams } from 'next/navigation';
 import { productsList } from "@/all-content/products/productData";
 import { ProductItem } from '@/all-content/products/productType';
 import ProductGridView from './ProductGridView';
@@ -126,20 +127,11 @@ const Pagination = ({ currentPage, totalPages, onPageChange }: { currentPage: nu
         </div>
     );
 };
-export default function AllProducts() {
-    // Read URL params safely via useEffect to avoid useSearchParams suspense issues
-    const [urlFilters, setUrlFilters] = useState({ city: '', category: '', yard: '' });
 
-    useEffect(() => {
-        if (typeof window !== 'undefined') {
-            const params = new URLSearchParams(window.location.search);
-            setUrlFilters({
-                city: params.get('city') || '',
-                category: params.get('category') || '',
-                yard: params.get('yard') || ''
-            });
-        }
-    }, []);
+export default function AllProducts() {
+    const searchParams = useSearchParams();
+
+    const [urlFilters, setUrlFilters] = useState({ city: '', category: '', yard: '', stockStatus: '', bodyStyle: '' });
 
     const [currentPage, setCurrentPage] = useState(1);
     const [isGrid, setGrid] = useState(true);
@@ -158,7 +150,33 @@ export default function AllProducts() {
         location: '',
         fuelType: '',
         transmission: '',
+        stockStatus: '',
     });
+
+    // Listens to Next.js URL param changes dynamically
+    useEffect(() => {
+        const initialStock = searchParams.get('stockStatus') || searchParams.get('stock_status') || '';
+        const initialBody = searchParams.get('bodyStyle') || searchParams.get('body') || searchParams.get('bodyType') || searchParams.get('category') || '';
+        
+        setUrlFilters({
+            city: searchParams.get('city') || '',
+            category: searchParams.get('category') || '',
+            yard: searchParams.get('yard') || '',
+            stockStatus: initialStock,
+            bodyStyle: initialBody,
+        });
+
+        setFilters(prev => ({
+            ...prev,
+            ...(initialStock ? { stockStatus: initialStock } : {}),
+            ...(initialBody ? { bodyStyle: initialBody } : {})
+        }));
+    }, [searchParams]);
+
+    // Reset page back to 1 whenever search or filters change
+    useEffect(() => {
+        setCurrentPage(1);
+    }, [filters, urlFilters]);
 
     const ITEMS_PER_PAGE = 12;
 
@@ -166,11 +184,11 @@ export default function AllProducts() {
         let list = [...(productsList || [])];
 
         // URL param filters
-        if (urlFilters.category) {
-            const q = urlFilters.category.toLowerCase();
+        if (urlFilters.category && !filters.bodyStyle) {
+            const q = urlFilters.category.replace(/[-_]/g, ' ').toLowerCase().trim();
             list = list.filter((item: any) => {
-                const cat = item.category || item.Body || item.bodyType || '';
-                return cat.toLowerCase() === q;
+                const cat = String(item.category || item.Body || item.bodyType || '').replace(/[-_]/g, ' ').toLowerCase().trim();
+                return cat === q;
             });
         }
         if (urlFilters.city) {
@@ -194,17 +212,40 @@ export default function AllProducts() {
             });
         }
 
-        // Sidebar filters
+        // Search Bar filter: checks Title, Stock Number, Make/Brand, and Model
         if (filters.search) {
-            const q = filters.search.toLowerCase();
-            list = list.filter((item: any) => item.title?.toLowerCase().includes(q));
-        }
-        if (filters.bodyStyle && filters.bodyStyle !== 'All Body Styles') {
+            const q = filters.search.toLowerCase().trim();
             list = list.filter((item: any) => {
-                const b = item.Body || item.bodyType || item.category || '';
-                return b === filters.bodyStyle;
+                const title = String(item.title || item.name || '').toLowerCase();
+                const stockNo = String(
+                    item.stockNo || 
+                    item.stock_no || 
+                    item.stockNumber || 
+                    item.stock || 
+                    item.id || 
+                    ''
+                ).toLowerCase();
+                const brand = String(item.brand || item.make || '').toLowerCase();
+                const model = String(item.model || '').toLowerCase();
+
+                return (
+                    title.includes(q) ||
+                    stockNo.includes(q) ||
+                    brand.includes(q) ||
+                    model.includes(q)
+                );
             });
         }
+
+        // Body Style filter (handles "Hatchback", "Mini Pickup", "Mini Van", "Sedan", "Station Wagon", "SUV", "Van")
+        if (filters.bodyStyle && filters.bodyStyle !== 'All Body Styles') {
+            const targetBody = filters.bodyStyle.replace(/[-_]/g, ' ').toLowerCase().trim();
+            list = list.filter((item: any) => {
+                const itemBody = String(item.Body || item.bodyType || item.category || item.bodyStyle || '').replace(/[-_]/g, ' ').toLowerCase().trim();
+                return itemBody === targetBody;
+            });
+        }
+
         if (filters.make && filters.make !== 'ALL MAKES') {
             list = list.filter((item: any) => item.brand === filters.make);
         }
@@ -219,6 +260,15 @@ export default function AllProducts() {
         }
         if (filters.transmission && filters.transmission !== 'All Transmissions') {
             list = list.filter((item: any) => item.transmission === filters.transmission);
+        }
+
+        // Stock Status filter
+        if (filters.stockStatus && filters.stockStatus !== 'All Stock Statuses') {
+            const targetStock = filters.stockStatus.replace(/[-_]/g, ' ').toLowerCase().trim();
+            list = list.filter((item: any) => {
+                const itemStatus = String(item.stockStatus || item.stock_status || item.status || '').replace(/[-_]/g, ' ').toLowerCase().trim();
+                return itemStatus === targetStock;
+            });
         }
 
         const min = parseInt(filters.minPrice) || 0;
@@ -382,15 +432,15 @@ export default function AllProducts() {
                             )}
                         </div>
 
-                       {totalPages > 1 && (
-    <div style={{ display: 'flex', justifyContent: 'center', marginTop: '40px' }}>
-        <Pagination 
-            currentPage={currentPage} 
-            totalPages={totalPages} 
-            onPageChange={handlePageChange} 
-        />
-    </div>
-)}
+                        {totalPages > 1 && (
+                            <div style={{ display: 'flex', justifyContent: 'center', marginTop: '40px' }}>
+                                <Pagination 
+                                    currentPage={currentPage} 
+                                    totalPages={totalPages} 
+                                    onPageChange={handlePageChange} 
+                                />
+                            </div>
+                        )}
                     </div>
 
                     <div className="col-xl-3 col-lg-4">

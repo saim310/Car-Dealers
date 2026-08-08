@@ -3305,6 +3305,24 @@ xs sidebar
   background-image: url("../images/backgrounds/slider-1-3.jpeg");
 }
 
+/* Mobile screens par alag banner images */
+@media (max-width: 768px) {
+    .main-slider__carousel .swiper-slide .item {
+        height: 400px !important;
+        min-height: 400px !important;
+    }
+    
+    .bgImage-1 .main-slider__bg {
+        background-image: url("../images/backgrounds/mobiless.jpeg") !important;
+    }
+    .bgImage-2 .main-slider__bg {
+        background-image: url("../images/backgrounds/mobile2.jpeg") !important;
+    }
+    .bgImage-3 .main-slider__bg {
+        background-image: url("../images/backgrounds/mobile3.jpg") !important;
+    }
+}
+
 
 .bannerTwoBg-1 .main-slider-two__bg {
   background-image: url("../images/backgrounds/slider-2-1.jpg");
@@ -12689,11 +12707,11 @@ Error Page
 }
 
 .process-one__single .bgImage-1 {
-  background-image: url("../images/backgrounds/process-one-single-bg-1.jpg");
+    background-image: url("/images/backgrounds/process-one-single-bg-1.jpg");
 }
 
 .process-one__single .bgImage-2 {
-  background-image: url("../images/backgrounds/process-one-single-bg-2.jpg");
+    background-image: url("/images/backgrounds/process-one-single-bg-2.jpg");
 }
 
 .process-one__single .bgImage-3 {
@@ -22759,7 +22777,40 @@ Product Description
 }
 
 
+/* Responsive Image Container */
+.banner-image-wrapper {
+  position: relative;
+  width: 100%;
+  height: 320px; /* Default Mobile Height */
+}
 
+@media (min-width: 640px) {
+  .banner-image-wrapper {
+    height: 450px; /* Tablet */
+  }
+}
+
+@media (min-width: 1024px) {
+  .banner-image-wrapper {
+    height: 600px; /* Desktop */
+  }
+}
+
+/* Mobile Responsive Typography & Buttons */
+@media (max-width: 639px) {
+  .cta-heading {
+    font-size: 22px !important;
+  }
+  .cta-btn-row {
+    flex-direction: column !important;
+  }
+  .cta-btn-row button {
+    width: 100% !important;
+  }
+  .slider-nav-arrows {
+    display: none !important; /* Mobile par arrows hide karke swipe allow karein */
+  }
+}
 
 
 

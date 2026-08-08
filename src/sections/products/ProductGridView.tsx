@@ -14,12 +14,33 @@ const formatPrice = (price: number | string) => {
 };
 
 const getStatusBadge = (item: any) => {
-    if (item.isNew || item.status === 'new') return { label: 'JUST ARRIVED', bg: '#ffc107', color: '#1a1a2e', icon: 'fa-bolt' };
-    if (item.fuel === 'Hybrid') return { label: 'HYBRID', bg: '#28a745', color: '#fff', icon: 'fa-leaf' };
-    if (item.salePrice && item.previousPrice && item.salePrice < item.previousPrice) return { label: 'PRICE DROP', bg: '#dc3545', color: '#fff', icon: 'fa-tag' };
-    if (item.mileage && parseInt(String(item.mileage).replace(/,/g, '')) < 50000) return { label: 'LOW KM', bg: '#007bff', color: '#fff', icon: 'fa-tachometer-alt' };
-    if (item.bodyType?.toLowerCase().includes('sedan') || item.Body?.toLowerCase().includes('sedan')) return { label: 'PREMIUM SEDAN', bg: '#6f42c1', color: '#fff', icon: 'fa-gem' };
-    return { label: 'BEST SELLER', bg: '#ffc107', color: '#1a1a2e', icon: 'fa-star' };
+    const rawStatus = (
+        item.stockStatus || 
+        item.stock_status || 
+        item.availability || 
+        item.stock ||
+        item.tag ||
+        item.badge ||
+        (typeof item.status === 'string' && !['new', 'used'].includes(item.status.toLowerCase()) ? item.status : '') || 
+        ''
+    );
+    const statusVal = String(rawStatus).toLowerCase().trim();
+
+    if (statusVal.includes('offer') || item.onOffer) {
+        return { label: 'ON OFFER', bg: '#0284c7', color: '#fff', icon: 'fa-tags' };
+    }
+    if (statusVal.includes('order') || item.onOrder) {
+        return { label: 'ON ORDER', bg: '#0284c7', color: '#fff', icon: 'fa-truck-moving' };
+    }
+    if (statusVal.includes('reserved') || statusVal.includes('deposit') || item.isReserved) {
+        return { label: 'RESERVED', bg: '#f59e0b', color: '#fff', icon: 'fa-clock' };
+    }
+    if (statusVal.includes('sold') || item.isSold) {
+        return { label: 'SOLD OUT', bg: '#dc3545', color: '#fff', icon: 'fa-ban' };
+    }
+
+    // Default to In Stock
+    return { label: 'IN STOCK', bg: '#28a745', color: '#fff', icon: 'fa-check-circle' };
 };
 
 export default function ProductGridView({ product }: { product: any }) {
@@ -99,7 +120,8 @@ export default function ProductGridView({ product }: { product: any }) {
                     <div style={{ display: 'flex', alignItems: 'center', gap: '6px', marginBottom: '10px' }}>
                         <i className="fas fa-map-marker-alt" style={{ color: '#dc3545', fontSize: '13px' }}></i>
                         <span style={{ fontSize: '13px', color: '#555', fontWeight: 600 }}>
-                            Yard {product.yard || product.Yard || 'N/A'}: {typeof window !== 'undefined' && window.location.search.includes('city=Melbourne') ? 'Melbourne' : typeof window !== 'undefined' && window.location.search.includes('city=Brisbane') ? 'Brisbane' : String(product.yard || product.Yard) === '1' ? 'Maidstone' : String(product.yard || product.Yard) === '2' ? 'Mordialloc' : String(product.yard || product.Yard) === '4' ? 'Slacks Creek' : product.city || 'N/A'}</span>
+                            Yard {product.yard || product.Yard || 'N/A'}: {typeof window !== 'undefined' && window.location.search.includes('city=Melbourne') ? 'Melbourne' : typeof window !== 'undefined' && window.location.search.includes('city=Brisbane') ? 'Brisbane' : String(product.yard || product.Yard) === '1' ? 'Maidstone' : String(product.yard || product.Yard) === '2' ? 'Mordialloc' : String(product.yard || product.Yard) === '4' ? 'Slacks Creek' : product.city || 'N/A'}
+                        </span>
                     </div>
 
                     <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '12px' }}>

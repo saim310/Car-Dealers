@@ -20,6 +20,7 @@ export const pages_link: NavItem[] = [
 ]
 
 export const cars_link: NavItem[] = [
+    { id: 0, link: "/inner/cars", value: "All Stock" }, // Added "All Stock" here
     { id: 1, link: "/inner/cars", value: "Cars" },
     { id: 2, link: "/inner/car-list-v-1", value: "Car Listing V-1" },
     { id: 3, link: "/inner/car-list-v-2", value: "Car Listing V-2" },
@@ -45,8 +46,6 @@ export const blogs_link: NavItem[] = [
     { id: 5, link: "/inner/blog-details", value: "Blog Details" },
 ]
 
-
-
 export const onePageManuListOne: ManuItemOnePage[] = [
     { id: 1, linkId: "home", link: "Home" },
     { id: 2, linkId: "services", link: "Services" },
@@ -56,6 +55,7 @@ export const onePageManuListOne: ManuItemOnePage[] = [
     { id: 6, linkId: "driver", link: "Driver" },
     { id: 7, linkId: "blog", link: "Blog" },
 ]
+
 export const onePageManuListTwo: ManuItemOnePage[] = [
     { id: 1, linkId: "home", link: "Home" },
     { id: 3, linkId: "about", link: "About Us" },
@@ -65,6 +65,7 @@ export const onePageManuListTwo: ManuItemOnePage[] = [
     { id: 6, linkId: "driver", link: "Driver" },
     { id: 7, linkId: "blog", link: "Blog" },
 ]
+
 export const onePageManuListThree: ManuItemOnePage[] = [
     { id: 1, linkId: "home", link: "Home" },
     { id: 3, linkId: "about", link: "About Us" },

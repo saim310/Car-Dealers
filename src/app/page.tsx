@@ -20,32 +20,83 @@ import { productsList } from '@/all-content/products/productData';
 const Page: React.FC = () => {
   const [filteredData, setFilteredData] = useState<any[]>(productsList);
 
-const handleSearch = (filters: any) => {
+  const handleSearch = (filters: any) => {
     const results = productsList.filter((car: any) => {
-      // Make / Brand match
-      const matchMake = !filters.make || 
-        car.brand?.toLowerCase().includes(filters.make.toLowerCase()) || 
-        car.model?.toLowerCase().includes(filters.make.toLowerCase()) ||
-        car.title?.toLowerCase().includes(filters.make.toLowerCase());
 
-      // Model match if specified
-      const matchModel = !filters.model || 
-        car.model?.toLowerCase().includes(filters.model.toLowerCase()) ||
-        car.title?.toLowerCase().includes(filters.model.toLowerCase());
+      // 1. Text Search match
+      const matchSearch =
+        !filters.search ||
+        car.title?.toLowerCase().includes(filters.search.toLowerCase()) ||
+        car.brand?.toLowerCase().includes(filters.search.toLowerCase()) ||
+        car.model?.toLowerCase().includes(filters.search.toLowerCase());
 
-      // Fuel match
-      const matchFuel = !filters.fuelType || car.fuel?.toLowerCase() === filters.fuelType.toLowerCase();
+      // 2. Body Style match
+      const matchBody =
+        !filters.bodyStyle ||
+        filters.bodyStyle === 'All Body Styles' ||
+        car.bodyStyle?.toLowerCase().trim() === filters.bodyStyle.toLowerCase().trim();
 
-      // Transmission match
-      const matchTrans = !filters.transmission || car.transmission?.toLowerCase() === filters.transmission.toLowerCase();
-      
-      // Price range match
-      const carPrice = car.price || 100;
+      // 3. Make / Brand match
+      const matchMake =
+        !filters.make ||
+        filters.make === 'ALL MAKES' ||
+        car.brand?.toLowerCase().includes(filters.make.toLowerCase());
+
+      // 4. Model match
+      const matchModel =
+        !filters.model ||
+        filters.model === 'All Models' ||
+        car.model?.toLowerCase().includes(filters.model.toLowerCase());
+
+      // 5. Fuel match
+      const matchFuel =
+        !filters.fuelType ||
+        filters.fuelType === 'All Fuel Types' ||
+        car.fuel?.toLowerCase().trim() === filters.fuelType.toLowerCase().trim();
+
+      // 6. Transmission match
+      const matchTrans =
+        !filters.transmission ||
+        filters.transmission === 'All Transmissions' ||
+        car.transmission?.toLowerCase().trim() === filters.transmission.toLowerCase().trim();
+
+      // 7. Stock Status match
+      const matchStockStatus =
+        !filters.stockStatus ||
+        filters.stockStatus === 'All Stock Statuses' ||
+        car.stockStatus?.replace(/_/g, ' ').toLowerCase().trim() ===
+          filters.stockStatus?.replace(/_/g, ' ').toLowerCase().trim();
+
+      // 8. Location match
+      const matchLocation =
+        !filters.location ||
+        filters.location === 'All Locations' ||
+        car.city?.toLowerCase().trim() === filters.location.toLowerCase().trim();
+
+      // 9. Price range match
+      const carPrice = Number(car.price) || 0;
       const min = filters.minPrice ? parseInt(filters.minPrice) : 0;
-      const max = filters.maxPrice ? parseInt(filters.maxPrice) : Infinity;
+      const max = filters.maxPrice && filters.maxPrice !== '100000' ? parseInt(filters.maxPrice) : Infinity;
       const matchPrice = carPrice >= min && carPrice <= max;
 
-      return matchMake && matchModel && matchFuel && matchTrans && matchPrice;
+      // 10. Year range match
+      const carYear = Number(car.year) || 0;
+      const yearFrom = filters.yearFrom ? parseInt(filters.yearFrom) : 0;
+      const yearTo = filters.yearTo ? parseInt(filters.yearTo) : Infinity;
+      const matchYear = carYear >= yearFrom && carYear <= yearTo;
+
+      return (
+        matchSearch &&
+        matchBody &&
+        matchMake &&
+        matchModel &&
+        matchFuel &&
+        matchTrans &&
+        matchStockStatus &&
+        matchLocation &&
+        matchPrice &&
+        matchYear
+      );
     });
 
     setFilteredData(results);

@@ -11,6 +11,58 @@ const Header: React.FC = () => {
     const { setIsSearch, setIsSidebar, setIsMobileManu } = useGorentContext();
     return (
         <header className="main-header">
+            <style>{`
+                @media (max-width: 768px) {
+                    /* Main container flexibility */
+                    .main-menu__wrapper-inner {
+                        display: flex !important;
+                        align-items: center !important;
+                        justify-content: center !important;
+                        position: relative !important;
+                        width: 100% !important;
+                        padding: 10px 15px !important;
+                    }
+
+                    /* Center logo container and image */
+                    .main-menu__left, 
+                    .main-menu__logo {
+                        margin: 0 auto !important;
+                        display: flex !important;
+                        justify-content: center !important;
+                        align-items: center !important;
+                        width: 100% !important;
+                    }
+
+                    .main-menu__logo img {
+                        margin: 0 auto !important;
+                        display: block !important;
+                    }
+
+                    /* Position the hamburger button cleanly on the far right */
+                    .main-menu__middle-box {
+                        position: absolute !important;
+                        right: 15px !important;
+                        top: 50% !important;
+                        transform: translateY(-50%) !important;
+                        margin: 0 !important;
+                        padding: 0 !important;
+                        z-index: 10 !important;
+                    }
+
+                    .mobile-nav__toggler {
+                        margin: 0 !important;
+                        display: flex !important;
+                        align-items: center !important;
+                        justify-content: center !important;
+                    }
+
+                    /* Hide right call/sidebar elements on mobile */
+                    .main-menu__right {
+                        display: none !important;
+                    }
+                }
+            `}</style>
+
             <div className="main-menu__top">
                 <div className="main-menu__top-inner">
                     <ul className="list-unstyled main-menu__contact-list">
@@ -66,20 +118,21 @@ const Header: React.FC = () => {
                         </li>
                     </ul>
 
-                        <div className="main-menu__social">
-                            <a href="#"><i className="icon-facebook"></i></a>
-                            <a href="#"><i className="icon-twitter"></i></a>
-                            <a href="#"><i className="icon-instagram"></i></a>
-                            <a href="#"><i className="icon-youtube"></i></a>
-                        </div>
+                    <div className="main-menu__social">
+                        <a href="#"><i className="icon-facebook"></i></a>
+                        <a href="#"><i className="icon-twitter"></i></a>
+                        <a href="#"><i className="icon-instagram"></i></a>
+                        <a href="#"><i className="icon-youtube"></i></a>
                     </div>
                 </div>
+            </div>
+
             <nav className="main-menu" >
                 <div className="main-menu__wrapper" >
                     <div className="main-menu__wrapper-inner" >
                         <div className="main-menu__left">
                             <div className="main-menu__logo">
-                                <Link href="/"><Image src={logoOne}  height={80} alt="" /></Link>
+                                <Link href="/"><Image src={logoOne} height={80} alt="UKA Group Logo" /></Link>
                             </div>
                         </div>
                         <div className="main-menu__middle-box">

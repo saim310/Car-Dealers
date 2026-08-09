@@ -95,8 +95,8 @@ const SideBar: React.FC = () => {
                                         </li>
                                         <li>
                                             <span className="icon-call"></span>
-                                            <a href="tel:1800006256">
-                                                +1800 006 256
+                                            <a href="tel:61485889402">
+                                                +61 485 889 402
                                             </a>
                                         </li>
                                         <li>

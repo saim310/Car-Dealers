@@ -113,7 +113,7 @@ const AboutInner: React.FC = () => {
                     <p>Call to Anytime</p>
                     <h4>
                       <a href="tel:15502505260">
-                        +1800 006 256
+                        +61 485 889 402
                       </a>
                     </h4>
                   </div>

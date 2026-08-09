@@ -106,9 +106,7 @@ const MainManuList: React.FC<ComponentProps> = ({ onePageManuList }) => {
                     <li className={currentPath === "/inner/blog" ? "current" : ""}>
                         <a href="/inner/blog">Blog</a>
                     </li>
-                     <li className={currentPath === "/inner/TradeIn" ? "current" : ""}>
-                <a href="/inner/TradeIn">TradeIn</a>
-            </li>
+                 
                     <li className={currentPath === "/inner/faqs" ? "current" : ""}>
                         <a href="/inner/faq">FAQs</a>
                       

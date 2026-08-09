@@ -20,38 +20,6 @@ const formatPrice = (price: number | string) => {
     return num.toLocaleString('en-US');
 };
 
-const getRating = (id: string | number) => {
-    const hash = String(id).split('').reduce((a, b) => a + b.charCodeAt(0), 0);
-    return (4.5 + (hash % 5) / 10).toFixed(1);
-};
-
-const getReviews = (id: string | number) => {
-    const hash = String(id).split('').reduce((a, b) => a + b.charCodeAt(0), 0);
-    return 50 + (hash % 150);
-};
-
-const StarRating = ({ id, city }: { id: string | number; city?: string }) => {
-    const rating = parseFloat(getRating(id));
-    const full = Math.floor(rating);
-    const half = rating - full >= 0.5;
-    const stars = [];
-    for (let i = 0; i < full; i++) stars.push(<i key={i} className="fas fa-star" style={{ color: '#ffc107', fontSize: '13px' }}></i>);
-    if (half) stars.push(<i key="h" className="fas fa-star-half-alt" style={{ color: '#ffc107', fontSize: '13px' }}></i>);
-    for (let i = full + (half ? 1 : 0); i < 5; i++) stars.push(<i key={`e${i}`} className="far fa-star" style={{ color: '#ffc107', fontSize: '13px' }}></i>);
-    return (
-        <div style={{ display: 'flex', alignItems: 'center', gap: '6px', flexWrap: 'wrap' }}>
-            <div style={{ display: 'flex', gap: '1px' }}>{stars}</div>
-            <span style={{ fontSize: '13px', color: '#666', fontWeight: 600 }}>{rating}</span>
-            {city && (
-                <span style={{ fontSize: '13px', color: '#888', fontWeight: 500, marginLeft: '4px' }}>
-                    <i className="fas fa-map-marker-alt" style={{ color: '#ffc107', fontSize: '11px', marginRight: '4px' }}></i>
-                    {city}
-                </span>
-            )}
-        </div>
-    );
-};
-
 // ─── Reusable Modal Shell with Portal ───
 const Modal = ({ isOpen, onClose, children }: { isOpen: boolean; onClose: () => void; children: React.ReactNode }) => {
     const [mounted, setMounted] = useState(false);
@@ -255,8 +223,8 @@ const ModalSidebar = ({ car }: { car?: any }) => {
 
                 <ul style={{ listStyle: 'none', padding: 0, margin: '0 0 14px 0', display: 'flex', flexDirection: 'column', gap: '10px' }}>
                     {[
-                        { icon: 'fa-phone-alt', text: '1800 006 256' },
-                        { icon: 'fa-comments', text: 'WhatsApp Us' },
+                        { icon: 'fa-phone-alt', text: '+61 485 889 402' },
+                        { icon: 'fa-comments', text: '+61 485 889 402' },
                         { icon: 'fa-envelope', text: 'info@ukajapan.com.au' },
                         { icon: 'fa-clock', text: 'Mon - Sun: 9:00 AM - 6:00 PM' },
                     ].map((item, i) => (
@@ -877,7 +845,6 @@ export default function ListingBottomRight({ car }: { car?: any }) {
     const isMobile = useIsMobile();
     const price = car?.Price || car?.price || car?.SpecialPrice || 0;
     const hasPrice = price > 0;
-    const carId = car?.id || car?.StockNumber || '1';
 
     const [modal, setModal] = useState<'testdrive' | 'finance' | 'enquiry' | null>(null);
 
@@ -931,8 +898,8 @@ export default function ListingBottomRight({ car }: { car?: any }) {
                             </span>
                         )}
                     </div>
-                    <div style={{ marginBottom: '14px' }}>
-                        <StarRating id={carId} city={car?.city || car?.City} />
+                    <div style={{ marginBottom: '14px', fontSize: '12px', color: '#888', fontWeight: 500 }}>
+                        Excluding Government Charges
                     </div>
 
                     <ul style={{ listStyle: 'none', padding: 0, margin: '0 0 16px 0', display: 'flex', flexDirection: 'column', gap: '8px' }}>
@@ -1070,8 +1037,8 @@ export default function ListingBottomRight({ car }: { car?: any }) {
 
                     <ul style={{ listStyle: 'none', padding: 0, margin: '0 0 14px 0', display: 'flex', flexDirection: 'column', gap: '10px' }}>
                         {[
-                            { icon: 'fa-phone-alt', text: '1800 006 256' },
-                            { icon: 'fa-comments', text: 'WhatsApp Us' },
+                            { icon: 'fa-phone-alt', text: '+61 485 889 402' },
+                            { icon: 'fa-comments', text: '+61 485 889 402' },
                             { icon: 'fa-envelope', text: 'info@ukajapan.com.au' },
                             { icon: 'fa-clock', text: 'Mon - Sun: 9:00 AM - 6:00 PM' },
                         ].map((item, i) => (

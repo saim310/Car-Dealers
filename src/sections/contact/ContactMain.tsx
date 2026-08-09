@@ -506,7 +506,7 @@ const ContactMain: React.FC = () => {
                                         </div>
                                         <div>
                                             <p style={{ margin: 0, fontSize: '13px', color: '#999', textTransform: 'uppercase', letterSpacing: '1px' }}>Call Us</p>
-                                            <a href="tel:1800006256" style={{ color: '#1a1a1a', textDecoration: 'none', fontWeight: 600 }}>1800 006 256</a>
+                                            <a href="tel:61485889402" style={{ color: '#1a1a1a', textDecoration: 'none', fontWeight: 600 }}>1800 006 256</a>
                                         </div>
                                     </div>
                                 </div>

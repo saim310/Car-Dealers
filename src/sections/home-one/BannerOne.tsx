@@ -12,12 +12,13 @@ import ReactDOM from 'react-dom';
 interface SliderItem {
     id: number;
     bgClass: string;
+    mobileImage: string;
 }
 
 const sliderData: SliderItem[] = [
-    { id: 1, bgClass: "bgImage-1" },
-    { id: 2, bgClass: "bgImage-2" },
-    { id: 3, bgClass: "bgImage-3" },
+    { id: 1, bgClass: "bgImage-1", mobileImage: "/assets/images/backgrounds/mobiless.jpeg" },
+    { id: 2, bgClass: "bgImage-2", mobileImage: "/assets/images/backgrounds/mobile3.jpg" },
+    { id: 3, bgClass: "bgImage-3", mobileImage: "/assets/images/backgrounds/mobile2.jpeg" },
 ];
 
 /* ─── Reusable Modal Shell with Portal ─── */
@@ -506,6 +507,12 @@ const BannerOne: React.FC = () => {
                     height: 100% !important; 
                     background-size: cover !important; 
                     background-position: center !important; 
+                }
+                /* Mobile background overrides */
+                @media (max-width: 640px) {
+                    .bgImage-1 .main-slider__bg { background-image: url('/assets/images/backgrounds/mobiless.jpeg') !important; }
+                    .bgImage-2 .main-slider__bg { background-image: url('/assets/images/backgrounds/mobile3.jpg') !important; }
+                    .bgImage-3 .main-slider__bg { background-image: url('/assets/images/backgrounds/mobile2.jpeg') !important; }
                 }
                 @media (max-width: 640px) {
                     .main-slider .owl-nav { display: none !important; }

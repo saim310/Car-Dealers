@@ -9,13 +9,13 @@ import Link from "next/link";
 // =========================================
 
 const IconShield = () => (
-  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
     <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
   </svg>
 );
 
 const IconFileCheck = () => (
-  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
     <path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z" />
     <polyline points="14 2 14 8 20 8" />
     <path d="m9 15 2 2 4-4" />
@@ -23,7 +23,7 @@ const IconFileCheck = () => (
 );
 
 const IconAward = () => (
-  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
     <circle cx="12" cy="8" r="7" />
     <polyline points="8.21 13.89 7 23 12 20 17 23 15.79 13.88" />
   </svg>
@@ -37,19 +37,19 @@ const IconArrowRight = () => (
 );
 
 // =========================================
-// HIGHLIGHT CARD
+// HIGHLIGHT ITEM
 // =========================================
 
-const HighlightCard = ({ icon, title, delay }: { icon: React.ReactNode; title: string; delay: number }) => (
+const HighlightItem = ({ icon, title, delay }: { icon: React.ReactNode; title: string; delay: number }) => (
   <motion.div
     initial={{ y: 20, opacity: 0 }}
     whileInView={{ y: 0, opacity: 1 }}
     transition={{ duration: 0.5, delay }}
     viewport={{ once: true }}
-    className="highlight-card"
+    className="trust-item"
   >
-    <span style={{ color: "#F5B818" }}>{icon}</span>
-    <span style={{ fontSize: "13px", fontWeight: 600, color: "#1a1a2e" }}>{title}</span>
+    <div className="trust-icon">{icon}</div>
+    <span className="trust-title">{title}</span>
   </motion.div>
 );
 
@@ -72,17 +72,12 @@ const WelcomeSection: React.FC = () => {
               viewport={{ once: true }}
               className="welcome-header"
             >
-              {/* Main Heading */}
               <h2 className="welcome-title">
                 About  <span style={{ color: "#F5B818" }}>UKA Japan Motors</span>
               </h2>
-
-              {/* Subheading */}
               <h3 className="welcome-subtitle">
                 Your Trusted Source for Japanese Cars in Australia
               </h3>
-
-              {/* Decorative Line */}
               <div className="welcome-divider">
                 <div className="welcome-divider-line" />
                 <div className="welcome-divider-dot" />
@@ -90,11 +85,13 @@ const WelcomeSection: React.FC = () => {
               </div>
             </motion.div>
 
-            {/* Highlight Cards */}
-            <div className="welcome-grid">
-              <HighlightCard icon={<IconShield />} title="25+ Years Experience" delay={0.1} />
-              <HighlightCard icon={<IconFileCheck />} title="Export Certified" delay={0.2} />
-              <HighlightCard icon={<IconAward />} title="Auction Sheet Verified" delay={0.3} />
+            {/* Trust Bar */}
+            <div className="trust-bar">
+              <HighlightItem icon={<IconShield />} title="25+ Years Experience" delay={0.1} />
+              <div className="trust-divider" />
+              <HighlightItem icon={<IconFileCheck />} title="Export Certified" delay={0.2} />
+              <div className="trust-divider" />
+              <HighlightItem icon={<IconAward />} title="Auction Sheet Verified" delay={0.3} />
             </div>
 
             {/* Content */}
@@ -217,22 +214,49 @@ const WelcomeSection: React.FC = () => {
           border-radius: 50%;
           transform: rotate(45deg);
         }
-        .highlight-card {
+
+        /* ─── Trust Bar ─── */
+        .trust-bar {
           display: flex;
           align-items: center;
-          gap: 12px;
-          padding: 16px 20px;
-          background: #fff;
-          border-radius: 12px;
+          justify-content: space-between;
           border: 1px solid #eee;
-          box-shadow: 0 2px 12px rgba(0,0,0,0.04);
-        }
-        .welcome-grid {
-          display: grid;
-          grid-template-columns: repeat(3, 1fr);
-          gap: 16px;
+          border-radius: 16px;
+          padding: 24px 32px;
           margin-bottom: 40px;
         }
+        .trust-item {
+          display: flex;
+          align-items: center;
+          gap: 14px;
+          flex: 1;
+          justify-content: center;
+        }
+        .trust-icon {
+          width: 48px;
+          height: 48px;
+          min-width: 48px;
+          border-radius: 50%;
+          background: #fff8e1;
+          color: #F5B818;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+        }
+        .trust-title {
+          font-size: 15px;
+          font-weight: 700;
+          color: #1a1a2e;
+          letter-spacing: -0.2px;
+          white-space: nowrap;
+        }
+        .trust-divider {
+          width: 1px;
+          height: 40px;
+          background: linear-gradient(to bottom, transparent, #e0e0e0, transparent);
+          flex-shrink: 0;
+        }
+
         .welcome-content {
           background: #fff;
           border-radius: 20px;
@@ -292,8 +316,11 @@ const WelcomeSection: React.FC = () => {
 
         /* Tablet */
         @media (max-width: 991px) {
-          .welcome-grid {
-            grid-template-columns: repeat(2, 1fr);
+          .trust-bar {
+            padding: 20px 24px;
+          }
+          .trust-title {
+            font-size: 14px;
           }
         }
 
@@ -305,10 +332,21 @@ const WelcomeSection: React.FC = () => {
           .welcome-header {
             margin-bottom: 24px;
           }
-          .welcome-grid {
-            grid-template-columns: 1fr;
-            gap: 12px;
+          .trust-bar {
+            flex-direction: column;
+            align-items: stretch;
+            padding: 16px 20px;
+            gap: 0;
             margin-bottom: 24px;
+          }
+          .trust-item {
+            justify-content: flex-start;
+            padding: 14px 4px;
+          }
+          .trust-divider {
+            width: 100%;
+            height: 1px;
+            background: linear-gradient(to right, transparent, #e0e0e0, transparent);
           }
           .welcome-content {
             padding: 24px;

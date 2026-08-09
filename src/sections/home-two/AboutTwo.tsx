@@ -90,7 +90,7 @@ const AboutTwo: React.FC = () => {
                                     </div>
                                     <div className="about-two__call-box-content">
                                         <p>Call to Anytime</p>
-                                        <h4><a href="tel:15502505260">+1800 006 256</a></h4>
+                                        <h4><a href="tel:15502505260">+61 485 889 402</a></h4>
                                     </div>
                                 </div>
                             </div>

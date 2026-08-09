@@ -2,11 +2,18 @@ import { NextResponse } from 'next/server';
 import { Resend } from 'resend';
 
 const RESEND_API_KEY = process.env.RESEND_API_KEY;
-const ADMIN_EMAIL = process.env.ADMIN_EMAIL || 'alis55971532@gmail.com';
 
-// Use Resend's test domain for unverified accounts.
-// Once you verify ukajapan.com.au in Resend dashboard, change this to:
-// 'UKA Japan <noreply@ukajapan.com.au>'
+// ═══════════════════════════════════════════════════════════
+// TESTING: Default to your Resend account email
+// so onboarding@resend.dev can actually deliver to it.
+// Change this in .env.local if you want:
+// ADMIN_EMAIL=zohairwordpress@gmail.com
+// ═══════════════════════════════════════════════════════════
+const ADMIN_EMAIL = process.env.ADMIN_EMAIL || 'zohairwordpress@gmail.com';
+
+// TESTING: Resend's test sender — works without domain verification.
+// PRODUCTION: After verifying ukajapan.com.au, change to:
+// const FROM_EMAIL = 'UKA Japan <noreply@ukajapan.com.au>';
 const FROM_EMAIL = 'onboarding@resend.dev';
 
 export async function POST(request: Request) {
@@ -23,6 +30,8 @@ export async function POST(request: Request) {
   try {
     const body = await request.json();
     const { formType, name, email, phone, message, contactMethod, carTitle, ...extra } = body;
+
+    console.log(`[Email API] Received ${formType} from ${name} (${email})`);
 
     const subjectMap: Record<string, string> = {
       enquiry: `New Enquiry — ${name}`,
@@ -72,9 +81,11 @@ export async function POST(request: Request) {
       replyTo: email,
     });
 
+    console.log(`[Email API] Sent successfully. ID: ${data.data?.id || 'N/A'}`);
+
     return NextResponse.json({ success: true, data });
   } catch (error) {
-    console.error('Email send error:', error);
+    console.error('[Email API] Send error:', error);
     return NextResponse.json(
       { success: false, error: 'Failed to send email. Please try again later.' },
       { status: 500 }

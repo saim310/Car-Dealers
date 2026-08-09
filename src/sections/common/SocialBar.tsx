@@ -74,7 +74,7 @@ const FloatingContactBar: React.FC = () => {
   const contactItems = [
     {
       icon: <IconEmail />,
-      href: "mailto:info@ukajapanmotors.com.au",
+      href: "mailto:info@ukajapan.com.au",
       label: "Email Us",
       bgColor: "#5B9BD5",
     },

@@ -285,16 +285,69 @@ const sectionTitleStyle: React.CSSProperties = {
     marginTop: '4px'
 };
 
+// ─── Shared Submit Handler Factory ───
+const useEmailSubmit = (formType: string, onClose: () => void, car?: any) => {
+    const [isLoading, setIsLoading] = useState(false);
+    const [error, setError] = useState('');
+    const [submitted, setSubmitted] = useState(false);
+
+    const sendEmail = async (payload: Record<string, any>) => {
+        setIsLoading(true);
+        setError('');
+
+        try {
+            const response = await fetch('/api/send-email', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    formType,
+                    carTitle: car?.Title || car?.title || 'N/A',
+                    ...payload,
+                }),
+            });
+
+            const data = await response.json();
+
+            if (!data.success) {
+                throw new Error(data.error || 'Failed to send');
+            }
+
+            setSubmitted(true);
+            setTimeout(() => {
+                setSubmitted(false);
+                onClose();
+            }, 2500);
+        } catch (err: any) {
+            setError(err.message || 'Email send nahi hui. Dobara try karein.');
+        } finally {
+            setIsLoading(false);
+        }
+    };
+
+    return { isLoading, error, submitted, sendEmail };
+};
+
 // ─── 1. Schedule Test Drive Modal ───
 const TestDriveModal = ({ isOpen, onClose, car }: { isOpen: boolean; onClose: () => void; car?: any }) => {
     const isMobile = useIsMobile();
     const [form, setForm] = useState({ name: '', email: '', phone: '', contact: '', date: '', time: '', location: '', message: '', agreed: false });
-    const [submitted, setSubmitted] = useState(false);
+    const { isLoading, error, submitted, sendEmail } = useEmailSubmit('testdrive', onClose, car);
 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
-        setSubmitted(true);
-        setTimeout(() => { setSubmitted(false); onClose(); }, 2000);
+        if (!form.agreed) {
+            return;
+        }
+        sendEmail({
+            name: form.name,
+            email: form.email,
+            phone: form.phone,
+            contactMethod: form.contact,
+            message: form.message,
+            date: form.date,
+            time: form.time,
+            location: form.location,
+        });
     };
 
     const gridStyle: React.CSSProperties = isMobile
@@ -438,23 +491,31 @@ const TestDriveModal = ({ isOpen, onClose, car }: { isOpen: boolean; onClose: ()
                                 </label>
                             </div>
 
-                            <button type="submit" style={{
+                            {error && (
+                                <div style={{ marginBottom: '12px', padding: '10px 12px', background: '#fff2f2', borderRadius: '8px', color: '#d32f2f', fontSize: '13px', fontWeight: 600 }}>
+                                    <i className="fas fa-exclamation-circle" style={{ marginRight: '6px' }}></i>
+                                    {error}
+                                </div>
+                            )}
+
+                            <button type="submit" disabled={isLoading} style={{
                                 width: '100%',
                                 padding: '14px',
-                                background: '#ffc107',
+                                background: isLoading ? '#e0e0e0' : '#ffc107',
                                 color: '#1a1a2e',
                                 fontWeight: 800,
                                 fontSize: '15px',
                                 borderRadius: '8px',
                                 border: 'none',
-                                cursor: 'pointer',
+                                cursor: isLoading ? 'not-allowed' : 'pointer',
                                 display: 'flex',
                                 alignItems: 'center',
                                 justifyContent: 'center',
                                 gap: '8px',
                                 marginBottom: '12px'
                             }}>
-                                <i className="far fa-calendar-check"></i> Book Test Drive
+                                <i className={isLoading ? 'fas fa-spinner fa-spin' : 'far fa-calendar-check'}></i>
+                                {isLoading ? 'Sending...' : 'Book Test Drive'}
                             </button>
 
                             <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '6px', fontSize: '12px', color: '#999' }}>
@@ -474,12 +535,20 @@ const TestDriveModal = ({ isOpen, onClose, car }: { isOpen: boolean; onClose: ()
 const FinanceModal = ({ isOpen, onClose, car }: { isOpen: boolean; onClose: () => void; car?: any }) => {
     const isMobile = useIsMobile();
     const [form, setForm] = useState({ name: '', phone: '', email: '', dob: '', employment: '', income: '', term: '', deposit: '' });
-    const [submitted, setSubmitted] = useState(false);
+    const { isLoading, error, submitted, sendEmail } = useEmailSubmit('finance', onClose, car);
 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
-        setSubmitted(true);
-        setTimeout(() => { setSubmitted(false); onClose(); }, 2000);
+        sendEmail({
+            name: form.name,
+            email: form.email,
+            phone: form.phone,
+            dob: form.dob,
+            employment: form.employment,
+            income: form.income,
+            term: form.term,
+            deposit: form.deposit,
+        });
     };
 
     const gridStyle: React.CSSProperties = isMobile
@@ -635,22 +704,30 @@ const FinanceModal = ({ isOpen, onClose, car }: { isOpen: boolean; onClose: () =
                                 </ul>
                             </div>
 
-                            <button type="submit" style={{
+                            {error && (
+                                <div style={{ marginBottom: '12px', padding: '10px 12px', background: '#fff2f2', borderRadius: '8px', color: '#d32f2f', fontSize: '13px', fontWeight: 600 }}>
+                                    <i className="fas fa-exclamation-circle" style={{ marginRight: '6px' }}></i>
+                                    {error}
+                                </div>
+                            )}
+
+                            <button type="submit" disabled={isLoading} style={{
                                 width: '100%',
                                 padding: '14px',
-                                background: '#ffc107',
+                                background: isLoading ? '#e0e0e0' : '#ffc107',
                                 color: '#1a1a2e',
                                 fontWeight: 800,
                                 fontSize: '15px',
                                 borderRadius: '8px',
                                 border: 'none',
-                                cursor: 'pointer',
+                                cursor: isLoading ? 'not-allowed' : 'pointer',
                                 display: 'flex',
                                 alignItems: 'center',
                                 justifyContent: 'center',
                                 gap: '8px'
                             }}>
-                                <i className="fas fa-dollar-sign"></i> Submit Finance Application
+                                <i className={isLoading ? 'fas fa-spinner fa-spin' : 'fas fa-dollar-sign'}></i>
+                                {isLoading ? 'Sending...' : 'Submit Finance Application'}
                             </button>
                         </form>
                     )}
@@ -666,12 +743,18 @@ const EnquiryModal = ({ isOpen, onClose, car }: { isOpen: boolean; onClose: () =
     const isMobile = useIsMobile();
     const [form, setForm] = useState({ name: '', phone: '', email: '', interest: '', message: '' });
     const [contactMethod, setContactMethod] = useState<'phone' | 'email' | 'whatsapp'>('phone');
-    const [submitted, setSubmitted] = useState(false);
+    const { isLoading, error, submitted, sendEmail } = useEmailSubmit('enquiry', onClose, car);
 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
-        setSubmitted(true);
-        setTimeout(() => { setSubmitted(false); onClose(); }, 2000);
+        sendEmail({
+            name: form.name,
+            email: form.email,
+            phone: form.phone,
+            contactMethod,
+            message: form.message,
+            interest: form.interest,
+        });
     };
 
     const gridStyle: React.CSSProperties = isMobile
@@ -814,22 +897,30 @@ const EnquiryModal = ({ isOpen, onClose, car }: { isOpen: boolean; onClose: () =
                                 </span>
                             </div>
 
-                            <button type="submit" style={{
+                            {error && (
+                                <div style={{ marginBottom: '12px', padding: '10px 12px', background: '#fff2f2', borderRadius: '8px', color: '#d32f2f', fontSize: '13px', fontWeight: 600 }}>
+                                    <i className="fas fa-exclamation-circle" style={{ marginRight: '6px' }}></i>
+                                    {error}
+                                </div>
+                            )}
+
+                            <button type="submit" disabled={isLoading} style={{
                                 width: '100%',
                                 padding: '14px',
-                                background: '#1a1a2e',
+                                background: isLoading ? '#333344' : '#1a1a2e',
                                 color: '#fff',
                                 fontWeight: 800,
                                 fontSize: '15px',
                                 borderRadius: '8px',
                                 border: 'none',
-                                cursor: 'pointer',
+                                cursor: isLoading ? 'not-allowed' : 'pointer',
                                 display: 'flex',
                                 alignItems: 'center',
                                 justifyContent: 'center',
                                 gap: '8px'
                             }}>
-                                <i className="far fa-envelope"></i> Send Enquiry
+                                <i className={isLoading ? 'fas fa-spinner fa-spin' : 'far fa-envelope'}></i>
+                                {isLoading ? 'Sending...' : 'Send Enquiry'}
                             </button>
                         </form>
                     )}

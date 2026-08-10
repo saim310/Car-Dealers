@@ -1,236 +1,298 @@
+import type { BlogPost } from "./blogType";
 
-import type { BlogItem, BlogStandardItem } from "./blogType";
-
-
-
-
-export const blogData: BlogItem[] = [
+export const blogPosts: BlogPost[] = [
   {
     id: 1,
     image: "/assets/images/blog/blog-1-1.jpg",
     tag: "Car Showcase",
+    category: "Car Showcase",
     day: "10",
     month: "Nov",
     author: "Admin",
-    commentsText: "Comment",
-     
-    title: "Documents required for car rental services",
-    description:
-      "Car Is Where Early Adopters And Innovation Seekers Find Lively Imaginative Tech.",
-    link: "/inner/blog-details",
+    commentsText: "2 Comments",
+    comments: 2,
+    readTime: "4 Min Read",
+    title: "The Future of Electric Vehicles in Modern Dealerships",
+    description: "Explore how electric vehicles are reshaping the automotive landscape and what it means for buyers seeking sustainable transportation solutions.",
+    link: "/inner/blog-details/1",
+    tags: ["Electric", "Tesla", "Industry Trends"],
+    contentBlocks: [
+      { type: "paragraph", text: "The automotive industry stands at a pivotal crossroads. With manufacturers committing billions to electrification, the traditional dealership model is undergoing a profound transformation. Buyers today are not merely purchasing a vehicle; they are investing in a sustainable lifestyle." },
+      { type: "paragraph", text: "This shift demands that dealerships adapt their infrastructure, training, and customer engagement strategies. From specialised charging stations to knowledgeable consultants versed in battery technology, the modern showroom is evolving rapidly." },
+      { type: "quote", text: "Electric mobility is not the future — it is the present. Those who fail to adapt risk obsolescence within the decade.", author: "Kane Williamson", role: "CEO" },
+      { type: "heading", text: "Infrastructure Challenges and Opportunities" },
+      { type: "paragraph", text: "Establishing robust charging networks remains a primary concern. However, forward-thinking dealerships view this challenge as an opportunity to build long-term customer loyalty through comprehensive service ecosystems." },
+      { type: "imageBox", images: ["/assets/images/blog/blog-details-img-box-img-1.jpg", "/assets/images/blog/blog-details-img-box-img-2.jpg"] },
+    ],
+    commentsList: [
+      { id: 1, name: "Theresa Webb", date: "02 June 2024 at 03:30 pm", text: "The wise man therefore always holds in these matters to this principle of selection. He rejects pleasures to secure other greater pleasures, or else he endures pains to avoid worse pains to the selection point.", image: "/assets/images/blog/comment-1-1.jpg" },
+      { id: 2, name: "Cameron Williamson", date: "02 June 2024 at 03:30 pm", text: "An excellent analysis of the current market trajectory. I believe the integration of renewable energy sources at dealership locations will further accelerate adoption rates among conservative buyers.", image: "/assets/images/blog/comment-1-2.jpg" },
+    ],
   },
   {
     id: 2,
     image: "/assets/images/blog/blog-1-2.jpg",
-    tag: "Car Showcase",
-    day: "10",
+    tag: "Maintenance",
+    category: "Maintenance Tips",
+    day: "15",
     month: "Nov",
-    author: "Admin",
-    commentsText: "Comment",
-    title: "One of the most effective car rental blog topic",
-    description:
-      "Car Is Where Early Adopters And Innovation Seekers Find Lively Imaginative Tech.",
-    link: "/inner/blog-details",
+    author: "Sarah Chen",
+    commentsText: "5 Comments",
+    comments: 5,
+    readTime: "6 Min Read",
+    title: "Essential Maintenance Tips for Luxury Sedans",
+    description: "Regular maintenance cleaning or replacing air filters can significantly extend the lifespan of your luxury vehicle and preserve its resale value.",
+    link: "/inner/blog-details/2",
+    tags: ["Maintenance", "Luxury", "Sedan"],
+    contentBlocks: [
+      { type: "paragraph", text: "Luxury sedans represent a significant investment, and proper maintenance is paramount to protecting that investment. Regular servicing intervals, though seemingly costly, prevent far more expensive repairs down the line." },
+      { type: "heading", text: "The Importance of Genuine Parts" },
+      { type: "paragraph", text: "Using manufacturer-approved components ensures optimal performance and maintains warranty coverage. Aftermarket alternatives may offer short-term savings but frequently compromise long-term reliability." },
+      { type: "quote", text: "Preventative maintenance is always more economical than reactive repair. A well-maintained luxury vehicle will serve faithfully for decades.", author: "Sarah Chen", role: "Senior Technician" },
+    ],
+    commentsList: [
+      { id: 1, name: "Jacob Jones", date: "10 Nov 2024 at 11:20 am", text: "Would you recommend ceramic coating for new luxury vehicles, or is traditional waxing still sufficient?", image: "/assets/images/blog/comment-1-1.jpg" },
+    ],
   },
   {
     id: 3,
     image: "/assets/images/blog/blog-1-3.jpg",
-    tag: "Car Showcase",
-    day: "10",
+    tag: "Rental",
+    category: "Car Rental",
+    day: "18",
     month: "Nov",
     author: "Admin",
-    commentsText: "Comment",
-    title: "Penalties for violating the rules in rental cars",
-    description:
-      "Car Is Where Early Adopters And Innovation Seekers Find Lively Imaginative Tech.",
-    link: "/inner/blog-details",
+    commentsText: "3 Comments",
+    comments: 3,
+    readTime: "5 Min Read",
+    title: "Corporate Car Rental Solutions for Modern Enterprises",
+    description: "Discover flexible fleet leasing and corporate rental packages designed to optimise transportation budgets for businesses of all sizes.",
+    link: "/inner/blog-details/3",
+    tags: ["Honda", "SUV", "Corporate"],
+    contentBlocks: [
+      { type: "paragraph", text: "Corporate mobility requirements have evolved substantially. Modern enterprises demand flexibility, transparency, and scalability from their vehicle providers." },
+      { type: "paragraph", text: "Fleet leasing arrangements now offer unprecedented customisation — from short-term project-based rentals to comprehensive multi-year agreements with full maintenance inclusion." },
+      { type: "imageBox", images: ["/assets/images/blog/blog-details-img-box-img-1.jpg", "/assets/images/blog/blog-details-img-box-img-2.jpg"] },
+    ],
+    commentsList: [],
   },
   {
     id: 4,
     image: "/assets/images/blog/blog-1-4.jpg",
-    tag: "Car Showcase",
-    day: "10",
+    tag: "News",
+    category: "Automotive News",
+    day: "22",
     month: "Nov",
-    author: "Admin",
-    commentsText: "Comment",
-    title: "Rental cars how to check driving fines?",
-    description:
-      "Car Is Where Early Adopters And Innovation Seekers Find Lively Imaginative Tech.",
-    link: "/inner/blog-details",
+    author: "Michael Ross",
+    commentsText: "8 Comments",
+    comments: 8,
+    readTime: "7 Min Read",
+    title: "Honda Unveils Next-Generation Hybrid Powertrain",
+    description: "Honda's latest hybrid technology promises unprecedented fuel efficiency without compromising the driving dynamics enthusiasts expect.",
+    link: "/inner/blog-details/4",
+    tags: ["Honda", "Hybrid", "Electric"],
+    contentBlocks: [
+      { type: "paragraph", text: "Honda has long been a pioneer in hybrid technology, and their latest announcement solidifies that reputation. The new dual-motor system achieves remarkable efficiency gains." },
+      { type: "heading", text: "Technical Specifications" },
+      { type: "paragraph", text: "The integrated powertrain delivers seamless transitions between electric and combustion modes, with intelligent predictive algorithms optimising energy recovery during deceleration." },
+    ],
+    commentsList: [
+      { id: 1, name: "Eleanor Pena", date: "23 Nov 2024 at 09:15 am", text: "Finally, a hybrid system that does not feel like a compromise. The torque delivery sounds impressive on paper.", image: "/assets/images/blog/comment-1-2.jpg" },
+    ],
   },
   {
     id: 5,
     image: "/assets/images/blog/blog-1-5.jpg",
-    tag: "Car Showcase",
-    day: "10",
+    tag: "Showcase",
+    category: "Car Showcase",
+    day: "25",
     month: "Nov",
     author: "Admin",
-    commentsText: "Comment",
-    title: "How to Rent a Car at the Airport Terminal?",
-    description:
-      "Car Is Where Early Adopters And Innovation Seekers Find Lively Imaginative Tech.",
-    link: "/inner/blog-details",
+    commentsText: "1 Comment",
+    comments: 1,
+    readTime: "3 Min Read",
+    title: "Audi e-Tron GT: Redefining Electric Luxury Performance",
+    description: "A detailed look at how Audi combines sustainable engineering with breathtaking performance in their flagship electric grand tourer.",
+    link: "/inner/blog-details/5",
+    tags: ["Audi", "Electric", "Luxury", "Sports"],
+    contentBlocks: [
+      { type: "paragraph", text: "The e-Tron GT represents Audi's unwavering commitment to performance-oriented electrification. Every curve serves both aesthetic and aerodynamic purposes." },
+      { type: "quote", text: "Sustainable performance is not an oxymoron — it is the new standard by which all luxury marques shall be judged.", author: "Michael Ross", role: "Automotive Editor" },
+    ],
+    commentsList: [],
   },
   {
     id: 6,
     image: "/assets/images/blog/blog-1-6.jpg",
-    tag: "Car Showcase",
-    day: "10",
+    tag: "Tips",
+    category: "Driving Tips",
+    day: "28",
     month: "Nov",
-    author: "Admin",
-    commentsText: "Comment",
-    title: "Penalties for violating the rules in rental cars",
-    description:
-      "Car Is Where Early Adopters And Innovation Seekers Find Lively Imaginative Tech.",
-    link: "/inner/blog-details",
+    author: "David Kim",
+    commentsText: "4 Comments",
+    comments: 4,
+    readTime: "5 Min Read",
+    title: "Winter Driving Safety: Preparing Your Vehicle for Cold Weather",
+    description: "Essential checks and preparations to ensure your vehicle remains safe and reliable during harsh winter conditions.",
+    link: "/inner/blog-details/6",
+    tags: ["Maintenance", "SUV", "Safety"],
+    contentBlocks: [
+      { type: "paragraph", text: "Winter presents unique challenges to vehicle reliability and driver safety. Proactive preparation mitigates risks associated with freezing temperatures and adverse road conditions." },
+      { type: "heading", text: "Battery and Tyre Considerations" },
+      { type: "paragraph", text: "Cold weather significantly reduces battery efficiency. A comprehensive health check, including load testing, should precede the winter season. Similarly, tyre compound selection becomes critical below seven degrees Celsius." },
+    ],
+    commentsList: [],
   },
   {
     id: 7,
-    image: "/assets/images/blog/blog-1-7.jpg",
-    tag: "Car Showcase",
-    day: "10",
-    month: "Nov",
+    image: "/assets/images/blog/blog-1-1.jpg",
+    tag: "Rental",
+    category: "Car Rental",
+    day: "02",
+    month: "Dec",
     author: "Admin",
-    commentsText: "Comment",
-    title: "Documents required for car rental services",
-    description:
-      "Car Is Where Early Adopters And Innovation Seekers Find Lively Imaginative Tech.",
-    link: "/inner/blog-details",
+    commentsText: "6 Comments",
+    comments: 6,
+    readTime: "4 Min Read",
+    title: "Airport Transfer Services: Convenience Meets Reliability",
+    description: "Why professional airport transfer services remain the superior choice for business travellers and families alike.",
+    link: "/inner/blog-details/7",
+    tags: ["Corporate", "Luxury", "Sedan"],
+    contentBlocks: [
+      { type: "paragraph", text: "Navigating unfamiliar airports after lengthy flights imposes unnecessary stress. Professional transfer services eliminate this burden through meticulous scheduling and meet-and-greet protocols." },
+    ],
+    commentsList: [],
   },
   {
     id: 8,
-    image: "/assets/images/blog/blog-1-8.jpg",
-    tag: "Car Showcase",
-    day: "10",
-    month: "Nov",
-    author: "Admin",
-    commentsText: "Comment",
-    title: "One of the most effective car rental blog topic",
-    description:
-      "Car Is Where Early Adopters And Innovation Seekers Find Lively Imaginative Tech.",
-    link: "/inner/blog-details",
+    image: "/assets/images/blog/blog-1-2.jpg",
+    tag: "Leasing",
+    category: "Fleet Leasing",
+    day: "05",
+    month: "Dec",
+    author: "Sarah Chen",
+    commentsText: "2 Comments",
+    comments: 2,
+    readTime: "6 Min Read",
+    title: "Long-Term Fleet Leasing vs. Vehicle Ownership",
+    description: "An analytical comparison of total cost of ownership versus long-term leasing arrangements for commercial vehicle fleets.",
+    link: "/inner/blog-details/8",
+    tags: ["Corporate", "Truck", "Industry Trends"],
+    contentBlocks: [
+      { type: "paragraph", text: "The decision between fleet ownership and leasing transcends simple monthly payment comparisons. Tax implications, maintenance liability, and asset depreciation must all factor into the strategic calculus." },
+      { type: "imageBox", images: ["/assets/images/blog/blog-details-img-box-img-1.jpg", "/assets/images/blog/blog-details-img-box-img-2.jpg"] },
+    ],
+    commentsList: [],
   },
   {
     id: 9,
-    image: "/assets/images/blog/blog-1-9.jpg",
-    tag: "Car Showcase",
-    day: "10",
-    month: "Nov",
-    author: "Admin",
-    commentsText: "Comment",
-    title: "Penalties for violating the rules in rental cars",
-    description:
-      "Car Is Where Early Adopters And Innovation Seekers Find Lively Imaginative Tech.",
-    link: "/inner/blog-details",
+    image: "/assets/images/blog/blog-1-3.jpg",
+    tag: "Showcase",
+    category: "Car Showcase",
+    day: "08",
+    month: "Dec",
+    author: "Michael Ross",
+    commentsText: "7 Comments",
+    comments: 7,
+    readTime: "5 Min Read",
+    title: "BMW M Series: The Evolution of Performance Engineering",
+    description: "Tracing the lineage of BMW's motorsport division and its influence on contemporary road car development.",
+    link: "/inner/blog-details/9",
+    tags: ["BMW", "Sports", "Luxury"],
+    contentBlocks: [
+      { type: "paragraph", text: "The M badge carries gravitas borne from decades of motorsport pedigree. Each generation refines the delicate balance between track capability and daily usability." },
+      { type: "quote", text: "Engineering excellence is not about adding complexity — it is about achieving purity of purpose.", author: "Michael Ross", role: "Automotive Editor" },
+    ],
+    commentsList: [],
   },
   {
     id: 10,
-    image: "/assets/images/blog/blog-1-10.jpg",
-    tag: "Car Showcase",
-    day: "10",
-    month: "Nov",
+    image: "/assets/images/blog/blog-1-4.jpg",
+    tag: "News",
+    category: "Automotive News",
+    day: "12",
+    month: "Dec",
     author: "Admin",
-    commentsText: "Comment",
-    title: "Rental cars how to check driving fines?",
-    description:
-      "Car Is Where Early Adopters And Innovation Seekers Find Lively Imaginative Tech.",
-    link: "/inner/blog-details",
+    commentsText: "3 Comments",
+    comments: 3,
+    readTime: "4 Min Read",
+    title: "SUV Market Trends: Consumer Preferences in 2024",
+    description: "Analysis of shifting consumer preferences within the SUV segment and what manufacturers are doing to meet evolving demands.",
+    link: "/inner/blog-details/10",
+    tags: ["SUV", "Industry Trends", "Honda"],
+    contentBlocks: [
+      { type: "paragraph", text: "The SUV segment continues its dominance across global markets, though consumer priorities are shifting from sheer size toward efficiency and technological integration." },
+    ],
+    commentsList: [],
   },
-   {
+  {
     id: 11,
-    image: "/assets/images/blog/blog-1-11.jpg",
-    tag: "Car Showcase",
-    day: "10",
-    month: "Nov",
-    author: "Admin",
-    commentsText: "Comment",
-    title: "One of the most effective car rental blog topic",
-    description:
-      "Car Is Where Early Adopters And Innovation Seekers Find Lively Imaginative Tech.",
-    link: "/inner/blog-details",
+    image: "/assets/images/blog/blog-1-5.jpg",
+    tag: "Maintenance",
+    category: "Maintenance Tips",
+    day: "15",
+    month: "Dec",
+    author: "David Kim",
+    commentsText: "9 Comments",
+    comments: 9,
+    readTime: "8 Min Read",
+    title: "Water Leakage Issues: Diagnosing and Repairing Drain Line Clogs",
+    description: "Water leakage can be due to a clogged drain line. Learn how to identify symptoms early and prevent costly interior damage.",
+    link: "/inner/blog-details/11",
+    tags: ["Maintenance", "Sedan", "Safety"],
+    contentBlocks: [
+      { type: "paragraph", text: "Unexplained moisture accumulation within the cabin frequently indicates compromised drainage pathways. Early diagnosis prevents catastrophic damage to electronic systems and interior materials." },
+      { type: "heading", text: "Common Causes" },
+      { type: "paragraph", text: "Leaves and debris obstructing cowl drains represent the most frequent culprit. Regular inspection of these channels, particularly during autumn, proves essential." },
+    ],
+    commentsList: [],
+  },
+  {
+    id: 12,
+    image: "/assets/images/blog/blog-1-6.jpg",
+    tag: "Tips",
+    category: "Driving Tips",
+    day: "18",
+    month: "Dec",
+    author: "Sarah Chen",
+    commentsText: "4 Comments",
+    comments: 4,
+    readTime: "5 Min Read",
+    title: "Maximising Fuel Efficiency in Urban Environments",
+    description: "Practical techniques for reducing fuel consumption during city driving without sacrificing journey time or comfort.",
+    link: "/inner/blog-details/12",
+    tags: ["Hybrid", "Sedan", "Maintenance"],
+    contentBlocks: [
+      { type: "paragraph", text: "Urban driving presents unique efficiency challenges characterised by frequent stops, idling, and variable speeds. Anticipatory driving techniques yield measurable improvements." },
+      { type: "imageBox", images: ["/assets/images/blog/blog-details-img-box-img-1.jpg", "/assets/images/blog/blog-details-img-box-img-2.jpg"] },
+    ],
+    commentsList: [],
   },
 ];
 
+// Backward-compatible exports
+export const blogData: BlogPost[] = blogPosts;
 
+export const blogStandardListData: BlogPost[] = blogPosts;
 
+export const getBlogById = (id: number): BlogPost | undefined => {
+  return blogPosts.find((post) => post.id === id);
+};
 
+export const getRecentPosts = (count: number = 3): BlogPost[] => {
+  return [...blogPosts].sort((a, b) => b.id - a.id).slice(0, count);
+};
 
+export const getCategories = (): { name: string; count: number }[] => {
+  const map = new Map<string, number>();
+  blogPosts.forEach((post) => {
+    map.set(post.category, (map.get(post.category) || 0) + 1);
+  });
+  return Array.from(map.entries()).map(([name, count]) => ({ name, count }));
+};
 
-export const blogStandardListData: BlogStandardItem[] = [
-    {
-        id: 1,
-        image: "/assets/images/blog/blog-1-1.jpg",
-        date: {
-            day: "12",
-            month: "Nov",
-        },
-        author: "Admin",
-        comments: 5,
-        readTime: "4 Min Read",
-        title: "Car service is essential for maintaining longevity of vehicle.",
-        description:
-            "Out enigma ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute inure dolor in the reprehenderit in voluptate velit esse cillum dolore eu fugiat null pariatur.",
-        link: "/inner/blog-details",
-    },
-    {
-        id: 2,
-        image: "/assets/images/blog/blog-1-2.jpg",
-        date: {
-            day: "15",
-            month: "Aug",
-        },
-        author: "Admin",
-        comments: 5,
-        readTime: "4 Min Read",
-        title: "Experience freedom on our UKA Japan booking service",
-        description:
-            "Out enigma ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute inure dolor in the reprehenderit in voluptate velit esse cillum dolore eu fugiat null pariatur.",
-        link: "/inner/blog-details",
-    },
-    {
-        id: 3,
-        image: "/assets/images/blog/blog-1-3.jpg",
-        date: {
-            day: "22",
-            month: "Feb",
-        },
-        author: "Admin",
-        comments: 5,
-        readTime: "4 Min Read",
-        title:
-            "Committed to providing our customers with ultimate service.",
-        description:
-            "Out enigma ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute inure dolor in the reprehenderit in voluptate velit esse cillum dolore eu fugiat null pariatur.",
-        link: "/inner/blog-details",
-    },
-    {
-        id: 4,
-        image: "/assets/images/blog/blog-1-4.jpg",
-        date: {
-            day: "12",
-            month: "Nov",
-        },
-        author: "Admin",
-        comments: 5,
-        readTime: "4 Min Read",
-        title: "Car service is essential for maintaining longevity of vehicle.",
-        description:
-            "Out enigma ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute inure dolor in the reprehenderit in voluptate velit esse cillum dolore eu fugiat null pariatur.",
-        link: "/inner/blog-details",
-    },
-    {
-        id: 5,
-        image: "/assets/images/blog/blog-1-5.jpg",
-        date: {
-            day: "15",
-            month: "Aug",
-        },
-        author: "Admin",
-        comments: 5,
-        readTime: "4 Min Read",
-        title: "Experience freedom on our UKA Japan booking service",
-        description:
-            "Out enigma ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute inure dolor in the reprehenderit in voluptate velit esse cillum dolore eu fugiat null pariatur.",
-        link: "/inner/blog-details",
-    },
-];
+export const getAllTags = (): string[] => {
+  const tagSet = new Set<string>();
+  blogPosts.forEach((post) => post.tags.forEach((tag) => tagSet.add(tag)));
+  return Array.from(tagSet);
+};

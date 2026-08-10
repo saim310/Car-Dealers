@@ -1,184 +1,173 @@
 "use client";
-import React from "react";
-// images
-import blogMainImg from "../../../public/assets/images/blog/blog-details-img-1.jpg";
-import blogBoxImg1 from "../../../public/assets/images/blog/blog-details-img-box-img-1.jpg";
-import blogBoxImg2 from "../../../public/assets/images/blog/blog-details-img-box-img-2.jpg";
-import commentImg1 from "../../../public/assets/images/blog/comment-1-1.jpg";
-import commentImg2 from "../../../public/assets/images/blog/comment-1-2.jpg";
+import React, { useEffect, useState } from "react";
+import { useParams } from "next/navigation";
 import Image from "next/image";
+import Link from "next/link";
 import BlogSideBar from "./BlogSideBar";
+import { getUserBlogBySlug, UserBlog } from "@/lib/blog-store";
 
 const BlogDetailsMain: React.FC = () => {
-    return (
-        <section className="blog-details">
-            <div className="container">
-                <div className="row">
-                    {/* Main Content */}
-                    <div className="col-xl-8 col-lg-7">
-                        <div className="blog-details__left">
-                            <div className="blog-details__img">
-                                <Image src={blogMainImg} width={850} height={509} alt="" />
-                                <div className="blog-details__date">
-                                    <p>12<br />Nov</p>
-                                </div>
-                            </div>
-                            <div className="blog-details__content">
-                                <div className="blog-details__user-and-meta">
-                                    <div className="blog-details__user">
-                                        <p><span className="icon-user"></span>By Admin</p>
-                                    </div>
-                                    <ul className="blog-details__meta list-unstyled">
-                                        <li>
-                                            <a href="#"><span className="icon-comments"></span>Comments (05)</a>
-                                        </li>
-                                        <li>
-                                            <a href="#"><span className="icon-clock"></span>4 Min Read</a>
-                                        </li>
-                                    </ul>
-                                </div>
-                                <h3 className="blog-details__title">Where Early Adopters And Innovation Seekers Find Lively
-                                    Imaginative Tech.
-                                </h3>
-                                <p className="blog-details__text-1">Out enigma ad minim veniam, quis nostrud exercitation
-                                    ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute inure dolor in
-                                    the reprehenderit in voluptate velit esse cillum dolore eu fugiat null pariatur.
-                                    Excepteur snit occaecat cupidatat non proident, sunt in culpa qui officia deserunt
-                                    mollit anim id est laborum.</p>
-                                <p className="blog-details__text-2">The wise man therefore always holds in these matters to
-                                    this principle of selection. He rejects pleasures to secure other greater pleasures,
-                                    or else he endures pains to avoid worse pains to the selection point.</p>
-                                <div className="blog-details__author-box">
-                                    <h4 className="blog-details__author-text">“Sed do eiusmod tempor incididunt labore et
-                                        dolore magna aliqua. Uther enim minim veniam, quis nostrud exercitation ullamco
-                                        laboris nisi aliquip commodo consequat. Duis aute irure dolor in reprehenderit
-                                        in voluptate”</h4>
-                                    <p className="blog-details__author-name">Kane Williamson<span> / CEO</span></p>
-                                </div>
-                                <h3 className="blog-details__title-2">Rental cost of sport and other
-                                    cars</h3>
-                                <p className="blog-details__text-3">Out enigma ad minim veniam, quis nostrud exercitation
-                                    ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute inure dolor in
-                                    the reprehenderit in voluptate velit esse cillum dolore eu fugiat null pariatur.
-                                    Excepteur snit occaecat cupidatat non proident, sunt in culpa qui officia deserunt
-                                    mollit anim id est laborum.</p>
-                                <div className="blog-details__img-box">
-                                    <div className="row">
-                                        <div className="col-xl-6">
-                                            <div className="blog-details__img-box-img">
-                                                <Image src={blogBoxImg1} width={410} height={245} alt="Image box" />
-                                            </div>
-                                        </div>
-                                        <div className="col-xl-6">
-                                            <div className="blog-details__img-box-img">
-                                                <Image src={blogBoxImg2} width={410} height={245} alt="Image box" />
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div className="blog-details__tag-and-share">
-                                    <div className="blog-details__tag">
-                                        <h3 className="blog-details__tag-title">Tags :</h3>
-                                        <ul className="blog-details__tag-list list-unstyled">
-                                            <li>
-                                                <a href="#">Tesla</a>
-                                            </li>
-                                            <li>
-                                                <a href="#">Honda</a>
-                                            </li>
-                                            <li>
-                                                <a href="#">Audi</a>
-                                            </li>
-                                        </ul>
-                                    </div>
-                                    <div className="blog-details__share-box">
-                                        <h3 className="blog-details__share-title">Share :</h3>
-                                        <div className="blog-details__share">
-                                            <a href="#"><span className="icon-facebook"></span></a>
-                                            <a href="#"><span className="icon-instagram-1"></span></a>
-                                            <a href="#"><span className="icon-instagram"></span></a>
-                                            <a href="#"><span className="icon-instagram-2"></span></a>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div className="comment-one">
-                                    <div className="comment-one__single">
-                                        <div className="comment-one__image">
-                                            <Image src={commentImg1} width={70} height={70} alt="" />
-                                        </div>
-                                        <div className="comment-one__content">
-                                            <h3>Theresa Webb</h3>
-                                            <span>02 June 2024 at 03:30 pm</span>
-                                            <p>The wise man therefore always holds in these matters to this principle of
-                                                selection. He rejects pleasures to secure other greater pleasures, or
-                                                else he endures pains to avoid worse pains to the selection point. But
-                                                in certain to all this circumstances</p>
-                                            <div className="comment-one__btn-box">
-                                                <a href="#" className="comment-one__btn"><span
-                                                    className="icon-share-alt"></span>Reply</a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div className="comment-one__single">
-                                        <div className="comment-one__image">
-                                            <Image src={commentImg2} width={70} height={70} alt="" />
-                                        </div>
-                                        <div className="comment-one__content">
-                                            <h3>Cameron Williamson</h3>
-                                            <span>02 June 2024 at 03:30 pm</span>
-                                            <p>The wise man therefore always holds in these matters to this principle of
-                                                selection. He rejects pleasures to secure other greater pleasures, or
-                                                else he endures pains to avoid worse pains to the selection point. But
-                                                in certain to all this circumstances</p>
-                                            <div className="comment-one__btn-box">
-                                                <a href="#" className="comment-one__btn"><span
-                                                    className="icon-share-alt"></span>Reply</a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div className="comment-form">
-                                    <h3 className="comment-form__title">Leave A Comment</h3>
-                                    <p className="comment-form__text">By using form u agree with the message sorage, you can
-                                        contact us directly now</p>
-                                    <form onSubmit={(e) => e.preventDefault()} className="comment-one__form contact-form-validated">
-                                        <div className="row">
-                                            <div className="col-xl-6">
-                                                <div className="comment-form__input-box">
-                                                    <input type="text" placeholder="Your Name" name="name" />
-                                                </div>
-                                            </div>
-                                            <div className="col-xl-6">
-                                                <div className="comment-form__input-box">
-                                                    <input type="email" placeholder="Your Email" name="email" />
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div className="row">
-                                            <div className="col-xl-12">
-                                                <div className="comment-form__input-box text-message-box">
-                                                    <textarea name="message"
-                                                        placeholder="Write your messege"></textarea>
-                                                </div>
-                                                <div className="comment-form__btn-box">
-                                                    <button type="submit" className="thm-btn comment-form__btn">submit
-                                                        now <span className="fas fa-arrow-right"></span></button>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </form>
-                                    <div className="result"></div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+  const params = useParams();
+  const slug = decodeURIComponent((params?.slug as string) || "");
+  const [blog, setBlog] = useState<UserBlog | null>(null);
+  const [loading, setLoading] = useState(true);
 
-                    {/* Sidebar */}
-                    <BlogSideBar mainWrapper="col-xl-4 col-lg-5" wrapper="sidebar" />
-                </div>
-            </div>
-        </section>
+  useEffect(() => {
+    if (typeof window !== "undefined" && slug) {
+      const found = getUserBlogBySlug(slug);
+      setBlog(found);
+      setLoading(false);
+    }
+  }, [slug]);
+
+  if (loading) {
+    return (
+      <section className="blog-details">
+        <div className="container" style={{ padding: "60px 20px", textAlign: "center" }}>
+          <p style={{ color: "#64748b" }}>Loading article...</p>
+        </div>
+      </section>
     );
+  }
+
+  if (!blog) {
+    return (
+      <section className="blog-details">
+        <div className="container" style={{ padding: "60px 20px", textAlign: "center" }}>
+          <h3 style={{ marginBottom: "12px" }}>Blog post not found.</h3>
+          <p style={{ color: "#64748b", marginBottom: "24px" }}>
+            The article you are looking for does not exist or has been removed.
+          </p>
+          <Link
+            href="/inner/blog"
+            className="thm-btn"
+            style={{ display: "inline-block" }}
+          >
+            Return to Blog
+          </Link>
+        </div>
+      </section>
+    );
+  }
+
+  return (
+    <section className="blog-details">
+      <div className="container">
+        <div className="row">
+          <div className="col-xl-8 col-lg-7">
+            <div className="blog-details__left">
+              <div className="blog-details__img">
+                <Image
+                  src={blog.image}
+                  width={850}
+                  height={509}
+                  alt={blog.imageAlt || blog.title}
+                  priority
+                />
+                <div className="blog-details__date">
+                  <p>
+                    {blog.day}
+                    <br />
+                    {blog.month}
+                  </p>
+                </div>
+              </div>
+
+              <div className="blog-details__content">
+                <div className="blog-details__user-and-meta">
+                  <div className="blog-details__user">
+                    <p>
+                      <span className="icon-user"></span>By {blog.author}
+                    </p>
+                  </div>
+                  <ul className="blog-details__meta list-unstyled">
+                    <li>
+                      <a href="#">
+                        <span className="icon-comments"></span>
+                        {blog.commentsText}
+                      </a>
+                    </li>
+                  </ul>
+                </div>
+
+                <h3 className="blog-details__title">{blog.title}</h3>
+
+                <div
+                  className="blog-details__text-1"
+                  style={{
+                    lineHeight: 1.8,
+                    color: "#475569",
+                    fontSize: "16px",
+                    maxWidth: "100%",
+                    overflowWrap: "break-word",
+                  }}
+                  dangerouslySetInnerHTML={{ __html: blog.content }}
+                />
+
+                <div
+                  style={{
+                    marginTop: "40px",
+                    display: "flex",
+                    gap: "10px",
+                    flexWrap: "wrap",
+                  }}
+                >
+                  <span
+                    style={{
+                      background: "#fef3c7",
+                      color: "#92400e",
+                      padding: "8px 18px",
+                      borderRadius: "20px",
+                      fontSize: "13px",
+                      fontWeight: 600,
+                    }}
+                  >
+                    {blog.tag}
+                  </span>
+                </div>
+
+                {/* Comment Form Placeholder */}
+                <div className="comment-form" style={{ marginTop: "60px" }}>
+                  <h3 className="comment-form__title">Leave A Comment</h3>
+                  <form
+                    onSubmit={(e) => e.preventDefault()}
+                    className="comment-one__form contact-form-validated"
+                  >
+                    <div className="row">
+                      <div className="col-xl-6">
+                        <div className="comment-form__input-box">
+                          <input type="text" placeholder="Your Name" name="name" />
+                        </div>
+                      </div>
+                      <div className="col-xl-6">
+                        <div className="comment-form__input-box">
+                          <input type="email" placeholder="Your Email" name="email" />
+                        </div>
+                      </div>
+                    </div>
+                    <div className="row">
+                      <div className="col-xl-12">
+                        <div className="comment-form__input-box text-message-box">
+                          <textarea name="message" placeholder="Write your message"></textarea>
+                        </div>
+                        <div className="comment-form__btn-box">
+                          <button type="submit" className="thm-btn comment-form__btn">
+                            Submit Now <span className="fas fa-arrow-right"></span>
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                  </form>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <BlogSideBar mainWrapper="col-xl-4 col-lg-5" wrapper="sidebar" />
+        </div>
+      </div>
+    </section>
+  );
 };
 
 export default BlogDetailsMain;

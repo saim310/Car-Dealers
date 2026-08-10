@@ -1,10 +1,11 @@
 import type { Metadata } from "next";
 import { Roboto, Inter_Tight } from "next/font/google";
-  import SocialBar from "@/sections/common/SocialBar";
+import SocialBar from "@/sections/common/SocialBar";
 
 import "../../public/assets/css/style.css";
 import ContextProvider from "../components/context/ContextProvider";
 import CustomLayout from "../components/custom-layout/CustomLayout";
+import { BlogFilterProvider } from "@/context/BlogFilterContext";
 
 const roboto = Roboto({
   subsets: ["latin"],
@@ -20,7 +21,7 @@ const interTight = Inter_Tight({
 
 export const metadata: Metadata = {
   title: "Japanese Cars for Sale in Australia | UKA Japan Motors",
-  description: " UKA Japan Motors offers premium Japanese cars for sale in Australia. Browse reliable used cars, automatics, and small cars at competitive prices today.",
+  description: "UKA Japan Motors offers premium Japanese cars for sale in Australia. Browse reliable used cars, automatics, and small cars at competitive prices today.",
 };
 
 export default function RootLayout({
@@ -33,10 +34,12 @@ export default function RootLayout({
       <body className={`${roboto.variable} ${interTight.variable}`}>
         <ContextProvider>
           <CustomLayout>
-            {children}
+            <BlogFilterProvider>
+              {children}
+            </BlogFilterProvider>
           </CustomLayout>
         </ContextProvider>
-          <SocialBar />
+        <SocialBar />
       </body>
     </html>
   );

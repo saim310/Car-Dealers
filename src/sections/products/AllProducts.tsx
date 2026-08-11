@@ -146,7 +146,6 @@ export default function AllProducts() {
         maxPrice: '100000',
         yearFrom: '',
         yearTo: '',
-        colour: '',
         location: '',
         fuelType: '',
         transmission: '',

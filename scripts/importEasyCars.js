@@ -2,9 +2,9 @@ const fs = require("fs");
 const path = require("path");
 const csv = require("csv-parser");
 
-const CSV_FILE = "C:/Users/saima/Downloads/Car-Dealers-main/Car-Dealers-main/public/data/stock.csv";
-const IMAGE_DIR = "C:/Users/saima/Downloads/Car-Dealers-main/Car-Dealers-main/public/assets/images/cars";
-const OUTPUT_FILE = "C:/Users/saima/Downloads/Car-Dealers-main/Car-Dealers-main/src/all-content/products/productData.ts";
+const CSV_FILE = path.join(__dirname, '../public/data/stock.csv');
+const IMAGE_DIR = path.join(__dirname, '../public/assets/images');
+const OUTPUT_FILE = path.join(__dirname, '../public/data/cars.json');
 
 const products = [];
 

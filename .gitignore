@@ -1,6 +1,6 @@
-# See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
-
-# dependencies
+# ===================================================================
+#  DEPENDENCIES
+# ===================================================================
 /node_modules
 /.pnp
 .pnp.*
@@ -10,32 +10,89 @@
 !.yarn/releases
 !.yarn/versions
 
-# testing
-/coverage
-
-# next.js
+# ===================================================================
+#  NEXT.JS BUILD OUTPUT
+# ===================================================================
 /.next/
 /out/
-
-# production
 /build
+/dist/
 
-# misc
-.DS_Store
-*.pem
+# ===================================================================
+#  TESTING
+# ===================================================================
+/coverage
+*.lcov
 
-# debug
+# ===================================================================
+#  ENVIRONMENT VARIABLES
+# ===================================================================
+# Never commit real secrets — example templates are allowed
+.env
+.env.local
+.env.*.local
+!.env.example
+!.env.local.example
+
+# ===================================================================
+#  SUPABASE (Local CLI artefacts)
+# ===================================================================
+/supabase/.branches
+/supabase/.temp
+/supabase/.env
+**/supabase/config.toml   # Optional: keep out if it contains local ports/secrets
+
+# ===================================================================
+#  VERCEL
+# ===================================================================
+.vercel
+
+# ===================================================================
+#  TYPESCRIPT
+# ===================================================================
+*.tsbuildinfo
+next-env.d.ts
+
+# ===================================================================
+#  LOGS & DEBUG
+# ===================================================================
+logs
+*.log
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 .pnpm-debug.log*
+lerna-debug.log*
 
-# env files (can opt-in for committing if needed)
-.env*
+# ===================================================================
+#  OPERATING SYSTEM
+# ===================================================================
+.DS_Store
+Thumbs.db
+*.pem
 
-# vercel
-.vercel
+# ===================================================================
+#  IDE / EDITORS
+# ===================================================================
+.vscode/*
+!.vscode/extensions.json   # Allow shared recommended extensions
+.idea/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+*.swp
+*.swo
+*~
 
-# typescript
-*.tsbuildinfo
-next-env.d.ts
+# ===================================================================
+#  MISC / TEMPORARY
+# ===================================================================
+*.tmp
+*.temp
+*.bak
+*.orig
+.cache/
+.eslintcache
+.stylelintcache

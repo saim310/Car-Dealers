@@ -4,18 +4,34 @@ import { useParams } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import BlogForm from '@/components/admin/BlogForm';
 import AdminGuard from '@/components/admin/AdminGuard';
-import { getUserBlogById, UserBlog } from '@/lib/blog-store';
+import { getBlogByIdClient, type DBBlog } from '@/lib/supabase/blogs.client';
 
 function EditBlogContent() {
   const params = useParams();
   const id = Number(params.id);
-  const [blog, setBlog] = useState<UserBlog | null>(null);
+  const [blog, setBlog] = useState<DBBlog | null>(null);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    if (typeof window !== 'undefined') {
-      setBlog(getUserBlogById(id));
-    }
+    (async () => {
+      try {
+        const data = await getBlogByIdClient(id);
+        setBlog(data);
+      } catch (err) {
+        console.error(err);
+      } finally {
+        setLoading(false);
+      }
+    })();
   }, [id]);
+
+  if (loading) {
+    return (
+      <div style={{ background: '#f8fafc', minHeight: '100vh', padding: '40px 0', textAlign: 'center', color: '#64748b' }}>
+        Loading...
+      </div>
+    );
+  }
 
   if (!blog) {
     return (

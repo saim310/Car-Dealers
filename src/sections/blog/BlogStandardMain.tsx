@@ -53,12 +53,12 @@ const BlogStandardMain: React.FC = () => {
                       <ul className="blog-list__meta list-unstyled">
                         <li>
                           <Link href={blog.link}>
-                            <span className="icon-comments"></span>Comments {`(0${blog.comments})`}
+                            <span className="icon-comments"></span>Comments {(blog as any)?.comments ?? 0}
                           </Link>
                         </li>
                         <li>
                           <Link href={blog.link}>
-                            <span className="icon-clock"></span>{blog.readTime}
+                            <span className="icon-clock"></span>{(blog as any)?.readTime}
                           </Link>
                         </li>
                       </ul>

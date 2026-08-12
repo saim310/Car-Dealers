@@ -2613,7 +2613,7 @@ export const productsList: ProductItem[] = [
     "persons": "5",
     "city": "Brisbane",
     "yard": "4",
-    "stockStatus": "In_Stock",
+    "stockStatus": "On_Offer",
     "status": "regular",
     "salePrice": 0
   },
@@ -2829,7 +2829,7 @@ export const productsList: ProductItem[] = [
     "persons": "5",
     "city": "Brisbane",
     "yard": "4",
-    "stockStatus": "On_Order",
+    "stockStatus": "In_Stock",
     "status": "regular",
     "salePrice": 0
   },
@@ -3429,7 +3429,7 @@ export const productsList: ProductItem[] = [
     "persons": "5",
     "city": "Brisbane",
     "yard": "4",
-    "stockStatus": "On_Order",
+    "stockStatus": "In_Stock",
     "status": "regular",
     "salePrice": 0
   },

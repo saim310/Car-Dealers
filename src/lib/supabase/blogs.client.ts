@@ -22,6 +22,15 @@ export interface DBBlog {
   created_at: string;
   updated_at: string;
 }
+export interface UserBlog {
+  id: number | string;
+  title: string;
+  slug: string;
+  content?: string;
+  image?: string;
+  created_at?: string;
+  [key: string]: any;
+}
 
 function makeSlug(title: string) {
   return title
@@ -42,7 +51,17 @@ export async function getBlogsClient(): Promise<DBBlog[]> {
   if (error) throw error;
   return data || [];
 }
-
+export async function getUserBlogBySlug(slug: string) {
+  const supabase = createClient();
+  const { data, error } = await supabase
+    .from("blogs")
+    .select("*")
+    .eq("slug", slug)
+    .single();
+  
+  if (error) throw error;
+  return data;
+}
 export async function getBlogBySlugClient(slug: string): Promise<DBBlog | null> {
   const supabase = createClient();
   const { data, error } = await supabase

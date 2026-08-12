@@ -4,7 +4,7 @@ import { useParams } from "next/navigation";
 import Image from "next/image";
 import Link from "next/link";
 import BlogSideBar from "./BlogSideBar";
-import { getUserBlogBySlug, UserBlog } from "@/lib/blog-store";
+import { getUserBlogBySlug, UserBlog } from "@/lib/supabase/blogs.client";
 
 const BlogDetailsMain: React.FC = () => {
   const params = useParams();
@@ -12,13 +12,17 @@ const BlogDetailsMain: React.FC = () => {
   const [blog, setBlog] = useState<UserBlog | null>(null);
   const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
-    if (typeof window !== "undefined" && slug) {
-      const found = getUserBlogBySlug(slug);
+useEffect(() => {
+  if (typeof window !== "undefined" && slug) {
+    const fetchBlog = async () => {
+      const found = await getUserBlogBySlug(slug);
       setBlog(found);
       setLoading(false);
-    }
-  }, [slug]);
+    };
+    fetchBlog();
+  }
+}, [slug]);
+
 
   if (loading) {
     return (

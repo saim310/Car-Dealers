@@ -74,19 +74,19 @@ const FloatingContactBar: React.FC = () => {
   const contactItems = [
     {
       icon: <IconEmail />,
-      href: "mailto:info@ukajapan.com.au",
+      href: "mailto:saim@ukajapan.com.au",
       label: "Email Us",
       bgColor: "#5B9BD5",
     },
     {
       icon: <IconWhatsApp />,
-      href: "https://wa.me/61412345678",
+      href: "https://wa.me/61485889402",
       label: "WhatsApp",
       bgColor: "#25D366",
     },
     {
       icon: <IconPhone />,
-      href: "tel:+61412345678",
+      href: "tel:+61485889402",
       label: "Call Us",
       bgColor: "#9B59B6",
     },

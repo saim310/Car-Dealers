@@ -74,7 +74,7 @@ export default function ListingBottomLeft({ car }: { car?: any }) {
                 </h3>
                 <div style={{ display: 'flex', flexWrap: 'wrap', gap: '14px' }}>
                     {[
-                        { icon: 'fa-gavel', label: 'Auction Grade', value: '4.5' },
+                        { icon: 'fa-gavel', label: 'Auction Grade', value: '3.5 & Above' },
                         { icon: 'fa-check-circle', label: 'Odometer', value: 'Certified' },
                         { icon: 'fa-user', label: 'One Owner', value: 'From Japan' },
                     ].map((h, i) => (

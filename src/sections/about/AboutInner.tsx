@@ -75,10 +75,9 @@ const AboutInner: React.FC = () => {
               <div className="section-title text-left sec-title-animation animation-style1">
                
 
-                <h2 className="section-title__title title-animation">
-                  <TextAnimation text="Welcome to UKA JAPAN" />
-                  <TextAnimation text="MOTORS" />
-                </h2>
+<h2 className="section-title__title" style={{ wordBreak: 'keep-all', whiteSpace: 'normal' }}>
+  Welcome to UKA JAPAN MOTORS
+</h2>
               </div>
 
               <p className="about-one__text-1">

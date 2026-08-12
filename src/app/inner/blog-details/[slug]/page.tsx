@@ -43,16 +43,28 @@ export default async function BlogDetailPage({ params }: { params: Promise<{ slu
               <div className="blog-details__content">
                 <p><span className="icon-user"></span>By {blog.author}</p>
                 <h1 style={{ fontSize: "32px", fontWeight: 700, margin: "20px 0" }}>{blog.title}</h1>
-                {blog.content ? (
-                  <div dangerouslySetInnerHTML={{ __html: blog.content }} />
-                ) : blog.content_blocks ? (
-                  blog.content_blocks.map((block, idx) => {
-                    if (block.type === "paragraph") return <p key={idx}>{block.text}</p>;
-                    if (block.type === "heading") return <h3 key={idx}>{block.text}</h3>;
-                    if (block.type === "quote") return <blockquote key={idx}>&ldquo;{block.text}&rdquo; — {block.author}</blockquote>;
-                    return null;
-                  })
-                ) : null}
+                <div
+                  style={{
+                    lineHeight: 1.8,
+                    color: "#475569",
+                    fontSize: "16px",
+                    maxWidth: "100%",
+                    overflowWrap: "break-word",
+                    wordBreak: "break-word",
+                    overflow: "hidden",
+                  }}
+                >
+                  {blog.content ? (
+                    <div dangerouslySetInnerHTML={{ __html: blog.content }} />
+                  ) : blog.content_blocks ? (
+                    blog.content_blocks.map((block, idx) => {
+                      if (block.type === "paragraph") return <p key={idx}>{block.text}</p>;
+                      if (block.type === "heading") return <h3 key={idx}>{block.text}</h3>;
+                      if (block.type === "quote") return <blockquote key={idx}>&ldquo;{block.text}&rdquo; — {block.author}</blockquote>;
+                      return null;
+                    })
+                  ) : null}
+                </div>
               </div>
             </div>
           </div>

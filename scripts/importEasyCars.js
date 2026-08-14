@@ -3,7 +3,7 @@ const path = require("path");
 const csv = require("csv-parser");
 
 const CSV_FILE = path.join(__dirname, '../public/data/stock.csv');
-const IMAGE_DIR = path.join(__dirname, '../public/assets/images');
+const IMAGE_DIR = path.join(__dirname, '../public/assets/images/cars');
 const OUTPUT_FILE = path.join(__dirname, '../public/data/cars.json');
 
 const products = [];
@@ -13,7 +13,12 @@ function findImages(stockNumber) {
 
   return fs.readdirSync(IMAGE_DIR)
     .filter(file => file.startsWith(stockNumber + "_"))
-    .sort()
+    .sort((a, b) => {
+      // Extract numbers after underscore for proper numeric sorting
+      const numA = parseInt(a.split('_')[1]) || 0;
+      const numB = parseInt(b.split('_')[1]) || 0;
+      return numA - numB;
+    })
     .map(file => `/assets/images/cars/${file}`);
 }
 
@@ -58,13 +63,18 @@ fs.createReadStream(CSV_FILE)
     });
 
   })
-  .on("end", () => {
+.on("end", () => {
     const content = `import type { ProductItem } from "./productType";
 
 export const productsList: ProductItem[] = ${JSON.stringify(products, null, 2)};
 `;
 
+    // 1. Write to JSON file
     fs.writeFileSync(OUTPUT_FILE, content);
 
-    console.log(`Done! Imported ${products.length} cars`);
+    // 2. ALSO Write directly to the frontend static TS file so website updates instantly
+    const tsFilePath = path.join(__dirname, '../src/all-content/products/productData.ts');
+    fs.writeFileSync(tsFilePath, content);
+
+    console.log(`Done! Imported ${products.length} cars and updated productData.ts`);
   });

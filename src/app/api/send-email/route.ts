@@ -27,7 +27,7 @@ function getRecipients(formType: string, location?: string): string[] {
   // (Finance, Enquiry, aur Test Drive mein bhi CC ki tarah)
   recipients.push(GENERAL_EMAIL);
 
-  return [...new Set(recipients)]; // duplicates remove karne ke liye
+	return Array.from(new Set(recipients)); // duplicates remove karne ke liye
 }
 
 export async function POST(request: Request) {

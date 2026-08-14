@@ -3,6 +3,9 @@ import fs from 'fs';
 import path from 'path';
 import Papa from 'papaparse';
 
+// Force dynamic so it always reads the latest CSV file and avoids static caching
+export const dynamic = 'force-dynamic';
+
 export async function GET(request: Request) {
     try {
         const { searchParams } = new URL(request.url);
@@ -23,33 +26,28 @@ export async function GET(request: Request) {
 
         const cars = parsed.data as any[];
 
-	// Sort cars: Valid price (> 0) first, Contact for Price (0 or empty) afterwards
-    cars.sort((a, b) => {
-        const priceA = Number(a.Price) || 0;
-        const priceB = Number(b.Price) || 0;
+        // Sort cars: Valid price (> 0) first, Contact for Price (0 or empty) afterwards
+        cars.sort((a, b) => {
+            const priceA = Number(a.Price) || 0;
+            const priceB = Number(b.Price) || 0;
 
-        if (priceA > 0 && priceB === 0) return -1; // A comes first
-        if (priceA === 0 && priceB > 0) return 1;  // B comes first
-        return 0; // Keep original relative order if both have price or both don't
-    });
-
+            if (priceA > 0 && priceB === 0) return -1; // A comes first
+            if (priceA === 0 && priceB > 0) return 1;  // B comes first
+            return 0; 
+        });
 
         if (!id) {
             return NextResponse.json(cars);
         }
 
-        // Match car by StockNumber, id, or SKU accurately
-        let car: any = cars.find((c: any, index: number) => 
-            String(c.StockNumber) === String(id) || 
-            String(c.id) === String(id) || 
-            String(c.ID) === String(id) || 
-            String(c.sku) === String(id) ||
-            String(index) === String(id)
+        // Match car accurately by StockNumber, id, ID, sku, or index with trimming
+        let car: any = cars.find((c: any, index: number) =>  
+            String(c.StockNumber ?? '').trim() === String(id).trim() || 
+            String(c.id ?? '').trim() === String(id).trim() || 
+            String(c.ID ?? '').trim() === String(id).trim() || 
+            String(c.sku ?? '').trim() === String(id).trim() ||
+            String(index).trim() === String(id).trim()
         );
-
-        if (!car && cars.length > 0) {
-            car = cars[0];
-        }
 
         if (!car) {
             return NextResponse.json({ error: 'Car not found' }, { status: 404 });

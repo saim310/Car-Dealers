@@ -1250,7 +1250,7 @@ export const productsList: ProductItem[] = [
     "persons": "7",
     "city": "Melbourne",
     "yard": "2",
-    "stockStatus": "In_Stock",
+    "stockStatus": "On_Offer",
     "status": "regular",
     "salePrice": 0
   },
@@ -2765,7 +2765,7 @@ export const productsList: ProductItem[] = [
       "/assets/images/cars/100903_34.jpg",
       "/assets/images/cars/100903_35.jpg"
     ],
-    "price": 21995,
+    "price": 22995,
     "previousPrice": 0,
     "rating": 5,
     "isNew": false,
@@ -2780,7 +2780,7 @@ export const productsList: ProductItem[] = [
     "persons": "5",
     "city": "Brisbane",
     "yard": "4",
-    "stockStatus": "In_Stock",
+    "stockStatus": "On_Offer",
     "status": "regular",
     "salePrice": 0
   },
@@ -8813,8 +8813,10 @@ export const productsList: ProductItem[] = [
   {
     "id": 101165,
     "title": "Nissan Serena 2019",
-    "image": "",
-    "images": [],
+    "image": "/assets/images/placeholder.jpg",
+    "images": [
+      "/assets/images/placeholder.jpg"
+    ],
     "price": 0,
     "previousPrice": 0,
     "rating": 5,
@@ -8837,8 +8839,10 @@ export const productsList: ProductItem[] = [
   {
     "id": 101166,
     "title": "Lexus LS 2006",
-    "image": "",
-    "images": [],
+    "image": "/assets/images/placeholder.jpg",
+    "images": [
+      "/assets/images/placeholder.jpg"
+    ],
     "price": 0,
     "previousPrice": 0,
     "rating": 5,
@@ -8861,8 +8865,10 @@ export const productsList: ProductItem[] = [
   {
     "id": 101167,
     "title": "Toyota Aqua 2016",
-    "image": "",
-    "images": [],
+    "image": "/assets/images/placeholder.jpg",
+    "images": [
+      "/assets/images/placeholder.jpg"
+    ],
     "price": 0,
     "previousPrice": 0,
     "rating": 5,
@@ -8885,8 +8891,10 @@ export const productsList: ProductItem[] = [
   {
     "id": 101168,
     "title": "Toyota Crown 2010",
-    "image": "",
-    "images": [],
+    "image": "/assets/images/placeholder.jpg",
+    "images": [
+      "/assets/images/placeholder.jpg"
+    ],
     "price": 0,
     "previousPrice": 0,
     "rating": 5,
@@ -8909,8 +8917,10 @@ export const productsList: ProductItem[] = [
   {
     "id": 101169,
     "title": "Toyota Crown 2010",
-    "image": "",
-    "images": [],
+    "image": "/assets/images/placeholder.jpg",
+    "images": [
+      "/assets/images/placeholder.jpg"
+    ],
     "price": 0,
     "previousPrice": 0,
     "rating": 5,
@@ -8933,8 +8943,10 @@ export const productsList: ProductItem[] = [
   {
     "id": 101170,
     "title": "Toyota Voxy 2015",
-    "image": "",
-    "images": [],
+    "image": "/assets/images/placeholder.jpg",
+    "images": [
+      "/assets/images/placeholder.jpg"
+    ],
     "price": 0,
     "previousPrice": 0,
     "rating": 5,
@@ -8957,8 +8969,10 @@ export const productsList: ProductItem[] = [
   {
     "id": 101171,
     "title": "Toyota Estima 2015",
-    "image": "",
-    "images": [],
+    "image": "/assets/images/placeholder.jpg",
+    "images": [
+      "/assets/images/placeholder.jpg"
+    ],
     "price": 0,
     "previousPrice": 0,
     "rating": 5,
@@ -8981,8 +8995,10 @@ export const productsList: ProductItem[] = [
   {
     "id": 101172,
     "title": "Lexus LS 2007",
-    "image": "",
-    "images": [],
+    "image": "/assets/images/placeholder.jpg",
+    "images": [
+      "/assets/images/placeholder.jpg"
+    ],
     "price": 0,
     "previousPrice": 0,
     "rating": 5,
@@ -9005,8 +9021,10 @@ export const productsList: ProductItem[] = [
   {
     "id": 101173,
     "title": "Honda Fit 2018",
-    "image": "",
-    "images": [],
+    "image": "/assets/images/placeholder.jpg",
+    "images": [
+      "/assets/images/placeholder.jpg"
+    ],
     "price": 0,
     "previousPrice": 0,
     "rating": 5,
@@ -9029,8 +9047,10 @@ export const productsList: ProductItem[] = [
   {
     "id": 101174,
     "title": "Toyota Crown 2012",
-    "image": "",
-    "images": [],
+    "image": "/assets/images/placeholder.jpg",
+    "images": [
+      "/assets/images/placeholder.jpg"
+    ],
     "price": 0,
     "previousPrice": 0,
     "rating": 5,
@@ -9053,8 +9073,10 @@ export const productsList: ProductItem[] = [
   {
     "id": 101175,
     "title": "Toyota Prius 2009",
-    "image": "",
-    "images": [],
+    "image": "/assets/images/placeholder.jpg",
+    "images": [
+      "/assets/images/placeholder.jpg"
+    ],
     "price": 0,
     "previousPrice": 0,
     "rating": 5,
@@ -9077,8 +9099,10 @@ export const productsList: ProductItem[] = [
   {
     "id": 101176,
     "title": "Nissan Serena 2017",
-    "image": "",
-    "images": [],
+    "image": "/assets/images/placeholder.jpg",
+    "images": [
+      "/assets/images/placeholder.jpg"
+    ],
     "price": 0,
     "previousPrice": 0,
     "rating": 5,
@@ -9101,8 +9125,10 @@ export const productsList: ProductItem[] = [
   {
     "id": 101177,
     "title": "Toyota Vellfire 2013",
-    "image": "",
-    "images": [],
+    "image": "/assets/images/placeholder.jpg",
+    "images": [
+      "/assets/images/placeholder.jpg"
+    ],
     "price": 0,
     "previousPrice": 0,
     "rating": 5,
@@ -9125,8 +9151,10 @@ export const productsList: ProductItem[] = [
   {
     "id": 101178,
     "title": "Toyota Crown 2008",
-    "image": "",
-    "images": [],
+    "image": "/assets/images/placeholder.jpg",
+    "images": [
+      "/assets/images/placeholder.jpg"
+    ],
     "price": 0,
     "previousPrice": 0,
     "rating": 5,
@@ -9149,8 +9177,10 @@ export const productsList: ProductItem[] = [
   {
     "id": 101179,
     "title": "Nissan Serena 2017",
-    "image": "",
-    "images": [],
+    "image": "/assets/images/placeholder.jpg",
+    "images": [
+      "/assets/images/placeholder.jpg"
+    ],
     "price": 0,
     "previousPrice": 0,
     "rating": 5,
@@ -9173,8 +9203,10 @@ export const productsList: ProductItem[] = [
   {
     "id": 101180,
     "title": "Toyota Mark X 2010",
-    "image": "",
-    "images": [],
+    "image": "/assets/images/placeholder.jpg",
+    "images": [
+      "/assets/images/placeholder.jpg"
+    ],
     "price": 0,
     "previousPrice": 0,
     "rating": 5,
@@ -9197,8 +9229,10 @@ export const productsList: ProductItem[] = [
   {
     "id": 101181,
     "title": "Lexus LS 2006",
-    "image": "",
-    "images": [],
+    "image": "/assets/images/placeholder.jpg",
+    "images": [
+      "/assets/images/placeholder.jpg"
+    ],
     "price": 0,
     "previousPrice": 0,
     "rating": 5,
@@ -9221,8 +9255,10 @@ export const productsList: ProductItem[] = [
   {
     "id": 101182,
     "title": "Lexus LS 2006",
-    "image": "",
-    "images": [],
+    "image": "/assets/images/placeholder.jpg",
+    "images": [
+      "/assets/images/placeholder.jpg"
+    ],
     "price": 0,
     "previousPrice": 0,
     "rating": 5,
@@ -9245,8 +9281,10 @@ export const productsList: ProductItem[] = [
   {
     "id": 101183,
     "title": "Lexus LS 2007",
-    "image": "",
-    "images": [],
+    "image": "/assets/images/placeholder.jpg",
+    "images": [
+      "/assets/images/placeholder.jpg"
+    ],
     "price": 0,
     "previousPrice": 0,
     "rating": 5,
@@ -9269,8 +9307,10 @@ export const productsList: ProductItem[] = [
   {
     "id": 101184,
     "title": "Toyota Crown 2010",
-    "image": "",
-    "images": [],
+    "image": "/assets/images/placeholder.jpg",
+    "images": [
+      "/assets/images/placeholder.jpg"
+    ],
     "price": 0,
     "previousPrice": 0,
     "rating": 5,
@@ -9293,8 +9333,10 @@ export const productsList: ProductItem[] = [
   {
     "id": 101185,
     "title": "Toyota Vitz 2012",
-    "image": "",
-    "images": [],
+    "image": "/assets/images/placeholder.jpg",
+    "images": [
+      "/assets/images/placeholder.jpg"
+    ],
     "price": 0,
     "previousPrice": 0,
     "rating": 5,
@@ -9317,8 +9359,10 @@ export const productsList: ProductItem[] = [
   {
     "id": 101186,
     "title": "Nissan LEAF 2019",
-    "image": "",
-    "images": [],
+    "image": "/assets/images/placeholder.jpg",
+    "images": [
+      "/assets/images/placeholder.jpg"
+    ],
     "price": 0,
     "previousPrice": 0,
     "rating": 5,
@@ -9341,8 +9385,10 @@ export const productsList: ProductItem[] = [
   {
     "id": 101187,
     "title": "Toyota Vitz 2012",
-    "image": "",
-    "images": [],
+    "image": "/assets/images/placeholder.jpg",
+    "images": [
+      "/assets/images/placeholder.jpg"
+    ],
     "price": 0,
     "previousPrice": 0,
     "rating": 5,
@@ -9365,8 +9411,10 @@ export const productsList: ProductItem[] = [
   {
     "id": 101188,
     "title": "Toyota Aqua 2015",
-    "image": "",
-    "images": [],
+    "image": "/assets/images/placeholder.jpg",
+    "images": [
+      "/assets/images/placeholder.jpg"
+    ],
     "price": 0,
     "previousPrice": 0,
     "rating": 5,
@@ -9389,8 +9437,10 @@ export const productsList: ProductItem[] = [
   {
     "id": 101189,
     "title": "Lexus LS 2007",
-    "image": "",
-    "images": [],
+    "image": "/assets/images/placeholder.jpg",
+    "images": [
+      "/assets/images/placeholder.jpg"
+    ],
     "price": 0,
     "previousPrice": 0,
     "rating": 5,
@@ -9413,8 +9463,10 @@ export const productsList: ProductItem[] = [
   {
     "id": 101190,
     "title": "Toyota Crown 2009",
-    "image": "",
-    "images": [],
+    "image": "/assets/images/placeholder.jpg",
+    "images": [
+      "/assets/images/placeholder.jpg"
+    ],
     "price": 0,
     "previousPrice": 0,
     "rating": 5,
@@ -9437,8 +9489,10 @@ export const productsList: ProductItem[] = [
   {
     "id": 101191,
     "title": "Toyota Vitz 2013",
-    "image": "",
-    "images": [],
+    "image": "/assets/images/placeholder.jpg",
+    "images": [
+      "/assets/images/placeholder.jpg"
+    ],
     "price": 0,
     "previousPrice": 0,
     "rating": 5,
@@ -9461,8 +9515,10 @@ export const productsList: ProductItem[] = [
   {
     "id": 101192,
     "title": "Toyota Aqua 2022",
-    "image": "",
-    "images": [],
+    "image": "/assets/images/placeholder.jpg",
+    "images": [
+      "/assets/images/placeholder.jpg"
+    ],
     "price": 0,
     "previousPrice": 0,
     "rating": 5,
@@ -9485,8 +9541,10 @@ export const productsList: ProductItem[] = [
   {
     "id": 101193,
     "title": "Lexus LS 2006",
-    "image": "",
-    "images": [],
+    "image": "/assets/images/placeholder.jpg",
+    "images": [
+      "/assets/images/placeholder.jpg"
+    ],
     "price": 0,
     "previousPrice": 0,
     "rating": 5,
@@ -9509,8 +9567,10 @@ export const productsList: ProductItem[] = [
   {
     "id": 101194,
     "title": "Toyota Mark X 2011",
-    "image": "",
-    "images": [],
+    "image": "/assets/images/placeholder.jpg",
+    "images": [
+      "/assets/images/placeholder.jpg"
+    ],
     "price": 0,
     "previousPrice": 0,
     "rating": 5,
@@ -9533,8 +9593,10 @@ export const productsList: ProductItem[] = [
   {
     "id": 101195,
     "title": "Nissan Elgrand 2013",
-    "image": "",
-    "images": [],
+    "image": "/assets/images/placeholder.jpg",
+    "images": [
+      "/assets/images/placeholder.jpg"
+    ],
     "price": 0,
     "previousPrice": 0,
     "rating": 5,
@@ -9557,8 +9619,10 @@ export const productsList: ProductItem[] = [
   {
     "id": 101197,
     "title": "Toyota Crown 2009",
-    "image": "",
-    "images": [],
+    "image": "/assets/images/placeholder.jpg",
+    "images": [
+      "/assets/images/placeholder.jpg"
+    ],
     "price": 0,
     "previousPrice": 0,
     "rating": 5,
@@ -9581,8 +9645,10 @@ export const productsList: ProductItem[] = [
   {
     "id": 101198,
     "title": "Nissan LEAF 2019",
-    "image": "",
-    "images": [],
+    "image": "/assets/images/placeholder.jpg",
+    "images": [
+      "/assets/images/placeholder.jpg"
+    ],
     "price": 0,
     "previousPrice": 0,
     "rating": 5,
@@ -9605,8 +9671,10 @@ export const productsList: ProductItem[] = [
   {
     "id": 101199,
     "title": "Toyota Crown 2009",
-    "image": "",
-    "images": [],
+    "image": "/assets/images/placeholder.jpg",
+    "images": [
+      "/assets/images/placeholder.jpg"
+    ],
     "price": 0,
     "previousPrice": 0,
     "rating": 5,
@@ -9629,8 +9697,10 @@ export const productsList: ProductItem[] = [
   {
     "id": 101200,
     "title": "Nissan LEAF 2019",
-    "image": "",
-    "images": [],
+    "image": "/assets/images/placeholder.jpg",
+    "images": [
+      "/assets/images/placeholder.jpg"
+    ],
     "price": 0,
     "previousPrice": 0,
     "rating": 5,
@@ -9653,8 +9723,10 @@ export const productsList: ProductItem[] = [
   {
     "id": 101201,
     "title": "Nissan LEAF 2019",
-    "image": "",
-    "images": [],
+    "image": "/assets/images/placeholder.jpg",
+    "images": [
+      "/assets/images/placeholder.jpg"
+    ],
     "price": 0,
     "previousPrice": 0,
     "rating": 5,
@@ -9677,8 +9749,10 @@ export const productsList: ProductItem[] = [
   {
     "id": 101202,
     "title": "Nissan LEAF 2019",
-    "image": "",
-    "images": [],
+    "image": "/assets/images/placeholder.jpg",
+    "images": [
+      "/assets/images/placeholder.jpg"
+    ],
     "price": 0,
     "previousPrice": 0,
     "rating": 5,
@@ -9701,8 +9775,10 @@ export const productsList: ProductItem[] = [
   {
     "id": 101203,
     "title": "Lexus LS 2011",
-    "image": "",
-    "images": [],
+    "image": "/assets/images/placeholder.jpg",
+    "images": [
+      "/assets/images/placeholder.jpg"
+    ],
     "price": 0,
     "previousPrice": 0,
     "rating": 5,
@@ -9725,8 +9801,10 @@ export const productsList: ProductItem[] = [
   {
     "id": 101204,
     "title": "Lexus LS 2007",
-    "image": "",
-    "images": [],
+    "image": "/assets/images/placeholder.jpg",
+    "images": [
+      "/assets/images/placeholder.jpg"
+    ],
     "price": 0,
     "previousPrice": 0,
     "rating": 5,
@@ -9749,8 +9827,10 @@ export const productsList: ProductItem[] = [
   {
     "id": 101205,
     "title": "Toyota Crown 2011",
-    "image": "",
-    "images": [],
+    "image": "/assets/images/placeholder.jpg",
+    "images": [
+      "/assets/images/placeholder.jpg"
+    ],
     "price": 0,
     "previousPrice": 0,
     "rating": 5,
@@ -9773,8 +9853,10 @@ export const productsList: ProductItem[] = [
   {
     "id": 101206,
     "title": "Toyota Crown 2007",
-    "image": "",
-    "images": [],
+    "image": "/assets/images/placeholder.jpg",
+    "images": [
+      "/assets/images/placeholder.jpg"
+    ],
     "price": 0,
     "previousPrice": 0,
     "rating": 5,
@@ -9797,8 +9879,10 @@ export const productsList: ProductItem[] = [
   {
     "id": 101207,
     "title": "Toyota Alphard 2013",
-    "image": "",
-    "images": [],
+    "image": "/assets/images/placeholder.jpg",
+    "images": [
+      "/assets/images/placeholder.jpg"
+    ],
     "price": 0,
     "previousPrice": 0,
     "rating": 5,
@@ -9821,8 +9905,10 @@ export const productsList: ProductItem[] = [
   {
     "id": 101209,
     "title": "Toyota Prius 2012",
-    "image": "",
-    "images": [],
+    "image": "/assets/images/placeholder.jpg",
+    "images": [
+      "/assets/images/placeholder.jpg"
+    ],
     "price": 0,
     "previousPrice": 0,
     "rating": 5,
@@ -9845,8 +9931,10 @@ export const productsList: ProductItem[] = [
   {
     "id": 101210,
     "title": "Toyota Estima 2012",
-    "image": "",
-    "images": [],
+    "image": "/assets/images/placeholder.jpg",
+    "images": [
+      "/assets/images/placeholder.jpg"
+    ],
     "price": 0,
     "previousPrice": 0,
     "rating": 5,
@@ -9869,8 +9957,10 @@ export const productsList: ProductItem[] = [
   {
     "id": 101211,
     "title": "Toyota Crown 2009",
-    "image": "",
-    "images": [],
+    "image": "/assets/images/placeholder.jpg",
+    "images": [
+      "/assets/images/placeholder.jpg"
+    ],
     "price": 0,
     "previousPrice": 0,
     "rating": 5,
@@ -9893,8 +9983,10 @@ export const productsList: ProductItem[] = [
   {
     "id": 101212,
     "title": "Toyota Crown 2008",
-    "image": "",
-    "images": [],
+    "image": "/assets/images/placeholder.jpg",
+    "images": [
+      "/assets/images/placeholder.jpg"
+    ],
     "price": 0,
     "previousPrice": 0,
     "rating": 5,
@@ -9917,8 +10009,10 @@ export const productsList: ProductItem[] = [
   {
     "id": 101213,
     "title": "Toyota Crown 2011",
-    "image": "",
-    "images": [],
+    "image": "/assets/images/placeholder.jpg",
+    "images": [
+      "/assets/images/placeholder.jpg"
+    ],
     "price": 0,
     "previousPrice": 0,
     "rating": 5,
@@ -9941,8 +10035,10 @@ export const productsList: ProductItem[] = [
   {
     "id": 101214,
     "title": "Toyota Crown 2012",
-    "image": "",
-    "images": [],
+    "image": "/assets/images/placeholder.jpg",
+    "images": [
+      "/assets/images/placeholder.jpg"
+    ],
     "price": 0,
     "previousPrice": 0,
     "rating": 5,
@@ -9965,8 +10061,10 @@ export const productsList: ProductItem[] = [
   {
     "id": 101215,
     "title": "Toyota Estima 2010",
-    "image": "",
-    "images": [],
+    "image": "/assets/images/placeholder.jpg",
+    "images": [
+      "/assets/images/placeholder.jpg"
+    ],
     "price": 0,
     "previousPrice": 0,
     "rating": 5,
@@ -9989,8 +10087,10 @@ export const productsList: ProductItem[] = [
   {
     "id": 101216,
     "title": "Toyota Estima 2010",
-    "image": "",
-    "images": [],
+    "image": "/assets/images/placeholder.jpg",
+    "images": [
+      "/assets/images/placeholder.jpg"
+    ],
     "price": 0,
     "previousPrice": 0,
     "rating": 5,
@@ -10013,8 +10113,10 @@ export const productsList: ProductItem[] = [
   {
     "id": 101217,
     "title": "Honda Odyssey 2017",
-    "image": "",
-    "images": [],
+    "image": "/assets/images/placeholder.jpg",
+    "images": [
+      "/assets/images/placeholder.jpg"
+    ],
     "price": 0,
     "previousPrice": 0,
     "rating": 5,
@@ -10037,8 +10139,10 @@ export const productsList: ProductItem[] = [
   {
     "id": 101218,
     "title": "Honda Odyssey 2016",
-    "image": "",
-    "images": [],
+    "image": "/assets/images/placeholder.jpg",
+    "images": [
+      "/assets/images/placeholder.jpg"
+    ],
     "price": 0,
     "previousPrice": 0,
     "rating": 5,
@@ -10061,8 +10165,10 @@ export const productsList: ProductItem[] = [
   {
     "id": 101219,
     "title": "Subaru Impreza XV 2014",
-    "image": "",
-    "images": [],
+    "image": "/assets/images/placeholder.jpg",
+    "images": [
+      "/assets/images/placeholder.jpg"
+    ],
     "price": 0,
     "previousPrice": 0,
     "rating": 5,
@@ -10085,8 +10191,10 @@ export const productsList: ProductItem[] = [
   {
     "id": 101220,
     "title": "Toyota Esquire 2018",
-    "image": "",
-    "images": [],
+    "image": "/assets/images/placeholder.jpg",
+    "images": [
+      "/assets/images/placeholder.jpg"
+    ],
     "price": 0,
     "previousPrice": 0,
     "rating": 5,
@@ -10109,8 +10217,10 @@ export const productsList: ProductItem[] = [
   {
     "id": 101221,
     "title": "Honda Vezel 2016",
-    "image": "",
-    "images": [],
+    "image": "/assets/images/placeholder.jpg",
+    "images": [
+      "/assets/images/placeholder.jpg"
+    ],
     "price": 0,
     "previousPrice": 0,
     "rating": 5,
@@ -10133,8 +10243,10 @@ export const productsList: ProductItem[] = [
   {
     "id": 101222,
     "title": "Nissan Elgrand 2013",
-    "image": "",
-    "images": [],
+    "image": "/assets/images/placeholder.jpg",
+    "images": [
+      "/assets/images/placeholder.jpg"
+    ],
     "price": 0,
     "previousPrice": 0,
     "rating": 5,
@@ -10157,8 +10269,10 @@ export const productsList: ProductItem[] = [
   {
     "id": 101223,
     "title": "Honda Fit 2019",
-    "image": "",
-    "images": [],
+    "image": "/assets/images/placeholder.jpg",
+    "images": [
+      "/assets/images/placeholder.jpg"
+    ],
     "price": 0,
     "previousPrice": 0,
     "rating": 5,
@@ -10181,8 +10295,10 @@ export const productsList: ProductItem[] = [
   {
     "id": 101224,
     "title": "Subaru Impreza XV 2014",
-    "image": "",
-    "images": [],
+    "image": "/assets/images/placeholder.jpg",
+    "images": [
+      "/assets/images/placeholder.jpg"
+    ],
     "price": 0,
     "previousPrice": 0,
     "rating": 5,
@@ -10205,8 +10321,10 @@ export const productsList: ProductItem[] = [
   {
     "id": 101225,
     "title": "Nissan Serena 2018",
-    "image": "",
-    "images": [],
+    "image": "/assets/images/placeholder.jpg",
+    "images": [
+      "/assets/images/placeholder.jpg"
+    ],
     "price": 0,
     "previousPrice": 0,
     "rating": 5,

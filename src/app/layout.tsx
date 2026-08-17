@@ -2,7 +2,6 @@ import type { Metadata } from "next";
 import { Roboto, Inter_Tight } from "next/font/google";
 import Script from "next/script";
 import SocialBar from "@/sections/common/SocialBar";
-
 import "../../public/assets/css/style.css";
 import ContextProvider from "../components/context/ContextProvider";
 import CustomLayout from "../components/custom-layout/CustomLayout";
@@ -24,6 +23,10 @@ export const metadata: Metadata = {
   title: "Japanese Cars for Sale in Australia | UKA Japan Motors",
   description:
     "UKA Japan Motors offers premium Japanese cars for sale in Australia. Browse reliable used cars, automatics, and small cars at competitive prices today.",
+  metadataBase: new URL("https://ukajapan.com.au"), // <-- YEH LINE ADD KAREIN
+  alternates: {                                     // <-- YEH BLOCK ADD KAREIN
+    canonical: "./",                                //
+  },                                                //
   verification: {
     google: "m2HEzFR7ahombtQlYFbMbEms1rcwi5qJgTcbhFYZJrM",
   },

@@ -9,9 +9,13 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   const { slug } = await params;
   const blog = await getBlogBySlugServer(decodeURIComponent(slug));
   if (!blog) return { title: "Blog Not Found" };
+  
   return {
     title: blog.seo_title || blog.title,
     description: blog.meta_description || "",
+    alternates: {                                                                // <-- YEH BLOCK ADD KAREIN
+      canonical: `https://ukajapan.com.au/inner/blog-details/${slug}`,           // <-- YEH LINE ADD KAREIN
+    },                                                                           // <-- YEH BLOCK ADD KAREIN
     openGraph: {
       title: blog.seo_title || blog.title,
       description: blog.meta_description || "",

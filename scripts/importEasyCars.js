@@ -1,13 +1,31 @@
+
+
 const fs = require("fs");
 const path = require("path");
 const csv = require("csv-parser");
+
+
 
 const CSV_FILE = path.join(__dirname, '../public/data/stock.csv');
 const IMAGE_DIR = path.join(__dirname, '../public/assets/images/cars');
 const OUTPUT_FILE = path.join(__dirname, '../public/data/cars.json');
 const TS_OUTPUT_FILE = path.join(__dirname, '../src/all-content/products/productData.ts');
 
+// Sync latest CSV dropped by EasyCars FTP automatically
+const ftpSourceFile = '/home/easycars/stock.csv';
+if (fs.existsSync(ftpSourceFile)) {
+  try {
+    fs.copyFileSync(ftpSourceFile, CSV_FILE);
+    console.log("Successfully synced latest stock.csv from /home/easycars/");
+  } catch (err) {
+    console.error("Error copying stock.csv from FTP folder:", err);
+  }
+}
+
+
+
 const products = [];
+
 
 function findImages(stockNumber) {
   if (!fs.existsSync(IMAGE_DIR)) {

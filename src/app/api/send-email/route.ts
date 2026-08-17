@@ -19,21 +19,27 @@ const YARD_FORM_TYPES = ['testdrive', 'finance', 'enquiry'];
 // ─── NEW FORMS (sirf info + saim bhejenge) ───
 const NEW_FORM_TYPES = ['contact', 'wholesale', 'finance_apply', 'finance_info', 'warranty'];
 
-function getRecipients(formType: string, location?: string): string[] {
+function getRecipients(formType: string, location?: string, carYard?: string, carCity?: string): string[] {
   const recipients: string[] = [];
+  const searchKey = (location || carYard || carCity || '').toLowerCase();
 
-  // ─── YARD FORMS: SIRF LOCATION-BASED EMAIL ───
-  if (YARD_FORM_TYPES.includes(formType) && location && YARD_EMAILS[location]) {
-    recipients.push(YARD_EMAILS[location]);
+  if (YARD_FORM_TYPES.includes(formType)) {
+    if (searchKey.includes('mordialloc') || searchKey.includes('2')) {
+      recipients.push(YARD_EMAILS.mordialloc);
+    } else if (searchKey.includes('brisbane') || searchKey.includes('slacks') || searchKey.includes('4')) {
+      recipients.push(YARD_EMAILS.brisbane);
+    } else {
+      // Default / Fallback yard sales email (Maidstone) agar koi aur match na ho
+      recipients.push(YARD_EMAILS.maidstone);
+    }
   }
 
-  // ─── NEW FORMS: SIRF INFO + SAIM ───
   if (NEW_FORM_TYPES.includes(formType)) {
     recipients.push('info@ukajapan.com.au');
     recipients.push('saim@ukajapan.com.au');
   }
 
-  return Array.from(new Set(recipients)); // duplicates hataye
+  return Array.from(new Set(recipients));
 }
 
 export async function POST(request: Request) {
@@ -49,9 +55,9 @@ export async function POST(request: Request) {
 
   try {
     const body = await request.json();
-    const { formType, name, email, phone, message, contactMethod, carTitle, location, ...extra } = body;
+    const { formType, name, email, phone, message, contactMethod, carTitle, location, yard, city, ...extra } = body;
 
-    console.log(`[Email API] Received ${formType} from ${name} (${email}) | Location: ${location || 'N/A'}`);
+    console.log(`[Email API] Received ${formType} from ${name} (${email}) | Location/Yard/City: ${location || yard || city || 'N/A'}`);
 
     // ─── SUBJECT MAP ───
     const subjectMap: Record<string, string> = {
@@ -66,7 +72,7 @@ export async function POST(request: Request) {
     };
 
     const subject = subjectMap[formType] || 'New Website Submission';
-    const recipients = getRecipients(formType, location);
+    const recipients = getRecipients(formType, location, yard, city);
 
     console.log(`[Email API] Recipients: ${recipients.join(', ')}`);
 
@@ -107,11 +113,12 @@ export async function POST(request: Request) {
       `;
     }
 
-    if (location) {
+    const finalLoc = location || yard || city;
+    if (finalLoc) {
       htmlBody += `
             <tr>
               <td style="padding:8px 0;border-bottom:1px solid #f0f0f0;"><strong>Yard Location</strong></td>
-              <td style="padding:8px 0;border-bottom:1px solid #f0f0f0;">${escapeHtml(location.charAt(0).toUpperCase() + location.slice(1))} Yard</td>
+              <td style="padding:8px 0;border-bottom:1px solid #f0f0f0;">${escapeHtml(String(finalLoc))}</td>
             </tr>
       `;
     }
@@ -125,7 +132,7 @@ export async function POST(request: Request) {
       `;
     }
 
-    // ─── PURANE FORM TYPES (BILKUL WAISE HI) ───
+    // ─── PURANE FORM TYPES ───
     if (formType === 'testdrive') {
       if (extra.date) {
         htmlBody += `
@@ -319,12 +326,6 @@ export async function POST(request: Request) {
       }
     }
 
-    // ─── WARRANTY FORM (koi extra field nahi, sab upar cover ho gaye) ───
-    if (formType === 'warranty') {
-      // Warranty form mein sirf name, phone, email, message hain
-      // Jo upar already show ho rahe hain
-    }
-
     htmlBody += `
           </table>
         </div>
@@ -350,7 +351,7 @@ export async function POST(request: Request) {
       );
     }
 
-    console.log(`[Email API] Sent successfully. ID: ${data?.id || 'N/A'}`);
+    console.log(`[Email API] Sent successfully to [${recipients.join(', ')}]. ID: ${data?.id || 'N/A'}`);
     return NextResponse.json({ success: true, data });
   } catch (error: any) {
     console.error('[Email API] Unhandled exception:', error);

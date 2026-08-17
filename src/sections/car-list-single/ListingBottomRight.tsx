@@ -110,8 +110,11 @@ const useEmailSubmit = (formType: string, onClose: () => void, car?: any) => {
     const [error, setError] = useState('');
     const [submitted, setSubmitted] = useState(false);
 
-    const carYard = car?.yard || car?.Yard || null;
-    const carCity = car?.city || car?.City || null;
+    const carYard = car?.yard || car?.Yard || car?.YardCode || car?.YardName || car?.city || car?.City || '';
+    
+    // Car ka title multiple variations se dhoond kar nikalayen
+    const resolvedCarTitle = car?.Title || car?.title || car?.name || car?.Name || 
+        (car?.Make && car?.Model ? `${car.Make} ${car.Model} ${car.Year || ''}`.trim() : '') || 'N/A';
 
     const sendEmail = async (payload: Record<string, any>) => {
         setIsLoading(true);
@@ -123,9 +126,10 @@ const useEmailSubmit = (formType: string, onClose: () => void, car?: any) => {
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
                     formType,
-                    carTitle: car?.Title || car?.title || 'N/A',
+                    carTitle: resolvedCarTitle,
                     yard: carYard,
-                    city: carCity,
+                    city: carYard,
+                    location: carYard,
                     ...payload,
                 }),
             });

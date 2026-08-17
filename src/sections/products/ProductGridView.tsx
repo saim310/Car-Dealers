@@ -1,6 +1,7 @@
 "use client";
 import React from 'react';
 import Link from 'next/link';
+import { getYardCity } from '@/config/yards';
 
 const formatNumber = (num: string | number) => {
     const cleaned = String(num).replace(/[^0-9]/g, '');
@@ -48,6 +49,11 @@ export default function ProductGridView({ product }: { product: any }) {
     const badge = getStatusBadge(product);
     const priceNum = product.salePrice || product.price || product.Price || 0;
     const hasPrice = priceNum > 0 && priceNum !== 'Contact for Price';
+    const yardValue = product.yard || product.Yard;
+    // Specific yard name (Maidstone/Mordialloc/Brisbane) takes priority over the
+    // generic city field, since "city" alone can't distinguish Maidstone from Mordialloc.
+    const derivedYardCity = getYardCity(yardValue);
+    const cityLabel = derivedYardCity !== 'N/A' ? derivedYardCity : (product.city || product.City || 'N/A');
 
     return (
         <div className="col-xl-4 col-lg-6 col-md-6 mb-4">
@@ -116,11 +122,11 @@ export default function ProductGridView({ product }: { product: any }) {
                         </Link>
                     </h4>
 
-                    {/* Location / Yard Info */}
+                    {/* Location / Yard Info — driven by the product's own data now */}
                     <div style={{ display: 'flex', alignItems: 'center', gap: '6px', marginBottom: '10px' }}>
                         <i className="fas fa-map-marker-alt" style={{ color: '#dc3545', fontSize: '13px' }}></i>
                         <span style={{ fontSize: '13px', color: '#555', fontWeight: 600 }}>
-                            Yard {product.yard || product.Yard || 'N/A'}: {typeof window !== 'undefined' && window.location.search.includes('city=Melbourne') ? 'Melbourne' : typeof window !== 'undefined' && window.location.search.includes('city=Brisbane') ? 'Brisbane' : String(product.yard || product.Yard) === '1' ? 'Maidstone' : String(product.yard || product.Yard) === '2' ? 'Mordialloc' : String(product.yard || product.Yard) === '4' ? 'Slacks Creek' : product.city || 'N/A'}
+                            Yard {yardValue || 'N/A'}: {cityLabel}
                         </span>
                     </div>
 

@@ -5,15 +5,13 @@ interface ListingsSlidersProps {
     car?: any;
 }
 
+const FALLBACK_IMAGE = "/assets/images/shop/shop-product-1-1.jpg";
+
 export default function ListingsSliders({ car }: ListingsSlidersProps) {
-    const stockNo = car?.StockNumber || car?.id || '100322';
-    const images = [
-        `/assets/images/cars/${stockNo}_1.jpg`,
-        `/assets/images/cars/${stockNo}_2.jpg`,
-        `/assets/images/cars/${stockNo}_3.jpg`,
-        `/assets/images/cars/${stockNo}_4.jpg`,
-        `/assets/images/cars/${stockNo}_5.jpg`,
-    ];
+    // Use the car's real images[] array (whatever length it is) instead of guessing 5 filenames from the stock number.
+    const images: string[] = (car?.images && car.images.length > 0)
+        ? car.images
+        : (car?.image ? [car.image] : [FALLBACK_IMAGE]);
 
     const [activeIndex, setActiveIndex] = useState(0);
 
@@ -38,7 +36,7 @@ export default function ListingsSliders({ car }: ListingsSlidersProps) {
                     src={images[activeIndex]}
                     alt={car?.Title || 'Car'}
                     style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }}
-                    onError={(e: any) => { e.target.src = "/assets/images/shop/shop-product-1-1.jpg"; }}
+                    onError={(e: any) => { e.target.src = FALLBACK_IMAGE; }}
                 />
 
                 {/* Badge */}
@@ -105,73 +103,85 @@ export default function ListingsSliders({ car }: ListingsSlidersProps) {
                     {activeIndex + 1} / {images.length}
                 </div>
 
-                {/* Nav Arrows */}
-                <button onClick={() => setActiveIndex((prev) => (prev - 1 + images.length) % images.length)} style={{
-                    position: 'absolute',
-                    left: '14px',
-                    top: '50%',
-                    transform: 'translateY(-50%)',
-                    width: '40px',
-                    height: '40px',
-                    borderRadius: '50%',
-                    background: '#fff',
-                    border: 'none',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    cursor: 'pointer',
-                    boxShadow: '0 2px 8px rgba(0,0,0,0.15)'
-                }}>
-                    <i className="fas fa-chevron-left" style={{ color: '#1a1a2e', fontSize: '13px' }}></i>
-                </button>
-                <button onClick={() => setActiveIndex((prev) => (prev + 1) % images.length)} style={{
-                    position: 'absolute',
-                    right: '14px',
-                    top: '50%',
-                    transform: 'translateY(-50%)',
-                    width: '40px',
-                    height: '40px',
-                    borderRadius: '50%',
-                    background: '#fff',
-                    border: 'none',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    cursor: 'pointer',
-                    boxShadow: '0 2px 8px rgba(0,0,0,0.15)'
-                }}>
-                    <i className="fas fa-chevron-right" style={{ color: '#1a1a2e', fontSize: '13px' }}></i>
-                </button>
+                {/* Nav Arrows — only shown when there's more than one image */}
+                {images.length > 1 && (
+                    <>
+                        <button onClick={() => setActiveIndex((prev) => (prev - 1 + images.length) % images.length)} style={{
+                            position: 'absolute',
+                            left: '14px',
+                            top: '50%',
+                            transform: 'translateY(-50%)',
+                            width: '40px',
+                            height: '40px',
+                            borderRadius: '50%',
+                            background: '#fff',
+                            border: 'none',
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            cursor: 'pointer',
+                            boxShadow: '0 2px 8px rgba(0,0,0,0.15)'
+                        }}>
+                            <i className="fas fa-chevron-left" style={{ color: '#1a1a2e', fontSize: '13px' }}></i>
+                        </button>
+                        <button onClick={() => setActiveIndex((prev) => (prev + 1) % images.length)} style={{
+                            position: 'absolute',
+                            right: '14px',
+                            top: '50%',
+                            transform: 'translateY(-50%)',
+                            width: '40px',
+                            height: '40px',
+                            borderRadius: '50%',
+                            background: '#fff',
+                            border: 'none',
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            cursor: 'pointer',
+                            boxShadow: '0 2px 8px rgba(0,0,0,0.15)'
+                        }}>
+                            <i className="fas fa-chevron-right" style={{ color: '#1a1a2e', fontSize: '13px' }}></i>
+                        </button>
+                    </>
+                )}
             </div>
 
-            {/* Thumbnails - Full width, equal distribution, larger */}
-            <div style={{ display: 'flex', gap: '10px', marginTop: '12px', width: '100%' }}>
-                {images.map((img, idx) => (
-                    <button
-                        key={idx}
-                        onClick={() => setActiveIndex(idx)}
-                        style={{
-                            flex: 1,
-                            height: '85px',
-                            borderRadius: '10px',
-                            overflow: 'hidden',
-                            border: activeIndex === idx ? '3px solid #ffc107' : '3px solid transparent',
-                            padding: 0,
-                            cursor: 'pointer',
-                            opacity: activeIndex === idx ? 1 : 0.65,
-                            transition: 'all 0.2s ease',
-                            minWidth: 0
-                        }}
-                    >
-                        <img
-                            src={img}
-                            alt={`Thumb ${idx + 1}`}
-                            style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }}
-                            onError={(e: any) => { e.target.src = "/assets/images/shop/shop-product-1-1.jpg"; }}
-                        />
-                    </button>
-                ))}
-            </div>
+            {/* Thumbnails — scrollable row so any number of images (5, 10, 15...) stays readable instead of getting squished */}
+            {images.length > 1 && (
+                <div style={{
+                    display: 'flex',
+                    gap: '10px',
+                    marginTop: '12px',
+                    width: '100%',
+                    overflowX: 'auto',
+                    paddingBottom: '4px'
+                }}>
+                    {images.map((img, idx) => (
+                        <button
+                            key={idx}
+                            onClick={() => setActiveIndex(idx)}
+                            style={{
+                                flex: '0 0 90px',
+                                height: '85px',
+                                borderRadius: '10px',
+                                overflow: 'hidden',
+                                border: activeIndex === idx ? '3px solid #ffc107' : '3px solid transparent',
+                                padding: 0,
+                                cursor: 'pointer',
+                                opacity: activeIndex === idx ? 1 : 0.65,
+                                transition: 'all 0.2s ease'
+                            }}
+                        >
+                            <img
+                                src={img}
+                                alt={`Thumb ${idx + 1}`}
+                                style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }}
+                                onError={(e: any) => { e.target.src = FALLBACK_IMAGE; }}
+                            />
+                        </button>
+                    ))}
+                </div>
+            )}
         </div>
     );
 }

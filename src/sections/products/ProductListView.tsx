@@ -2,7 +2,7 @@
 import React from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
-import { useSearchParams } from 'next/navigation';
+import { getYardCity } from '@/config/yards';
 
 const formatNumber = (num: string | number) => {
     const cleaned = String(num).replace(/[^0-9]/g, '');
@@ -25,26 +25,15 @@ const getStatusBadge = (item: any) => {
 };
 
 export default function ProductListView({ product }: { product: any }) {
-    const searchParams = useSearchParams();
-    const cityParam = searchParams.get('city');
-
     const carId = product.id || product.stockNumber || product.vin || '1';
     const badge = getStatusBadge(product);
     const priceNum = product.salePrice || product.price || product.Price || 0;
     const hasPrice = priceNum > 0 && priceNum !== 'Contact for Price';
-
-    // Location label resolution
-    const getLocationLabel = () => {
-        if (cityParam === 'Melbourne') return 'Melbourne';
-        if (cityParam === 'Brisbane') return 'Brisbane';
-        
-        const yardVal = String(product.yard || product.Yard);
-        if (yardVal === '1') return 'Maidstone';
-        if (yardVal === '2') return 'Mordialloc';
-        if (yardVal === '4') return 'Slacks Creek';
-        
-        return product.city || 'N/A';
-    };
+    const yardValue = product.yard || product.Yard;
+    // Specific yard name (Maidstone/Mordialloc/Brisbane) takes priority over the
+    // generic city field, since "city" alone can't distinguish Maidstone from Mordialloc.
+    const derivedYardCity = getYardCity(yardValue);
+    const cityLabel = derivedYardCity !== 'N/A' ? derivedYardCity : (product.city || product.City || 'N/A');
 
     return (
         <div className="col-xl-6 col-lg-6 mb-4">
@@ -115,11 +104,11 @@ export default function ProductListView({ product }: { product: any }) {
                             </Link>
                         </h4>
 
-                        {/* Location / Yard Info */}
+                        {/* Location / Yard Info — driven by the product's own data now */}
                         <div style={{ display: 'flex', alignItems: 'center', gap: '6px', marginBottom: '10px' }}>
                             <i className="fas fa-map-marker-alt" style={{ color: '#dc3545', fontSize: '13px' }}></i>
                             <span style={{ fontSize: '13px', color: '#555', fontWeight: 600 }}>
-                                Yard {product.yard || product.Yard || 'N/A'}: {getLocationLabel()}
+                                Yard {yardValue || 'N/A'}: {cityLabel}
                             </span>
                         </div>
 

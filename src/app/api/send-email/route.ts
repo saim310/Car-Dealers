@@ -13,21 +13,27 @@ const YARD_EMAILS: Record<string, string> = {
   brisbane: 'sales.brisbane@ukajapan.com.au',
 };
 
-const GENERAL_EMAIL = 'info@ukajapan.com.au';
+// ─── YARD FORMS (sirf location-based email bhejenge) ───
+const YARD_FORM_TYPES = ['testdrive', 'finance', 'enquiry'];
+
+// ─── NEW FORMS (sirf info + saim bhejenge) ───
+const NEW_FORM_TYPES = ['contact', 'wholesale', 'finance_apply', 'finance_info', 'warranty'];
 
 function getRecipients(formType: string, location?: string): string[] {
   const recipients: string[] = [];
 
-  // Test Drive: yard-specific email based on location
-  if (formType === 'testdrive' && location && YARD_EMAILS[location]) {
+  // ─── YARD FORMS: SIRF LOCATION-BASED EMAIL ───
+  if (YARD_FORM_TYPES.includes(formType) && location && YARD_EMAILS[location]) {
     recipients.push(YARD_EMAILS[location]);
   }
 
-  // General: info@ukajapan.com.au for ALL submissions
-  // (Finance, Enquiry, aur Test Drive mein bhi CC ki tarah)
-  recipients.push(GENERAL_EMAIL);
+  // ─── NEW FORMS: SIRF INFO + SAIM ───
+  if (NEW_FORM_TYPES.includes(formType)) {
+    recipients.push('info@ukajapan.com.au');
+    recipients.push('saim@ukajapan.com.au');
+  }
 
-	return Array.from(new Set(recipients)); // duplicates remove karne ke liye
+  return Array.from(new Set(recipients)); // duplicates hataye
 }
 
 export async function POST(request: Request) {
@@ -47,10 +53,16 @@ export async function POST(request: Request) {
 
     console.log(`[Email API] Received ${formType} from ${name} (${email}) | Location: ${location || 'N/A'}`);
 
+    // ─── SUBJECT MAP ───
     const subjectMap: Record<string, string> = {
       enquiry: `New Enquiry — ${name}`,
       testdrive: `New Test Drive Request — ${name}`,
       finance: `New Finance Application — ${name}`,
+      contact: `New Contact Form Submission — ${name}`,
+      wholesale: `New Wholesale Enquiry — ${name}`,
+      finance_apply: `New Finance Application (Apply) — ${name}`,
+      finance_info: `New Finance Enquiry (Info) — ${name}`,
+      warranty: `New Warranty Enquiry — ${name}`,
     };
 
     const subject = subjectMap[formType] || 'New Website Submission';
@@ -58,6 +70,7 @@ export async function POST(request: Request) {
 
     console.log(`[Email API] Recipients: ${recipients.join(', ')}`);
 
+    // ─── HTML BODY ───
     let htmlBody = `
       <div style="max-width:600px;margin:0 auto;font-family:Arial,sans-serif;color:#333;">
         <div style="background:#1a1a2e;padding:20px;text-align:center;">
@@ -112,6 +125,7 @@ export async function POST(request: Request) {
       `;
     }
 
+    // ─── PURANE FORM TYPES (BILKUL WAISE HI) ───
     if (formType === 'testdrive') {
       if (extra.date) {
         htmlBody += `
@@ -183,6 +197,134 @@ export async function POST(request: Request) {
       `;
     }
 
+    // ─── NAYE FORM TYPES ───
+    if (formType === 'wholesale') {
+      if (extra.dealership) {
+        htmlBody += `
+            <tr>
+              <td style="padding:8px 0;border-bottom:1px solid #f0f0f0;"><strong>Dealership</strong></td>
+              <td style="padding:8px 0;border-bottom:1px solid #f0f0f0;">${escapeHtml(extra.dealership)}</td>
+            </tr>
+        `;
+      }
+      if (extra.legalEntity) {
+        htmlBody += `
+            <tr>
+              <td style="padding:8px 0;border-bottom:1px solid #f0f0f0;"><strong>Legal Entity</strong></td>
+              <td style="padding:8px 0;border-bottom:1px solid #f0f0f0;">${escapeHtml(extra.legalEntity)}</td>
+            </tr>
+        `;
+      }
+      if (extra.lcmt) {
+        htmlBody += `
+            <tr>
+              <td style="padding:8px 0;border-bottom:1px solid #f0f0f0;"><strong>LCMT Number</strong></td>
+              <td style="padding:8px 0;border-bottom:1px solid #f0f0f0;">${escapeHtml(extra.lcmt)}</td>
+            </tr>
+        `;
+      }
+    }
+
+    if (formType === 'finance_apply') {
+      if (extra.loanAmount) {
+        htmlBody += `
+            <tr>
+              <td style="padding:8px 0;border-bottom:1px solid #f0f0f0;"><strong>Loan Amount</strong></td>
+              <td style="padding:8px 0;border-bottom:1px solid #f0f0f0;">$${escapeHtml(extra.loanAmount)}</td>
+            </tr>
+        `;
+      }
+      if (extra.loanDuration) {
+        htmlBody += `
+            <tr>
+              <td style="padding:8px 0;border-bottom:1px solid #f0f0f0;"><strong>Loan Duration</strong></td>
+              <td style="padding:8px 0;border-bottom:1px solid #f0f0f0;">${escapeHtml(extra.loanDuration)} Years</td>
+            </tr>
+        `;
+      }
+      if (extra.loanType) {
+        htmlBody += `
+            <tr>
+              <td style="padding:8px 0;border-bottom:1px solid #f0f0f0;"><strong>Loan Type</strong></td>
+              <td style="padding:8px 0;border-bottom:1px solid #f0f0f0;">${escapeHtml(extra.loanType)}</td>
+            </tr>
+        `;
+      }
+      if (extra.employmentStatus) {
+        htmlBody += `
+            <tr>
+              <td style="padding:8px 0;border-bottom:1px solid #f0f0f0;"><strong>Employment Status</strong></td>
+              <td style="padding:8px 0;border-bottom:1px solid #f0f0f0;">${escapeHtml(extra.employmentStatus)}</td>
+            </tr>
+        `;
+      }
+      if (extra.residencyStatus) {
+        htmlBody += `
+            <tr>
+              <td style="padding:8px 0;border-bottom:1px solid #f0f0f0;"><strong>Residency Status</strong></td>
+              <td style="padding:8px 0;border-bottom:1px solid #f0f0f0;">${escapeHtml(extra.residencyStatus)}</td>
+            </tr>
+        `;
+      }
+      if (extra.propertyOwner) {
+        htmlBody += `
+            <tr>
+              <td style="padding:8px 0;border-bottom:1px solid #f0f0f0;"><strong>Property Owner</strong></td>
+              <td style="padding:8px 0;border-bottom:1px solid #f0f0f0;">${escapeHtml(extra.propertyOwner)}</td>
+            </tr>
+        `;
+      }
+      if (extra.financeBefore) {
+        htmlBody += `
+            <tr>
+              <td style="padding:8px 0;border-bottom:1px solid #f0f0f0;"><strong>Previous Finance</strong></td>
+              <td style="padding:8px 0;border-bottom:1px solid #f0f0f0;">${escapeHtml(extra.financeBefore)}</td>
+            </tr>
+        `;
+      }
+      if (extra.creditHistory) {
+        htmlBody += `
+            <tr>
+              <td style="padding:8px 0;border-bottom:1px solid #f0f0f0;"><strong>Credit History</strong></td>
+              <td style="padding:8px 0;border-bottom:1px solid #f0f0f0;">${escapeHtml(extra.creditHistory)}</td>
+            </tr>
+        `;
+      }
+    }
+
+    if (formType === 'finance_info') {
+      if (extra.financeAmount) {
+        htmlBody += `
+            <tr>
+              <td style="padding:8px 0;border-bottom:1px solid #f0f0f0;"><strong>Desired Finance Amount</strong></td>
+              <td style="padding:8px 0;border-bottom:1px solid #f0f0f0;">$${escapeHtml(extra.financeAmount)}</td>
+            </tr>
+        `;
+      }
+      if (extra.employmentType) {
+        htmlBody += `
+            <tr>
+              <td style="padding:8px 0;border-bottom:1px solid #f0f0f0;"><strong>Employment Type</strong></td>
+              <td style="padding:8px 0;border-bottom:1px solid #f0f0f0;">${escapeHtml(extra.employmentType)}</td>
+            </tr>
+        `;
+      }
+      if (extra.income) {
+        htmlBody += `
+            <tr>
+              <td style="padding:8px 0;border-bottom:1px solid #f0f0f0;"><strong>Annual Income</strong></td>
+              <td style="padding:8px 0;border-bottom:1px solid #f0f0f0;">${escapeHtml(extra.income)}</td>
+            </tr>
+        `;
+      }
+    }
+
+    // ─── WARRANTY FORM (koi extra field nahi, sab upar cover ho gaye) ───
+    if (formType === 'warranty') {
+      // Warranty form mein sirf name, phone, email, message hain
+      // Jo upar already show ho rahe hain
+    }
+
     htmlBody += `
           </table>
         </div>
@@ -209,7 +351,6 @@ export async function POST(request: Request) {
     }
 
     console.log(`[Email API] Sent successfully. ID: ${data?.id || 'N/A'}`);
-
     return NextResponse.json({ success: true, data });
   } catch (error: any) {
     console.error('[Email API] Unhandled exception:', error);

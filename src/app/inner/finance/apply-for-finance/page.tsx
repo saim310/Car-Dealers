@@ -60,8 +60,54 @@ const FinancePage: React.FC = () => {
     name: "", phone: "", email: "", message: "",
   });
 
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState('');
+  const [success, setSuccess] = useState(false);
+
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setIsLoading(true);
+    setError('');
+    setSuccess(false);
+
+    try {
+      const response = await fetch('/api/send-email', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          formType: 'finance_apply',
+          name: formData.name,
+          email: formData.email,
+          phone: formData.phone,
+          message: formData.message,
+          loanAmount: formData.loanAmount,
+          loanDuration: formData.loanDuration,
+          loanType: formData.loanType,
+          employmentStatus: formData.employmentStatus,
+          residencyStatus: formData.residencyStatus,
+          propertyOwner: formData.propertyOwner,
+          financeBefore: formData.financeBefore,
+          creditHistory: formData.creditHistory,
+        }),
+      });
+      const data = await response.json();
+      if (!data.success) throw new Error(data.error || 'Failed to send');
+      setSuccess(true);
+      setFormData({
+        loanAmount: "", loanDuration: "", loanType: "", employmentStatus: "",
+        residencyStatus: "", propertyOwner: "", financeBefore: "", creditHistory: "",
+        name: "", phone: "", email: "", message: "",
+      });
+      setTimeout(() => setSuccess(false), 3000);
+    } catch (err: any) {
+      setError(err.message || 'Something went wrong');
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   const partners = [
@@ -398,7 +444,7 @@ const FinancePage: React.FC = () => {
               </div>
 
               <div className="uka-finance-form__body">
-                <form onSubmit={(e) => e.preventDefault()}>
+                <form onSubmit={handleSubmit}>
                   <div className="uka-finance-form__grid">
                     {/* Row 1 */}
                     <div className="uka-finance-form__group">
@@ -528,8 +574,37 @@ const FinancePage: React.FC = () => {
 
                     {/* Submit */}
                     <div className="uka-finance-form__group uka-finance-form__group--full">
-                      <button type="submit" className="uka-finance-form__submit">
-                        Submit Application
+                      {success && (
+                        <div style={{ 
+                          padding: '12px 16px', 
+                          background: '#d4edda', 
+                          borderRadius: '8px', 
+                          color: '#155724',
+                          fontWeight: 600,
+                          fontSize: '14px'
+                        }}>
+                          ✅ Application submitted successfully!
+                        </div>
+                      )}
+                      {error && (
+                        <div style={{ 
+                          padding: '12px 16px', 
+                          background: '#f8d7da', 
+                          borderRadius: '8px', 
+                          color: '#721c24',
+                          fontWeight: 600,
+                          fontSize: '14px'
+                        }}>
+                          ❌ {error}
+                        </div>
+                      )}
+                      <button 
+                        type="submit" 
+                        disabled={isLoading}
+                        className="uka-finance-form__submit"
+                        style={{ opacity: isLoading ? 0.6 : 1 }}
+                      >
+                        {isLoading ? 'Sending...' : 'Submit Application'}
                         <IconArrowRight />
                       </button>
                     </div>

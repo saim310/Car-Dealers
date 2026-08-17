@@ -76,14 +76,42 @@ const ContactMain: React.FC = () => {
         message: ''
     });
 
+    const [isLoading, setIsLoading] = useState(false);
+    const [error, setError] = useState('');
+    const [success, setSuccess] = useState(false);
+
     const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
         setFormData({ ...formData, [e.target.name]: e.target.value });
     };
 
-    const handleSubmit = (e: React.FormEvent) => {
+    const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
-        alert('Enquiry submitted successfully!');
-        setFormData({ name: '', phone: '', email: '', message: '' });
+        setIsLoading(true);
+        setError('');
+        setSuccess(false);
+
+        try {
+            const response = await fetch('/api/send-email', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    formType: 'contact',
+                    name: formData.name,
+                    email: formData.email,
+                    phone: formData.phone,
+                    message: formData.message,
+                }),
+            });
+            const data = await response.json();
+            if (!data.success) throw new Error(data.error || 'Failed to send');
+            setSuccess(true);
+            setFormData({ name: '', phone: '', email: '', message: '' });
+            setTimeout(() => setSuccess(false), 3000);
+        } catch (err: any) {
+            setError(err.message || 'Something went wrong');
+        } finally {
+            setIsLoading(false);
+        }
     };
 
     const fadeInUp: any =  {
@@ -665,11 +693,39 @@ const ContactMain: React.FC = () => {
                                         reCAPTCHA verification required
                                     </div>
 
+                                    {success && (
+                                        <div style={{ 
+                                            marginBottom: '15px', 
+                                            padding: '12px 16px', 
+                                            background: '#d4edda', 
+                                            borderRadius: '8px', 
+                                            color: '#155724',
+                                            fontWeight: 600,
+                                            fontSize: '14px'
+                                        }}>
+                                            ✅ Enquiry sent successfully!
+                                        </div>
+                                    )}
+                                    {error && (
+                                        <div style={{ 
+                                            marginBottom: '15px', 
+                                            padding: '12px 16px', 
+                                            background: '#f8d7da', 
+                                            borderRadius: '8px', 
+                                            color: '#721c24',
+                                            fontWeight: 600,
+                                            fontSize: '14px'
+                                        }}>
+                                            ❌ {error}
+                                        </div>
+                                    )}
+
                                     <button
                                         type="submit"
+                                        disabled={isLoading}
                                         style={{
                                             padding: '16px 40px',
-                                            background: '#f5b93c',
+                                            background: isLoading ? '#ccc' : '#f5b93c',
                                             color: '#1a1a1a',
                                             border: 'none',
                                             borderRadius: '10px',
@@ -677,22 +733,27 @@ const ContactMain: React.FC = () => {
                                             fontWeight: 700,
                                             textTransform: 'uppercase',
                                             letterSpacing: '2px',
-                                            cursor: 'pointer',
+                                            cursor: isLoading ? 'not-allowed' : 'pointer',
                                             transition: 'all 0.3s ease',
                                             display: 'inline-flex',
                                             alignItems: 'center',
-                                            gap: '10px'
+                                            gap: '10px',
+                                            opacity: isLoading ? 0.6 : 1
                                         }}
                                         onMouseEnter={(e) => {
-                                            e.currentTarget.style.background = '#1a1a1a';
-                                            e.currentTarget.style.color = '#f5b93c';
+                                            if (!isLoading) {
+                                                e.currentTarget.style.background = '#1a1a1a';
+                                                e.currentTarget.style.color = '#f5b93c';
+                                            }
                                         }}
                                         onMouseLeave={(e) => {
-                                            e.currentTarget.style.background = '#f5b93c';
-                                            e.currentTarget.style.color = '#1a1a1a';
+                                            if (!isLoading) {
+                                                e.currentTarget.style.background = '#f5b93c';
+                                                e.currentTarget.style.color = '#1a1a1a';
+                                            }
                                         }}
                                     >
-                                        Send Enquiry
+                                        {isLoading ? 'Sending...' : 'Send Enquiry'}
                                         <span className="icon-right-arrow" style={{ fontSize: '12px' }}></span>
                                     </button>
                                 </form>

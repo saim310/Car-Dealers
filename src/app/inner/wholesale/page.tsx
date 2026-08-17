@@ -229,9 +229,50 @@ const WholesalePage: React.FC = () => {
     message: "",
   });
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState('');
+  const [success, setSuccess] = useState(false);
+
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    console.log(formData);
+    setIsLoading(true);
+    setError('');
+    setSuccess(false);
+
+    try {
+      const response = await fetch('/api/send-email', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          formType: 'wholesale',
+          name: `${formData.firstName} ${formData.lastName}`,
+          email: formData.email,
+          phone: formData.phone,
+          message: formData.message,
+          dealership: formData.dealership,
+          legalEntity: formData.legalEntity,
+          lcmt: formData.lcmt,
+        }),
+      });
+      const data = await response.json();
+      if (!data.success) throw new Error(data.error || 'Failed to send');
+      setSuccess(true);
+      setFormData({
+        firstName: "",
+        lastName: "",
+        phone: "",
+        email: "",
+        dealership: "",
+        legalEntity: "",
+        lcmt: "",
+        message: "",
+      });
+      setTimeout(() => setSuccess(false), 3000);
+    } catch (err: any) {
+      setError(err.message || 'Something went wrong');
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   const updateField = (field: string, value: string) => {
@@ -338,8 +379,38 @@ const WholesalePage: React.FC = () => {
                       isTextarea
                     />
 
-                    <button type="submit" className="uka-btn uka-btn--submit">
-                      Submit Enquiry
+                    {success && (
+                      <div style={{ 
+                        padding: '12px 16px', 
+                        background: '#d4edda', 
+                        borderRadius: '8px', 
+                        color: '#155724',
+                        fontWeight: 600,
+                        fontSize: '14px'
+                      }}>
+                        ✅ Enquiry sent successfully!
+                      </div>
+                    )}
+                    {error && (
+                      <div style={{ 
+                        padding: '12px 16px', 
+                        background: '#f8d7da', 
+                        borderRadius: '8px', 
+                        color: '#721c24',
+                        fontWeight: 600,
+                        fontSize: '14px'
+                      }}>
+                        ❌ {error}
+                      </div>
+                    )}
+
+                    <button 
+                      type="submit" 
+                      disabled={isLoading}
+                      className="uka-btn uka-btn--submit"
+                      style={{ opacity: isLoading ? 0.6 : 1 }}
+                    >
+                      {isLoading ? 'Sending...' : 'Submit Enquiry'}
                     </button>
                   </form>
                 </div>

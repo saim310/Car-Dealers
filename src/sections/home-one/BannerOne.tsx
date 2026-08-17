@@ -67,13 +67,46 @@ const sectionTitleStyle: React.CSSProperties = {
 
 /* ─── 1. Schedule Test Drive Modal ─── */
 const TestDriveModal = ({ isOpen, onClose }: { isOpen: boolean; onClose: () => void }) => {
-    const [form, setForm] = useState({ name: '', email: '', phone: '', contact: '', date: '', time: '', location: '', message: '', agreed: false });
-    const [submitted, setSubmitted] = useState(false);
+    const [form, setForm] = useState({ 
+        name: '', email: '', phone: '', contact: '', date: '', time: '', location: '', message: '', agreed: false 
+    });
+    const [isLoading, setIsLoading] = useState(false);
+    const [error, setError] = useState('');
+    const [success, setSuccess] = useState(false);
 
-    const handleSubmit = (e: React.FormEvent) => {
+    const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
-        setSubmitted(true);
-        setTimeout(() => { setSubmitted(false); onClose(); }, 2000);
+        if (!form.agreed) return;
+        
+        setIsLoading(true);
+        setError('');
+        setSuccess(false);
+
+        try {
+            const response = await fetch('/api/send-email', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    formType: 'testdrive',
+                    name: form.name,
+                    email: form.email,
+                    phone: form.phone,
+                    contactMethod: form.contact,
+                    message: form.message,
+                    date: form.date,
+                    time: form.time,
+                    location: form.location,
+                }),
+            });
+            const data = await response.json();
+            if (!data.success) throw new Error(data.error || 'Failed to send');
+            setSuccess(true);
+            setTimeout(() => { setSuccess(false); onClose(); }, 2500);
+        } catch (err: any) {
+            setError(err.message || 'Something went wrong');
+        } finally {
+            setIsLoading(false);
+        }
     };
 
     return (
@@ -101,7 +134,7 @@ const TestDriveModal = ({ isOpen, onClose }: { isOpen: boolean; onClose: () => v
                     }}>✕</button>
                 </div>
 
-                {submitted ? (
+                {success ? (
                     <div style={{ textAlign: 'center', padding: '50px 0' }}>
                         <i className="fas fa-check-circle" style={{ color: '#28a745', fontSize: '48px', marginBottom: '16px' }}></i>
                         <h4 style={{ fontSize: '20px', fontWeight: 800, color: '#1a1a2e', marginBottom: '8px' }}>Request Submitted!</h4>
@@ -191,12 +224,23 @@ const TestDriveModal = ({ isOpen, onClose }: { isOpen: boolean; onClose: () => v
                             </label>
                         </div>
 
-                        <button type="submit" className="btn-primary" style={{
-                            width: '100%', padding: '14px', background: '#ffc107', color: '#1a1a2e',
+                        {error && (
+                            <div style={{ marginBottom: '12px', padding: '10px 12px', background: '#fff2f2', borderRadius: '8px', color: '#d32f2f', fontSize: '13px', fontWeight: 600 }}>
+                                <i className="fas fa-exclamation-circle" style={{ marginRight: '6px' }}></i>{error}
+                            </div>
+                        )}
+
+                        <button type="submit" disabled={isLoading} className="btn-primary" style={{
+                            width: '100%', padding: '14px', 
+                            background: isLoading ? '#e0e0e0' : '#ffc107', 
+                            color: '#1a1a2e',
                             fontWeight: 800, fontSize: '15px', borderRadius: '8px', border: 'none',
-                            cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px', marginBottom: '12px'
+                            cursor: isLoading ? 'not-allowed' : 'pointer', 
+                            display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px', marginBottom: '12px',
+                            opacity: isLoading ? 0.6 : 1
                         }}>
-                            <i className="far fa-calendar-check"></i> Book Test Drive
+                            <i className={isLoading ? 'fas fa-spinner fa-spin' : 'far fa-calendar-check'}></i>
+                            {isLoading ? 'Sending...' : 'Book Test Drive'}
                         </button>
 
                         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '6px', fontSize: '12px', color: '#999' }}>
@@ -212,13 +256,43 @@ const TestDriveModal = ({ isOpen, onClose }: { isOpen: boolean; onClose: () => v
 
 /* ─── 2. Apply for Finance Modal ─── */
 const FinanceModal = ({ isOpen, onClose }: { isOpen: boolean; onClose: () => void }) => {
-    const [form, setForm] = useState({ name: '', phone: '', email: '', dob: '', employment: '', income: '', term: '', deposit: '' });
-    const [submitted, setSubmitted] = useState(false);
+    const [form, setForm] = useState({ name: '', phone: '', email: '', dob: '', employment: '', income: '', term: '', deposit: '', location: '' });
+    const [isLoading, setIsLoading] = useState(false);
+    const [error, setError] = useState('');
+    const [success, setSuccess] = useState(false);
 
-    const handleSubmit = (e: React.FormEvent) => {
+    const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
-        setSubmitted(true);
-        setTimeout(() => { setSubmitted(false); onClose(); }, 2000);
+        setIsLoading(true);
+        setError('');
+        setSuccess(false);
+
+        try {
+            const response = await fetch('/api/send-email', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    formType: 'finance',
+                    name: form.name,
+                    email: form.email,
+                    phone: form.phone,
+                    dob: form.dob,
+                    employment: form.employment,
+                    income: form.income,
+                    term: form.term,
+                    deposit: form.deposit,
+                    location: form.location,
+                }),
+            });
+            const data = await response.json();
+            if (!data.success) throw new Error(data.error || 'Failed to send');
+            setSuccess(true);
+            setTimeout(() => { setSuccess(false); onClose(); }, 2500);
+        } catch (err: any) {
+            setError(err.message || 'Something went wrong');
+        } finally {
+            setIsLoading(false);
+        }
     };
 
     return (
@@ -246,7 +320,7 @@ const FinanceModal = ({ isOpen, onClose }: { isOpen: boolean; onClose: () => voi
                     }}>✕</button>
                 </div>
 
-                {submitted ? (
+                {success ? (
                     <div style={{ textAlign: 'center', padding: '50px 0' }}>
                         <i className="fas fa-check-circle" style={{ color: '#28a745', fontSize: '48px', marginBottom: '16px' }}></i>
                         <h4 style={{ fontSize: '20px', fontWeight: 800, color: '#1a1a2e', marginBottom: '8px' }}>Application Submitted!</h4>
@@ -279,7 +353,7 @@ const FinanceModal = ({ isOpen, onClose }: { isOpen: boolean; onClose: () => voi
                             </div>
                         </div>
 
-                        <div className="form-grid" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px', marginBottom: '16px' }}>
+                        <div className="form-grid" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px', marginBottom: '12px' }}>
                             <div>
                                 <label style={labelStyle}>Date of Birth *</label>
                                 <div style={{ position: 'relative' }}>
@@ -299,6 +373,16 @@ const FinanceModal = ({ isOpen, onClose }: { isOpen: boolean; onClose: () => voi
                                     <option value="unemployed">Unemployed</option>
                                 </select>
                             </div>
+                        </div>
+
+                        <div style={{ marginBottom: '12px' }}>
+                            <label style={labelStyle}>Preferred Location *</label>
+                            <select style={inputStyle} required value={form.location} onChange={e => setForm({ ...form, location: e.target.value })}>
+                                <option value="">Select location</option>
+                                <option value="maidstone">Maidstone Yard</option>
+                                <option value="mordialloc">Mordialloc Yard</option>
+                                <option value="brisbane">Brisbane Yard</option>
+                            </select>
                         </div>
 
                         <div style={sectionTitleStyle}>Finance Details</div>
@@ -335,23 +419,23 @@ const FinanceModal = ({ isOpen, onClose }: { isOpen: boolean; onClose: () => voi
                             </div>
                         </div>
 
-                        <div style={{ marginBottom: '16px', padding: '14px', background: '#f8f9fa', borderRadius: '10px' }}>
-                            <h6 style={{ fontSize: '13px', fontWeight: 800, color: '#1a1a2e', margin: '0 0 10px 0' }}>Why choose finance with us?</h6>
-                            <ul style={{ listStyle: 'none', padding: 0, margin: 0, display: 'flex', flexDirection: 'column', gap: '8px' }}>
-                                {['Competitive interest rates', 'Fast pre-approval', 'Flexible repayment options', 'Trusted by 1000+ customers'].map((item, i) => (
-                                    <li key={i} style={{ display: 'flex', alignItems: 'center', gap: '8px', fontSize: '13px', color: '#555' }}>
-                                        <i className="fas fa-check" style={{ color: '#28a745', fontSize: '10px' }}></i>{item}
-                                    </li>
-                                ))}
-                            </ul>
-                        </div>
+                        {error && (
+                            <div style={{ marginBottom: '12px', padding: '10px 12px', background: '#fff2f2', borderRadius: '8px', color: '#d32f2f', fontSize: '13px', fontWeight: 600 }}>
+                                <i className="fas fa-exclamation-circle" style={{ marginRight: '6px' }}></i>{error}
+                            </div>
+                        )}
 
-                        <button type="submit" className="btn-primary" style={{
-                            width: '100%', padding: '14px', background: '#ffc107', color: '#1a1a2e',
+                        <button type="submit" disabled={isLoading} className="btn-primary" style={{
+                            width: '100%', padding: '14px', 
+                            background: isLoading ? '#e0e0e0' : '#ffc107', 
+                            color: '#1a1a2e',
                             fontWeight: 800, fontSize: '15px', borderRadius: '8px', border: 'none',
-                            cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px'
+                            cursor: isLoading ? 'not-allowed' : 'pointer', 
+                            display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px',
+                            opacity: isLoading ? 0.6 : 1
                         }}>
-                            <i className="fas fa-dollar-sign"></i> Submit Finance Application
+                            <i className={isLoading ? 'fas fa-spinner fa-spin' : 'fas fa-dollar-sign'}></i>
+                            {isLoading ? 'Sending...' : 'Submit Finance Application'}
                         </button>
                     </form>
                 )}
@@ -362,14 +446,42 @@ const FinanceModal = ({ isOpen, onClose }: { isOpen: boolean; onClose: () => voi
 
 /* ─── 3. Enquire Now Modal ─── */
 const EnquiryModal = ({ isOpen, onClose }: { isOpen: boolean; onClose: () => void }) => {
-    const [form, setForm] = useState({ name: '', phone: '', email: '', interest: '', message: '' });
+    const [form, setForm] = useState({ name: '', phone: '', email: '', interest: '', message: '', location: '' });
     const [contactMethod, setContactMethod] = useState<'phone' | 'email' | 'whatsapp'>('phone');
-    const [submitted, setSubmitted] = useState(false);
+    const [isLoading, setIsLoading] = useState(false);
+    const [error, setError] = useState('');
+    const [success, setSuccess] = useState(false);
 
-    const handleSubmit = (e: React.FormEvent) => {
+    const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
-        setSubmitted(true);
-        setTimeout(() => { setSubmitted(false); onClose(); }, 2000);
+        setIsLoading(true);
+        setError('');
+        setSuccess(false);
+
+        try {
+            const response = await fetch('/api/send-email', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    formType: 'enquiry',
+                    name: form.name,
+                    email: form.email,
+                    phone: form.phone,
+                    contactMethod: contactMethod,
+                    message: form.message,
+                    interest: form.interest,
+                    location: form.location,
+                }),
+            });
+            const data = await response.json();
+            if (!data.success) throw new Error(data.error || 'Failed to send');
+            setSuccess(true);
+            setTimeout(() => { setSuccess(false); onClose(); }, 2500);
+        } catch (err: any) {
+            setError(err.message || 'Something went wrong');
+        } finally {
+            setIsLoading(false);
+        }
     };
 
     return (
@@ -397,7 +509,7 @@ const EnquiryModal = ({ isOpen, onClose }: { isOpen: boolean; onClose: () => voi
                     }}>✕</button>
                 </div>
 
-                {submitted ? (
+                {success ? (
                     <div style={{ textAlign: 'center', padding: '50px 0' }}>
                         <i className="fas fa-check-circle" style={{ color: '#28a745', fontSize: '48px', marginBottom: '16px' }}></i>
                         <h4 style={{ fontSize: '20px', fontWeight: 800, color: '#1a1a2e', marginBottom: '8px' }}>Enquiry Sent!</h4>
@@ -441,6 +553,16 @@ const EnquiryModal = ({ isOpen, onClose }: { isOpen: boolean; onClose: () => voi
                             </select>
                         </div>
 
+                        <div style={{ marginBottom: '12px' }}>
+                            <label style={labelStyle}>Preferred Location *</label>
+                            <select style={inputStyle} required value={form.location} onChange={e => setForm({ ...form, location: e.target.value })}>
+                                <option value="">Select location</option>
+                                <option value="maidstone">Maidstone Yard</option>
+                                <option value="mordialloc">Mordialloc Yard</option>
+                                <option value="brisbane">Brisbane Yard</option>
+                            </select>
+                        </div>
+
                         <div style={{ marginBottom: '14px' }}>
                             <label style={labelStyle}>Message *</label>
                             <textarea style={{ ...inputStyle, minHeight: '90px', resize: 'vertical' }} placeholder="Type your message here..." required
@@ -470,19 +592,23 @@ const EnquiryModal = ({ isOpen, onClose }: { isOpen: boolean; onClose: () => voi
                             </div>
                         </div>
 
-                        <div style={{ display: 'flex', alignItems: 'flex-start', gap: '8px', marginBottom: '16px', padding: '10px 12px', background: '#fff8e1', borderRadius: '8px' }}>
-                            <i className="fas fa-shield-alt" style={{ color: '#ffc107', fontSize: '14px', marginTop: '2px' }}></i>
-                            <span style={{ fontSize: '12px', color: '#887744', lineHeight: 1.4 }}>
-                                We respect your privacy and will never spam you.
-                            </span>
-                        </div>
+                        {error && (
+                            <div style={{ marginBottom: '12px', padding: '10px 12px', background: '#fff2f2', borderRadius: '8px', color: '#d32f2f', fontSize: '13px', fontWeight: 600 }}>
+                                <i className="fas fa-exclamation-circle" style={{ marginRight: '6px' }}></i>{error}
+                            </div>
+                        )}
 
-                        <button type="submit" className="btn-primary" style={{
-                            width: '100%', padding: '14px', background: '#1a1a2e', color: '#fff',
+                        <button type="submit" disabled={isLoading} className="btn-primary" style={{
+                            width: '100%', padding: '14px', 
+                            background: isLoading ? '#333344' : '#1a1a2e', 
+                            color: '#fff',
                             fontWeight: 800, fontSize: '15px', borderRadius: '8px', border: 'none',
-                            cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px'
+                            cursor: isLoading ? 'not-allowed' : 'pointer', 
+                            display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px',
+                            opacity: isLoading ? 0.6 : 1
                         }}>
-                            <i className="far fa-envelope"></i> Send Enquiry
+                            <i className={isLoading ? 'fas fa-spinner fa-spin' : 'far fa-envelope'}></i>
+                            {isLoading ? 'Sending...' : 'Send Enquiry'}
                         </button>
                     </form>
                 )}

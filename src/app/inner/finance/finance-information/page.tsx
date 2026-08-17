@@ -67,22 +67,53 @@ const FinancePage: React.FC = () => {
         message: ''
     });
 
+    const [isLoading, setIsLoading] = useState(false);
+    const [error, setError] = useState('');
+    const [success, setSuccess] = useState(false);
+
     const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
         setFormData({ ...formData, [e.target.name]: e.target.value });
     };
 
-    const handleSubmit = (e: React.FormEvent) => {
+    const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
-        alert('Finance enquiry submitted successfully! Our team will contact you shortly.');
-        setFormData({
-            name: '',
-            phone: '',
-            email: '',
-            financeAmount: '',
-            employmentType: '',
-            income: '',
-            message: ''
-        });
+        setIsLoading(true);
+        setError('');
+        setSuccess(false);
+
+        try {
+            const response = await fetch('/api/send-email', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    formType: 'finance_info',
+                    name: formData.name,
+                    email: formData.email,
+                    phone: formData.phone,
+                    message: formData.message,
+                    financeAmount: formData.financeAmount,
+                    employmentType: formData.employmentType,
+                    income: formData.income,
+                }),
+            });
+            const data = await response.json();
+            if (!data.success) throw new Error(data.error || 'Failed to send');
+            setSuccess(true);
+            setFormData({
+                name: '',
+                phone: '',
+                email: '',
+                financeAmount: '',
+                employmentType: '',
+                income: '',
+                message: ''
+            });
+            setTimeout(() => setSuccess(false), 3000);
+        } catch (err: any) {
+            setError(err.message || 'Something went wrong');
+        } finally {
+            setIsLoading(false);
+        }
     };
 
     const fadeInUp = {
@@ -764,6 +795,33 @@ const FinancePage: React.FC = () => {
                                     />
                                 </div>
 
+                                {success && (
+                                    <div style={{ 
+                                        marginBottom: '20px', 
+                                        padding: '12px 16px', 
+                                        background: '#d4edda', 
+                                        borderRadius: '8px', 
+                                        color: '#155724',
+                                        fontWeight: 600,
+                                        fontSize: '14px'
+                                    }}>
+                                        ✅ Application submitted successfully!
+                                    </div>
+                                )}
+                                {error && (
+                                    <div style={{ 
+                                        marginBottom: '20px', 
+                                        padding: '12px 16px', 
+                                        background: '#f8d7da', 
+                                        borderRadius: '8px', 
+                                        color: '#721c24',
+                                        fontWeight: 600,
+                                        fontSize: '14px'
+                                    }}>
+                                        ❌ {error}
+                                    </div>
+                                )}
+
                                 <div style={{
                                     marginBottom: '30px',
                                     padding: '20px',
@@ -779,9 +837,10 @@ const FinancePage: React.FC = () => {
                                 <div style={{ textAlign: 'center' }}>
                                     <button
                                         type="submit"
+                                        disabled={isLoading}
                                         style={{
                                             padding: '18px 60px',
-                                            background: '#f5b93c',
+                                            background: isLoading ? '#ccc' : '#f5b93c',
                                             color: '#1a1a1a',
                                             border: 'none',
                                             borderRadius: '12px',
@@ -789,26 +848,31 @@ const FinancePage: React.FC = () => {
                                             fontWeight: 800,
                                             textTransform: 'uppercase',
                                             letterSpacing: '2px',
-                                            cursor: 'pointer',
+                                            cursor: isLoading ? 'not-allowed' : 'pointer',
                                             transition: 'all 0.3s ease',
                                             display: 'inline-flex',
                                             alignItems: 'center',
                                             gap: '12px',
-                                            boxShadow: '0 10px 30px rgba(245,185,56,0.3)'
+                                            boxShadow: isLoading ? 'none' : '0 10px 30px rgba(245,185,56,0.3)',
+                                            opacity: isLoading ? 0.6 : 1
                                         }}
                                         onMouseEnter={(e) => {
-                                            e.currentTarget.style.background = '#1a1a1a';
-                                            e.currentTarget.style.color = '#f5b93c';
-                                            e.currentTarget.style.transform = 'translateY(-2px)';
+                                            if (!isLoading) {
+                                                e.currentTarget.style.background = '#1a1a1a';
+                                                e.currentTarget.style.color = '#f5b93c';
+                                                e.currentTarget.style.transform = 'translateY(-2px)';
+                                            }
                                         }}
                                         onMouseLeave={(e) => {
-                                            e.currentTarget.style.background = '#f5b93c';
-                                            e.currentTarget.style.color = '#1a1a1a';
-                                            e.currentTarget.style.transform = 'translateY(0)';
+                                            if (!isLoading) {
+                                                e.currentTarget.style.background = '#f5b93c';
+                                                e.currentTarget.style.color = '#1a1a1a';
+                                                e.currentTarget.style.transform = 'translateY(0)';
+                                            }
                                         }}
                                     >
                                         <Send size={18} strokeWidth={2.5} />
-                                        Submit Application
+                                        {isLoading ? 'Sending...' : 'Submit Application'}
                                     </button>
                                 </div>
                             </form>

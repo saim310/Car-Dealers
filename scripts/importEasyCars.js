@@ -1,17 +1,13 @@
-
-
 const fs = require("fs");
 const path = require("path");
 const csv = require("csv-parser");
-
-
 
 const CSV_FILE = path.join(__dirname, '../public/data/stock.csv');
 const IMAGE_DIR = path.join(__dirname, '../public/assets/images/cars');
 const OUTPUT_FILE = path.join(__dirname, '../public/data/cars.json');
 const TS_OUTPUT_FILE = path.join(__dirname, '../src/all-content/products/productData.ts');
 
-// Sync latest CSV dropped by EasyCars FTP automatically
+// 1. Sync latest CSV dropped by EasyCars FTP automatically
 const ftpSourceFile = '/home/easycars/stock.csv';
 if (fs.existsSync(ftpSourceFile)) {
   try {
@@ -22,10 +18,28 @@ if (fs.existsSync(ftpSourceFile)) {
   }
 }
 
-
+// 2. Sync latest images dropped by EasyCars FTP automatically
+const ftpImagesDir = '/home/easycars/images';
+if (fs.existsSync(ftpImagesDir)) {
+  try {
+    if (!fs.existsSync(IMAGE_DIR)) {
+      fs.mkdirSync(IMAGE_DIR, { recursive: true });
+    }
+    const imageFiles = fs.readdirSync(ftpImagesDir);
+    imageFiles.forEach(file => {
+      const srcPath = path.join(ftpImagesDir, file);
+      const destPath = path.join(IMAGE_DIR, file);
+      if (fs.lstatSync(srcPath).isFile()) {
+        fs.copyFileSync(srcPath, destPath);
+      }
+    });
+    console.log("Successfully synced latest images from /home/easycars/images/");
+  } catch (err) {
+    console.error("Error copying images from FTP folder:", err);
+  }
+}
 
 const products = [];
-
 
 function findImages(stockNumber) {
   if (!fs.existsSync(IMAGE_DIR)) {

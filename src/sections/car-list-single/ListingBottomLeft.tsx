@@ -32,18 +32,78 @@ export default function ListingBottomLeft({ car }: { car?: any }) {
         .filter((p: any) => String(p.id) !== String(car?.id || car?.StockNumber))
         .slice(0, 4);
 
-    const overviewItems = [
-        { icon: 'fa-calendar-alt', label: 'Year', value: car?.Year || car?.year || 'N/A' },
-        { icon: 'fa-cogs', label: 'Transmission', value: car?.GearType || car?.transmission || 'Auto' },
-        { icon: 'fa-tachometer-alt', label: 'Mileage', value: car?.Odometer ? `${formatNumber(car.Odometer)} km` : 'N/A' },
-        { icon: 'fa-car-side', label: 'Body Type', value: car?.Body || car?.bodyType || 'Van' },
-        { icon: 'fa-gas-pump', label: 'Fuel Type', value: car?.FuelType || car?.fuel || 'Hybrid' },
-        { icon: 'fa-engine', label: 'Engine Size', value: car?.EngineSize || '2,500 cc' },
-        { icon: 'fa-road', label: 'Drive Type', value: car?.Drive || '2WD' },
-        { icon: 'fa-door-open', label: 'Doors', value: `${car?.DoorNum || car?.doors || '5'} Doors` },
-        { icon: 'fa-paint-brush', label: 'Exterior Color', value: car?.Color || car?.color || 'Pearl White' },
-        { icon: 'fa-hashtag', label: 'Stock Number', value: car?.StockNumber || car?.id || 'N/A' },
-    ];
+
+const overviewItems = [
+    {
+        icon: 'fa-tag',
+        label: 'Stock Status',
+        value: (() => {
+            const status = car?.StockStatus || car?.stockStatus || car?.status || car?.Availability || 'In Stock';
+            if (status.toLowerCase().replace(/[\s_-]+/g, '') === 'onoffer') {
+                return 'On Offer';
+            }
+            return status;
+        })()
+    },
+    {
+        icon: 'fa-calendar-alt',
+        label: 'Year',
+        value: car?.Year || car?.year || 'N/A'
+    },
+    {
+        icon: 'fa-cogs',
+        label: 'Transmission',
+        value: car?.GearType || car?.transmission || 'N/A'
+    },
+    {
+        icon: 'fa-tachometer-alt',
+        label: 'Mileage',
+        value: car?.Odometer || car?.mileage ? `${formatNumber(car?.Odometer || car?.mileage)} km` : 'N/A'
+    },
+    {
+        icon: 'fa-car-side',
+        label: 'Body Type',
+        value: car?.Body || car?.bodyStyle || car?.bodyType || 'N/A'
+    },
+    {
+        icon: 'fa-gas-pump',
+        label: 'Fuel Type',
+        value: car?.FuelType || car?.fuel || 'N/A'
+    },
+    {
+        icon: 'fa-cog', // Standard FontAwesome engine icon
+        label: 'Engine Size',
+        value: car?.EngineSize ? `${car.EngineSize} cc` : 'N/A'
+    },
+    {
+        icon: 'fa-road',
+        label: 'Drive Type',
+        value: car?.Drive || car?.driveType || 'N/A'
+    },
+    {
+        icon: 'fa-door-open',
+        label: 'Doors',
+        value: (car?.DoorNum || car?.doors) ? `${car?.DoorNum || car?.doors} Doors` : 'N/A'
+    },
+    {
+        icon: 'fa-paint-brush',
+        label: 'Exterior Color',
+        value: car?.Color || car?.color || 'N/A'
+    },
+    {
+        icon: 'fa-users',
+        label: 'Seating Capacity',
+        value: (() => {
+            const seats = car?.Persons || car?.persons || car?.seater || car?.seatingCapacity || car?.Seats || car?.Seater;
+            return seats ? `${seats} Seats` : 'N/A';
+        })()
+    },
+    {
+        icon: 'fa-hashtag',
+        label: 'Stock Number',
+        value: car?.StockNumber || car?.id || 'N/A'
+    }
+];
 
     return (
         <div>

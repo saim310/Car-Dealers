@@ -2,6 +2,7 @@ import AboutInner from '@/sections/about/AboutInner';
 import ListingInner from '@/sections/about/ListingInner';
 import TeamInner from '@/sections/about/TeamInner';
 import TestimonianInner from '@/sections/about/TestimonianInner';
+
 import BookingInner from '@/sections/booking/BookingInner';
 import Banner from '@/sections/common/Banner';
 import LetsTalk from '@/sections/common/LetsTalk';
@@ -13,9 +14,14 @@ import React from 'react';
 const page: React.FC = () => {
     return (
         <>
-            <Banner breadcrumb='About Us' />
+           
             <AboutInner />
-             <WhychooseOne />
+            <ListingInner />
+            <TeamInner />
+            <TestimonianInner />
+            <WhychooseOne />
+         
+            
         </>
     );
 };

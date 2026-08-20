@@ -7,10 +7,11 @@ import type { Swiper as SwiperType } from 'swiper';
 import { Autoplay, Navigation } from 'swiper/modules';
 import TextAnimation from '@/components/elements/TextAnimation';
 
-const videoTestimonials = [
+// Updated with local image paths
+const imageTestimonials = [
     {
         id: 1,
-        videoId: "LXb3EKWsInQ",
+        image: "/assets/images/testimonial/testimonial-2-1.jpg",
         name: "Marco Janson",
         role: "Customer",
         text: "UKA Japan Motors made the entire import process seamless. The vehicle arrived in pristine condition and their customer service was exceptional from start to finish.",
@@ -19,7 +20,7 @@ const videoTestimonials = [
     },
     {
         id: 2,
-        videoId: "dQw4w9WgXcQ",
+        image: "/assets/images/testimonial/testimonial-2-2.jpg",
         name: "Sarah Mitchell",
         role: "Fleet Manager",
         text: "We have purchased over 15 vehicles for our company fleet. Every single car has exceeded our expectations. UKA Japan is our trusted partner for Japanese imports.",
@@ -28,7 +29,7 @@ const videoTestimonials = [
     },
     {
         id: 3,
-        videoId: "M7lc1UVf-VE",
+        image: "/assets/images/testimonial/testimonial-2-3.jpg",
         name: "David Chen",
         role: "Car Enthusiast",
         text: "After months of research, I chose UKA Japan Motors for my dream JDM car. The transparency, pricing, and quality of service were absolutely outstanding.",
@@ -37,7 +38,7 @@ const videoTestimonials = [
     },
     {
         id: 4,
-        videoId: "LXb3EKWsInQ",
+        image: "/assets/images/testimonial/testimonial-2-4.jpg",
         name: "Emily Thompson",
         role: "Business Owner",
         text: "Exceptional service and quality vehicles. The team went above and beyond to ensure I got exactly what I needed. Highly recommend to anyone looking for Japanese imports.",
@@ -46,7 +47,7 @@ const videoTestimonials = [
     },
     {
         id: 5,
-        videoId: "dQw4w9WgXcQ",
+        image: "/assets/images/testimonial/testimonial-2-5.jpg",
         name: "James Wilson",
         role: "Mechanic",
         text: "As a mechanic, I am very particular about the condition of vehicles. UKA Japan Motors consistently delivers cars that are mechanically sound and well-maintained.",
@@ -55,7 +56,7 @@ const videoTestimonials = [
     },
     {
         id: 6,
-        videoId: "M7lc1UVf-VE",
+        image: "/assets/images/testimonial/testimonial-2-6.jpg",
         name: "Lisa Park",
         role: "First-Time Buyer",
         text: "I was nervous about importing my first car, but the team at UKA Japan walked me through every step. The process was transparent and stress-free.",
@@ -81,7 +82,7 @@ const VideoTestimonial: React.FC = () => {
                         display: 'block',
                         marginBottom: '10px'
                     }}>
-                        Video Testimonials
+                        Client Testimonials
                     </span>
                     <h2 className="section-title__title title-animation">
                         <TextAnimation text='See What Our Clients' />
@@ -105,7 +106,7 @@ const VideoTestimonial: React.FC = () => {
                             1200: { slidesPerView: 3, spaceBetween: 30 },
                         }}
                     >
-                        {videoTestimonials.map((item) => (
+                        {imageTestimonials.map((item) => (
                             <SwiperSlide key={item.id}>
                                 <div className="video-testimonial__single" style={{
                                     background: '#ffffff',
@@ -116,25 +117,24 @@ const VideoTestimonial: React.FC = () => {
                                     display: 'flex',
                                     flexDirection: 'column'
                                 }}>
-                                    {/* Video Thumbnail with Play Overlay */}
+                                    {/* Image instead of video */}
                                     <div className="video-testimonial__media" style={{
                                         position: 'relative',
-                                        paddingTop: '56.25%', /* 16:9 Aspect Ratio */
+                                        paddingTop: '56.25%', // 16:9
                                         background: '#1a1a1a',
                                         overflow: 'hidden'
                                     }}>
-                                        <iframe
-                                            src={`https://www.youtube.com/embed/${item.videoId}?rel=0&modestbranding=1&controls=1`}
-                                            title={`Video testimonial by ${item.name}`}
-                                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                                            allowFullScreen
-                                            style={{ 
-                                                position: 'absolute', 
-                                                top: 0, 
-                                                left: 0, 
-                                                width: '100%', 
-                                                height: '100%', 
-                                                border: 'none' 
+                                        <img
+                                            src={item.image}
+                                            alt={`Testimonial by ${item.name}`}
+                                            style={{
+                                                position: 'absolute',
+                                                top: 0,
+                                                left: 0,
+                                                width: '100%',
+                                                height: '100%',
+                                                objectFit: 'cover',
+                                                border: 'none'
                                             }}
                                         />
                                     </div>
@@ -219,7 +219,7 @@ const VideoTestimonial: React.FC = () => {
                         ))}
                     </Swiper>
 
-                    {/* Navigation Buttons - Positioned Top Right */}
+                    {/* Navigation Buttons */}
                     <div className="owl-nav" style={{ 
                         display: 'flex', 
                         justifyContent: 'flex-end', 

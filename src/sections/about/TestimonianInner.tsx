@@ -1,107 +1,49 @@
 "use client";
-import React, { useState } from "react"; 
-import shape1 from "../../../public/assets/images/shapes/testimonial-two-shape-1.png";
-import shape2 from "../../../public/assets/images/shapes/testimonial-two-shape-2.png";
-import { Swiper, SwiperSlide } from 'swiper/react';
-import type { Swiper as SwiperType } from 'swiper';
-import { Autoplay, Navigation } from 'swiper/modules'; 
-import Image from "next/image";
-import TextAnimation from "@/components/elements/TextAnimation";
-import { testimonialsTwo } from "@/all-content/testimonials/testimonialsData";
-import Link from "next/link";
+import React from "react";
 
+const AboutSection: React.FC = () => {
+  return (
+    <section className="py-5" style={{ backgroundColor: "#ffffff" }}>
+      <div className="container">
+        <div className="row">
+          <div className="col-lg-8 col-md-10 mx-auto">
+            {/* Title */}
+            <h2 className="fw-bold text-dark mb-4" style={{ fontSize: "28px" }}>
+              About UKA Japan Motors
+            </h2>
 
-const TestimonianInner: React.FC = () => {
-    const [swiperInstance, setSwiperInstance] = useState<SwiperType | null>(null);
-    return (
-        <section className="testimonial-two">
-            <div className="testimonial-two__shape-1 float-bob-y">
-                <Image src={shape1} width={665} height={520} alt="" />
+            {/* Paragraph 1 */}
+            <p className="text-secondary mb-4" style={{ fontSize: "15px", lineHeight: "1.7" }}>
+              At UKA Japan Motors, we specialize in bringing the most reliable Japanese cars to discerning customers across the United Kingdom. With a passion for quality and a commitment to excellence, we ensure that every import car for sale meets our high standards of performance, reliability, and value.
+            </p>
+
+            {/* Paragraph 2 */}
+            <p className="text-secondary mb-4" style={{ fontSize: "15px", lineHeight: "1.7" }}>
+              With over 36 years' experience in the automotive industry, our Japanese import car dealership was established with a vision to make affordable Japanese vehicles accessible to UK enthusiasts and everyday drivers alike. Over the years, we have built a reputation for trust and integrity, consistently delivering quality vehicles for sale and exceptional customer service.
+            </p>
+
+            {/* Gradient Badge */}
+            <div 
+              className="rounded-4 p-4 text-center text-white shadow-sm mt-4"
+              style={{ 
+                background: "linear-gradient(90deg, #f36c00 0%, #155bb5 100%)",
+                maxWidth: "380px",
+                borderRadius: "16px"
+              }}
+            >
+              <div className="fw-bold" style={{ fontSize: "28px", lineHeight: "1.1" }}>
+                36+
+              </div>
+              <div className="small opacity-90 mt-1" style={{ fontSize: "12px", fontWeight: "500" }}>
+                Years of Excellence
+              </div>
             </div>
-            <div className="testimonial-two__shape-2 float-bob-x">
-                <Image src={shape2} width={665} height={520} alt="" />
-            </div>
-            <div className="container">
-                <div className="section-title text-left sec-title-animation animation-style2">
-                  
 
-                    <h2 className="section-title__title title-animation">
-                        <TextAnimation text="What Peoples Say" />
-                        <TextAnimation text="about UKA Japan" />
-                    </h2>
-                </div>
-                <div className="testimonial-two__carousel owl-carousel owl-theme">
-                    <Swiper
-                        slidesPerView={3}
-                        spaceBetween={30}
-                        loop={true}
-                        autoplay={{
-                            delay: 4000,
-                            disableOnInteraction: false,
-                        }}
-                        onSwiper={setSwiperInstance}
-                        speed={1000}
-                        modules={[Navigation, Autoplay]}
-                        breakpoints={{
-                            320: { slidesPerView: 1, spaceBetween: 10 },
-                            640: { slidesPerView: 2, spaceBetween: 20 },
-                            1024: { slidesPerView: 3, spaceBetween: 30 },
-                        }}
-                    >
-                        {testimonialsTwo.map((item) => (
-                            <SwiperSlide key={item.id}>
-                                <div className="item" >
-                                    <div className="testimonial-two__single">
-                                        <div className="testimonial-two__quote">
-                                            <span className="icon-quote"></span>
-                                        </div>
-
-                                        <div className="testimonial-two__img">
-                                            {
-                                                item?.image && (<Image src={item.image} loading="eager" width={100} height={100} alt={item?.name} />)
-                                            } 
-                                        </div>
-
-                                        <p className="testimonial-two__text">{item.text}</p>
-
-                                        <div className="testimonial-two__client-info">
-                                            <div className="testimonial-two__client-content">
-                                                <h4 className="testimonial-two__client-name">
-                                                    <Link href={item?.link || "/inner/drivers"}>{item?.name}</Link>
-                                                </h4>
-                                                <p className="testimonial-two__client-sub-title">
-                                                    {item.role}
-                                                </p>
-                                            </div>
-
-                                            <div className="testimonial-two__rating">
-                                                {[...Array(5)].map((_, i) => (
-                                                    <span className="icon-star" key={i}></span>
-                                                ))}
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </SwiperSlide>
-                        ))}
-                    </Swiper>
-                    <div className="owl-nav" style={{ zIndex: '105' }}>
-                        <button type="button"
-                            className="owl-prev rotate180"
-                            onClick={() => swiperInstance?.slidePrev()}
-                        >
-                            <span className="far fa-long-arrow-left"></span>
-                        </button>
-                        <button type="button" className="owl-next"
-                            onClick={() => swiperInstance?.slideNext()}
-                        >
-                            <span className="far fa-long-arrow-right"></span>
-                        </button>
-                    </div>
-                </div>
-            </div>
-        </section>
-    );
+          </div>
+        </div>
+      </div>
+    </section>
+  );
 };
 
-export default TestimonianInner;
+export default AboutSection;

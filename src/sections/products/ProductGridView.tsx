@@ -1,7 +1,6 @@
 "use client";
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
-import { getYardCity } from '@/config/yards';
 
 const formatNumber = (num: string | number) => {
     const cleaned = String(num).replace(/[^0-9]/g, '');
@@ -9,9 +8,13 @@ const formatNumber = (num: string | number) => {
 };
 
 const formatPrice = (price: number | string) => {
-    const num = typeof price === 'string' ? parseInt(price.replace(/,/g, '')) : price;
-    if (!num || isNaN(num)) return 'Contact for Price';
-    return '$' + num.toLocaleString('en-US');
+    if (!price || price === 'Contact for Price') return 'Contact for Price';
+    
+    const rawNum = typeof price === 'string' ? parseFloat(price.replace(/[^0-9.]/g, '')) : price;
+    if (isNaN(rawNum) || rawNum <= 0) return 'Contact for Price';
+
+    const actualPrice = rawNum > 1000000 ? rawNum / 100 : rawNum;
+    return '$' + Math.round(actualPrice).toLocaleString('en-US');
 };
 
 const getStatusBadge = (item: any) => {
@@ -40,20 +43,36 @@ const getStatusBadge = (item: any) => {
         return { label: 'SOLD OUT', bg: '#dc3545', color: '#fff', icon: 'fa-ban' };
     }
 
-    // Default to In Stock
     return { label: 'IN STOCK', bg: '#28a745', color: '#fff', icon: 'fa-check-circle' };
 };
 
 export default function ProductGridView({ product }: { product: any }) {
     const carId = product.id || product.stockNumber || product.vin || '1';
     const badge = getStatusBadge(product);
-    const priceNum = product.salePrice || product.price || product.Price || 0;
-    const hasPrice = priceNum > 0 && priceNum !== 'Contact for Price';
-    const yardValue = product.yard || product.Yard;
-    // Specific yard name (Maidstone/Mordialloc/Brisbane) takes priority over the
-    // generic city field, since "city" alone can't distinguish Maidstone from Mordialloc.
-    const derivedYardCity = getYardCity(yardValue);
-    const cityLabel = derivedYardCity !== 'N/A' ? derivedYardCity : (product.city || product.City || 'N/A');
+    const rawPrice = product.salePrice || product.price || product.Price || 0;
+    const formattedPrice = formatPrice(rawPrice);
+    const hasPrice = formattedPrice !== 'Contact for Price';
+
+    const [cityOverride, setCityOverride] = useState<string | null>(null);
+
+    useEffect(() => {
+        if (typeof window !== 'undefined') {
+            const params = new URLSearchParams(window.location.search);
+            setCityOverride(params.get('city'));
+        }
+    }, []);
+
+    const getYardLocation = () => {
+        if (cityOverride === 'Melbourne') return 'Melbourne';
+        if (cityOverride === 'Brisbane') return 'Brisbane';
+        
+        const yardStr = String(product.yard || product.Yard || '');
+        if (yardStr === '1') return 'Maidstone';
+        if (yardStr === '2') return 'Mordialloc';
+        if (yardStr === '4') return 'Slacks Creek';
+        
+        return product.city || 'N/A';
+    };
 
     return (
         <div className="col-xl-4 col-lg-6 col-md-6 mb-4">
@@ -67,6 +86,7 @@ export default function ProductGridView({ product }: { product: any }) {
                 flexDirection: 'column',
                 height: '100%'
             }}>
+                {/* Image Container */}
                 <div style={{ position: 'relative', height: '210px', background: '#f5f5f5' }}>
                     <Link href={`/inner/listing-single/${carId}`}>
                         <img 
@@ -76,6 +96,7 @@ export default function ProductGridView({ product }: { product: any }) {
                         />
                     </Link>
 
+                    {/* Availability Tag */}
                     <div style={{
                         position: 'absolute',
                         top: '12px',
@@ -96,6 +117,7 @@ export default function ProductGridView({ product }: { product: any }) {
                         {badge.label}
                     </div>
 
+                    {/* Favorite Button */}
                     <button style={{
                         position: 'absolute',
                         top: '12px',
@@ -115,40 +137,83 @@ export default function ProductGridView({ product }: { product: any }) {
                     </button>
                 </div>
 
+                {/* Card Body */}
                 <div style={{ padding: '16px', flex: 1, display: 'flex', flexDirection: 'column' }}>
-                    <h4 style={{ fontSize: '16px', fontWeight: 800, color: '#1a1a2e', marginBottom: '6px', lineHeight: 1.3 }}>
+                    
+                    {/* Title */}
+                    <h4 style={{ fontSize: '16px', fontWeight: 800, color: '#1a1a2e', marginBottom: '8px', lineHeight: 1.3 }}>
                         <Link href={`/inner/listing-single/${carId}`} style={{ color: 'inherit', textDecoration: 'none' }}>
-                            {product.title || (product.brand + " " + product.model)}
+                            {product.title || ((product.brand || '') + " " + (product.model || ''))}
                         </Link>
                     </h4>
 
-                    {/* Location / Yard Info — driven by the product's own data now */}
-                    <div style={{ display: 'flex', alignItems: 'center', gap: '6px', marginBottom: '10px' }}>
-                        <i className="fas fa-map-marker-alt" style={{ color: '#dc3545', fontSize: '13px' }}></i>
-                        <span style={{ fontSize: '13px', color: '#555', fontWeight: 600 }}>
-                            Yard {yardValue || 'N/A'}: {cityLabel}
+                    {/* Location & Stock Pill Row */}
+                    <div style={{ 
+                        display: 'flex', 
+                        alignItems: 'center', 
+                        justifyContent: 'space-between', 
+                        marginBottom: '12px',
+                        flexWrap: 'wrap',
+                        gap: '6px'
+                    }}>
+                        <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+                            <i className="fas fa-map-marker-alt" style={{ color: '#dc3545', fontSize: '13px' }}></i>
+                            <span style={{ fontSize: '13px', color: '#555', fontWeight: 600 }}>
+                                Yard {product.yard || product.Yard || 'N/A'}: {getYardLocation()}
+                            </span>
+                        </div>
+
+                        {/* Styled Stock Number Pill */}
+                        <span style={{
+                            background: '#f1f5f9',
+                            color: '#475569',
+                            fontSize: '11px',
+                            fontWeight: 700,
+                            padding: '2px 8px',
+                            borderRadius: '4px',
+                            border: '1px solid #e2e8f0',
+                            letterSpacing: '0.2px'
+                        }}>
+                            #{product.stockNumber || product.id}
                         </span>
                     </div>
 
-                    <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '12px' }}>
-                        <span style={{ fontSize: '22px', fontWeight: 900, color: '#1a1a2e' }}>
-                            {hasPrice ? formatPrice(priceNum) : 'Contact for Price'}
-                        </span>
+                    {/* Price Section */}
+                    <div style={{ marginBottom: '12px' }}>
+                        <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                            <span style={{ fontSize: '22px', fontWeight: 900, color: '#1a1a2e' }}>
+                                {formattedPrice}
+                            </span>
+                            {hasPrice && (
+                                <span style={{
+                                    background: '#ffc107',
+                                    color: '#1a1a2e',
+                                    fontSize: '10px',
+                                    fontWeight: 800,
+                                    padding: '3px 8px',
+                                    borderRadius: '4px',
+                                    letterSpacing: '0.3px'
+                                }}>
+                                    AUD
+                                </span>
+                            )}
+                        </div>
+
+                        {/* Small Excl. Govt. Charges line */}
                         {hasPrice && (
                             <span style={{
-                                background: '#ffc107',
-                                color: '#1a1a2e',
-                                fontSize: '10px',
-                                fontWeight: 800,
-                                padding: '3px 8px',
-                                borderRadius: '4px',
-                                letterSpacing: '0.3px'
+                                display: 'block',
+                                fontSize: '10.5px',
+                                color: '#777',
+                                fontWeight: 500,
+                                marginTop: '2px'
                             }}>
-                                AUD
+                                Excl. Govt. Charges
                             </span>
                         )}
                     </div>
 
+                    {/* Key Specs */}
                     <div style={{
                         display: 'flex',
                         alignItems: 'center',
@@ -170,6 +235,7 @@ export default function ProductGridView({ product }: { product: any }) {
                         </div>
                     </div>
 
+                    {/* CTA Button */}
                     <div style={{ marginTop: 'auto' }}>
                         <Link 
                             href={`/inner/listing-single/${carId}`}

@@ -68,7 +68,9 @@ const sectionTitleStyle: React.CSSProperties = {
 /* ─── 1. Schedule Test Drive Modal ─── */
 const TestDriveModal = ({ isOpen, onClose }: { isOpen: boolean; onClose: () => void }) => {
     const [form, setForm] = useState({ 
-        name: '', email: '', phone: '', contact: '', date: '', time: '', location: '', message: '', agreed: false 
+        name: '', email: '', phone: '', contact: '', date: '', time: '', location: '', message: '', agreed: false,
+        // ─── NEW FIELDS (OPTIONAL) ───
+        licenseNumber: '', customTime: '', customerAddress: '', salesPerson: '', stockNumber: ''
     });
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState('');
@@ -96,6 +98,12 @@ const TestDriveModal = ({ isOpen, onClose }: { isOpen: boolean; onClose: () => v
                     date: form.date,
                     time: form.time,
                     location: form.location,
+                    // ─── NEW FIELDS ───
+                    licenseNumber: form.licenseNumber,
+                    customTime: form.customTime,
+                    customerAddress: form.customerAddress,
+                    salesPerson: form.salesPerson,
+                    stockNumber: form.stockNumber,
                 }),
             });
             const data = await response.json();
@@ -142,6 +150,7 @@ const TestDriveModal = ({ isOpen, onClose }: { isOpen: boolean; onClose: () => v
                     </div>
                 ) : (
                     <form onSubmit={handleSubmit}>
+                        {/* ─── YOUR DETAILS ─── */}
                         <div style={sectionTitleStyle}>Your Details</div>
                         <div className="form-grid" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px', marginBottom: '12px' }}>
                             <div>
@@ -178,6 +187,7 @@ const TestDriveModal = ({ isOpen, onClose }: { isOpen: boolean; onClose: () => v
                             </div>
                         </div>
 
+                        {/* ─── PREFERRED DATE & TIME ─── */}
                         <div style={sectionTitleStyle}>Preferred Date & Time</div>
                         <div className="form-grid" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px', marginBottom: '12px' }}>
                             <div>
@@ -189,17 +199,7 @@ const TestDriveModal = ({ isOpen, onClose }: { isOpen: boolean; onClose: () => v
                                 </div>
                             </div>
                             <div>
-                                <label style={labelStyle}>Preferred Time *</label>
-                                <select style={inputStyle} required value={form.time} onChange={e => setForm({ ...form, time: e.target.value })}>
-                                    <option value="">Select time</option>
-                                    <option value="morning">Morning (9AM - 12PM)</option>
-                                    <option value="afternoon">Afternoon (12PM - 5PM)</option>
-                                    <option value="evening">Evening (5PM - 7PM)</option>
-                                </select>
-                            </div>
-                        </div>
-
-                        <div style={{ marginBottom: '16px' }}>
+ 
                             <label style={labelStyle}>Test Drive Location *</label>
                             <select style={inputStyle} required value={form.location} onChange={e => setForm({ ...form, location: e.target.value })}>
                                 <option value="">Select location</option>
@@ -208,13 +208,57 @@ const TestDriveModal = ({ isOpen, onClose }: { isOpen: boolean; onClose: () => v
                                 <option value="brisbane">Brisbane Yard</option>
                             </select>
                         </div>
+                            </div>
+                  
 
+                        {/* ─── LOCATION (REQUIRED) ─── */}
+                       
+
+                        {/* ─── MESSAGE ─── */}
                         <div style={{ marginBottom: '16px' }}>
                             <label style={labelStyle}>Your Message (Optional)</label>
                             <textarea style={{ ...inputStyle, minHeight: '80px', resize: 'vertical' }} placeholder="Anything specific you would like us to know?"
                                 value={form.message} onChange={e => setForm({ ...form, message: e.target.value })}></textarea>
                         </div>
 
+                        {/* ─── NEW FIELDS (ALL OPTIONAL) ─── */}
+                        <div style={{ marginBottom: '16px', paddingTop: '8px', borderTop: '1px solid #eee' }}>
+                            <p style={{ fontSize: '13px', color: '#999', marginBottom: '12px', fontWeight: 600 }}>Additional Information (Optional)</p>
+                            
+                            <div className="form-grid" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px' }}>
+                                <div>
+                                    <label style={labelStyle}>License Number</label>
+                                    <input style={inputStyle} placeholder="Enter license number"
+                                        value={form.licenseNumber} onChange={e => setForm({ ...form, licenseNumber: e.target.value })} />
+                                </div>
+                                <div>
+                                    <label style={labelStyle}>Custom Time</label>
+                                    <input style={inputStyle} type="time"
+                                        value={form.customTime} onChange={e => setForm({ ...form, customTime: e.target.value })} />
+                                </div>
+                            </div>
+
+                            <div className="form-grid" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px', marginTop: '12px' }}>
+                                <div>
+                                    <label style={labelStyle}>Customer Address</label>
+                                    <input style={inputStyle} placeholder="Enter customer address"
+                                        value={form.customerAddress} onChange={e => setForm({ ...form, customerAddress: e.target.value })} />
+                                </div>
+                                <div>
+                                    <label style={labelStyle}>Sales Person Name</label>
+                                    <input style={inputStyle} placeholder="Enter sales person name"
+                                        value={form.salesPerson} onChange={e => setForm({ ...form, salesPerson: e.target.value })} />
+                                </div>
+                            </div>
+
+                            <div style={{ marginTop: '12px' }}>
+                                <label style={labelStyle}>Stock Number</label>
+                                <input style={inputStyle} placeholder="Enter stock number"
+                                    value={form.stockNumber} onChange={e => setForm({ ...form, stockNumber: e.target.value })} />
+                            </div>
+                        </div>
+
+                        {/* ─── TERMS ─── */}
                         <div style={{ display: 'flex', alignItems: 'flex-start', gap: '8px', marginBottom: '16px' }}>
                             <input type="checkbox" id="td-agree" checked={form.agreed}
                                 onChange={e => setForm({ ...form, agreed: e.target.checked })}
@@ -256,7 +300,11 @@ const TestDriveModal = ({ isOpen, onClose }: { isOpen: boolean; onClose: () => v
 
 /* ─── 2. Apply for Finance Modal ─── */
 const FinanceModal = ({ isOpen, onClose }: { isOpen: boolean; onClose: () => void }) => {
-    const [form, setForm] = useState({ name: '', phone: '', email: '', dob: '', employment: '', income: '', term: '', deposit: '', location: '' });
+    const [form, setForm] = useState({ 
+        name: '', phone: '', email: '', dob: '', employment: '', income: '', term: '', deposit: '', location: '',
+        // ─── NEW FIELDS (OPTIONAL) ───
+        licenseNumber: '', customTime: '', customerAddress: '', salesPerson: '', stockNumber: ''
+    });
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState('');
     const [success, setSuccess] = useState(false);
@@ -282,6 +330,12 @@ const FinanceModal = ({ isOpen, onClose }: { isOpen: boolean; onClose: () => voi
                     term: form.term,
                     deposit: form.deposit,
                     location: form.location,
+                    // ─── NEW FIELDS ───
+                    licenseNumber: form.licenseNumber,
+                    customTime: form.customTime,
+                    customerAddress: form.customerAddress,
+                    salesPerson: form.salesPerson,
+                    stockNumber: form.stockNumber,
                 }),
             });
             const data = await response.json();
@@ -328,6 +382,7 @@ const FinanceModal = ({ isOpen, onClose }: { isOpen: boolean; onClose: () => voi
                     </div>
                 ) : (
                     <form onSubmit={handleSubmit}>
+                        {/* ─── PERSONAL DETAILS ─── */}
                         <div style={sectionTitleStyle}>Personal Details</div>
                         <div style={{ marginBottom: '12px' }}>
                             <label style={labelStyle}>Full Name *</label>
@@ -375,6 +430,7 @@ const FinanceModal = ({ isOpen, onClose }: { isOpen: boolean; onClose: () => voi
                             </div>
                         </div>
 
+                        {/* ─── LOCATION (REQUIRED) ─── */}
                         <div style={{ marginBottom: '12px' }}>
                             <label style={labelStyle}>Preferred Location *</label>
                             <select style={inputStyle} required value={form.location} onChange={e => setForm({ ...form, location: e.target.value })}>
@@ -385,6 +441,7 @@ const FinanceModal = ({ isOpen, onClose }: { isOpen: boolean; onClose: () => voi
                             </select>
                         </div>
 
+                        {/* ─── FINANCE DETAILS ─── */}
                         <div style={sectionTitleStyle}>Finance Details</div>
                         <div className="form-grid" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px', marginBottom: '12px' }}>
                             <div>
@@ -419,6 +476,43 @@ const FinanceModal = ({ isOpen, onClose }: { isOpen: boolean; onClose: () => voi
                             </div>
                         </div>
 
+                        {/* ─── NEW FIELDS (ALL OPTIONAL) ─── */}
+                        <div style={{ marginBottom: '16px', paddingTop: '8px', borderTop: '1px solid #eee' }}>
+                            <p style={{ fontSize: '13px', color: '#999', marginBottom: '12px', fontWeight: 600 }}>Additional Information (Optional)</p>
+                            
+                            <div className="form-grid" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px' }}>
+                                <div>
+                                    <label style={labelStyle}>License Number</label>
+                                    <input style={inputStyle} placeholder="Enter license number"
+                                        value={form.licenseNumber} onChange={e => setForm({ ...form, licenseNumber: e.target.value })} />
+                                </div>
+                                <div>
+                                    <label style={labelStyle}>Custom Time</label>
+                                    <input style={inputStyle} type="time"
+                                        value={form.customTime} onChange={e => setForm({ ...form, customTime: e.target.value })} />
+                                </div>
+                            </div>
+
+                            <div className="form-grid" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px', marginTop: '12px' }}>
+                                <div>
+                                    <label style={labelStyle}>Customer Address</label>
+                                    <input style={inputStyle} placeholder="Enter customer address"
+                                        value={form.customerAddress} onChange={e => setForm({ ...form, customerAddress: e.target.value })} />
+                                </div>
+                                <div>
+                                    <label style={labelStyle}>Sales Person Name</label>
+                                    <input style={inputStyle} placeholder="Enter sales person name"
+                                        value={form.salesPerson} onChange={e => setForm({ ...form, salesPerson: e.target.value })} />
+                                </div>
+                            </div>
+
+                            <div style={{ marginTop: '12px' }}>
+                                <label style={labelStyle}>Stock Number</label>
+                                <input style={inputStyle} placeholder="Enter stock number"
+                                    value={form.stockNumber} onChange={e => setForm({ ...form, stockNumber: e.target.value })} />
+                            </div>
+                        </div>
+
                         {error && (
                             <div style={{ marginBottom: '12px', padding: '10px 12px', background: '#fff2f2', borderRadius: '8px', color: '#d32f2f', fontSize: '13px', fontWeight: 600 }}>
                                 <i className="fas fa-exclamation-circle" style={{ marginRight: '6px' }}></i>{error}
@@ -446,7 +540,11 @@ const FinanceModal = ({ isOpen, onClose }: { isOpen: boolean; onClose: () => voi
 
 /* ─── 3. Enquire Now Modal ─── */
 const EnquiryModal = ({ isOpen, onClose }: { isOpen: boolean; onClose: () => void }) => {
-    const [form, setForm] = useState({ name: '', phone: '', email: '', interest: '', message: '', location: '' });
+    const [form, setForm] = useState({ 
+        name: '', phone: '', email: '', interest: '', message: '', location: '',
+        // ─── NEW FIELDS (OPTIONAL) ───
+        licenseNumber: '', customTime: '', customerAddress: '', salesPerson: '', stockNumber: ''
+    });
     const [contactMethod, setContactMethod] = useState<'phone' | 'email' | 'whatsapp'>('phone');
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState('');
@@ -471,6 +569,12 @@ const EnquiryModal = ({ isOpen, onClose }: { isOpen: boolean; onClose: () => voi
                     message: form.message,
                     interest: form.interest,
                     location: form.location,
+                    // ─── NEW FIELDS ───
+                    licenseNumber: form.licenseNumber,
+                    customTime: form.customTime,
+                    customerAddress: form.customerAddress,
+                    salesPerson: form.salesPerson,
+                    stockNumber: form.stockNumber,
                 }),
             });
             const data = await response.json();
@@ -517,6 +621,7 @@ const EnquiryModal = ({ isOpen, onClose }: { isOpen: boolean; onClose: () => voi
                     </div>
                 ) : (
                     <form onSubmit={handleSubmit}>
+                        {/* ─── YOUR DETAILS ─── */}
                         <div style={sectionTitleStyle}>Your Details</div>
                         <div style={{ marginBottom: '12px' }}>
                             <label style={labelStyle}>Full Name *</label>
@@ -553,6 +658,7 @@ const EnquiryModal = ({ isOpen, onClose }: { isOpen: boolean; onClose: () => voi
                             </select>
                         </div>
 
+                        {/* ─── LOCATION (REQUIRED) ─── */}
                         <div style={{ marginBottom: '12px' }}>
                             <label style={labelStyle}>Preferred Location *</label>
                             <select style={inputStyle} required value={form.location} onChange={e => setForm({ ...form, location: e.target.value })}>
@@ -569,6 +675,7 @@ const EnquiryModal = ({ isOpen, onClose }: { isOpen: boolean; onClose: () => voi
                                 value={form.message} onChange={e => setForm({ ...form, message: e.target.value })}></textarea>
                         </div>
 
+                        {/* ─── CONTACT METHOD ─── */}
                         <div style={{ marginBottom: '14px' }}>
                             <label style={{ ...labelStyle, marginBottom: '8px' }}>Preferred Contact Method</label>
                             <div className="contact-method-row" style={{ display: 'flex', gap: '8px' }}>
@@ -589,6 +696,43 @@ const EnquiryModal = ({ isOpen, onClose }: { isOpen: boolean; onClose: () => voi
                                         <i className={`fas ${m.icon}`} style={{ fontSize: '12px' }}></i>{m.label}
                                     </button>
                                 ))}
+                            </div>
+                        </div>
+
+                        {/* ─── NEW FIELDS (ALL OPTIONAL) ─── */}
+                        <div style={{ marginBottom: '16px', paddingTop: '8px', borderTop: '1px solid #eee' }}>
+                            <p style={{ fontSize: '13px', color: '#999', marginBottom: '12px', fontWeight: 600 }}>Additional Information (Optional)</p>
+                            
+                            <div className="form-grid" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px' }}>
+                                <div>
+                                    <label style={labelStyle}>License Number</label>
+                                    <input style={inputStyle} placeholder="Enter license number"
+                                        value={form.licenseNumber} onChange={e => setForm({ ...form, licenseNumber: e.target.value })} />
+                                </div>
+                                <div>
+                                    <label style={labelStyle}>Custom Time</label>
+                                    <input style={inputStyle} type="time"
+                                        value={form.customTime} onChange={e => setForm({ ...form, customTime: e.target.value })} />
+                                </div>
+                            </div>
+
+                            <div className="form-grid" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px', marginTop: '12px' }}>
+                                <div>
+                                    <label style={labelStyle}>Customer Address</label>
+                                    <input style={inputStyle} placeholder="Enter customer address"
+                                        value={form.customerAddress} onChange={e => setForm({ ...form, customerAddress: e.target.value })} />
+                                </div>
+                                <div>
+                                    <label style={labelStyle}>Sales Person Name</label>
+                                    <input style={inputStyle} placeholder="Enter sales person name"
+                                        value={form.salesPerson} onChange={e => setForm({ ...form, salesPerson: e.target.value })} />
+                                </div>
+                            </div>
+
+                            <div style={{ marginTop: '12px' }}>
+                                <label style={labelStyle}>Stock Number</label>
+                                <input style={inputStyle} placeholder="Enter stock number"
+                                    value={form.stockNumber} onChange={e => setForm({ ...form, stockNumber: e.target.value })} />
                             </div>
                         </div>
 
@@ -852,7 +996,7 @@ const BannerOne: React.FC = () => {
                 </section>
             </section>
 
-            {/* Modals */}
+            {/* ─── Modals ─── */}
             <TestDriveModal isOpen={modal === 'testdrive'} onClose={() => setModal(null)} />
             <FinanceModal isOpen={modal === 'finance'} onClose={() => setModal(null)} />
             <EnquiryModal isOpen={modal === 'enquiry'} onClose={() => setModal(null)} />

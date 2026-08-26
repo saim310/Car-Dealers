@@ -64,7 +64,7 @@ const StarRating: React.FC<{ value: number; maxStars?: number }> = ({
 const AboutOne: React.FC = () => {
   return (
     <section className="about-one" id="about">
-      <div className="container">
+|      <div className="container">
         <div className="row">
           {/* Left Side */}
           <div className="col-xl-6">
@@ -105,8 +105,8 @@ const AboutOne: React.FC = () => {
 
                 <div className="about-one__experience">
                   <div className="about-one__experience-count">
-                    <h3 className="odometer" data-count="50">
-                      <AdvanceCountUp ending={50} />
+                    <h3 className="odometer" data-count="36">
+                      <AdvanceCountUp ending={36} />
                     </h3>
                     <span>+</span>
                   </div>
@@ -133,11 +133,11 @@ const AboutOne: React.FC = () => {
                 <br />
                 ultimate service.
               </p>
-
-              <p className="about-one__text-2">
-                Lorem ipsum is simply dummy text of the printing and
-                typesetting industry and has been the industrys standard.
-              </p>
+<p className="about-one__text-2">
+  Discover quality Japanese used cars across Australia. We offering a wide range of reliable cars,
+  hybrids, SUVs and automatic vehicles. With stock available in Melbourne, Maidstone,
+  Mordialloc and Brisbane, we make it easier to find the right vehicle for your needs.
+</p>
 
               <ul className="about-one__progress-box list-unstyled">
                 {/* Customer Satisfaction - Star Rating */}

@@ -42,7 +42,7 @@ const FaqOne: React.FC = () => {
                                 <div className="faq-one__experience-box">
                                     <div className="faq-one__experience-year">
                                         <h2 className="odometer" data-count="55">
-                                            55
+                                            36
                                         </h2>
                                     </div>
                                     <p className="faq-one__experience-text">

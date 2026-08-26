@@ -10,32 +10,11 @@ export const whyChooseData: WhyChooseItem[] = [
     link: "/inner/finance/finance-calculator", // Pehla link
   },
   {
-    id: 2,
-    icon: "icon-range",
-    title: "End-to-End Import Support",
-    text: "From vehicle sourcing and inspections...",
-    link: "inner/warranty", // Dusra link
-  },
-  {
     id: 3,
     icon: "icon-rating",
     title: "Quality Inspected Vehicles",
     text: "Every vehicle is carefully reviewed...",
     link: "/inner/contact", // Teesra link
-  },
-  {
-    id: 4,
-    icon: "icon-location",
-    title: "Local Support in Australia",
-    text: "Serving customers across Brisbane...",
-    link: "/inner/contact", // Chautha link
-  },
-  {
-    id: 5,
-    icon: "icon-car",
-    title: "Trusted Industry Experience",
-    text: "Our experience in Japanese vehicle...",
-    link: "/inner/about", // Paanchwa link
   },
   {
     id: 6,

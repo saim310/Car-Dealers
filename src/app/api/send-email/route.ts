@@ -79,10 +79,12 @@ export async function POST(request: Request) {
     const salesPerson = extra.salesPersonName || extra.salesPerson || extra.salesman;
     const stockNo = extra.stockNumber || extra.stockNo || extra.stockId;
     const prefDate = extra.date || extra.preferredDate || extra.bookingDate;
+	const stateVal = extra.state || body.state;
+
 
     if (license) htmlBody += `<tr><td style="padding:8px 0;border-bottom:1px solid #f0f0f0;"><strong>License #</strong></td><td style="padding:8px 0;border-bottom:1px solid #f0f0f0;">${escapeHtml(license)}</td></tr>`;
+    if (stateVal) htmlBody += `<tr><td style="padding:8px 0;border-bottom:1px solid #f0f0f0;"><strong>State</strong></td><td style="padding:8px 0;border-bottom:1px solid #f0f0f0;">${escapeHtml(stateVal)}</td></tr>`; // Yeh line add kar dein
     if (prefDate) htmlBody += `<tr><td style="padding:8px 0;border-bottom:1px solid #f0f0f0;"><strong>Preferred Date</strong></td><td style="padding:8px 0;border-bottom:1px solid #f0f0f0;">${escapeHtml(prefDate)}</td></tr>`;
-    if (time) htmlBody += `<tr><td style="padding:8px 0;border-bottom:1px solid #f0f0f0;"><strong>Preferred Time</strong></td><td style="padding:8px 0;border-bottom:1px solid #f0f0f0;">${escapeHtml(time)}</td></tr>`;
     if (address) htmlBody += `<tr><td style="padding:8px 0;border-bottom:1px solid #f0f0f0;"><strong>Address</strong></td><td style="padding:8px 0;border-bottom:1px solid #f0f0f0;">${escapeHtml(address)}</td></tr>`;
     if (salesPerson) htmlBody += `<tr><td style="padding:8px 0;border-bottom:1px solid #f0f0f0;"><strong>Sales Person</strong></td><td style="padding:8px 0;border-bottom:1px solid #f0f0f0;">${escapeHtml(salesPerson)}</td></tr>`;
     if (stockNo) htmlBody += `<tr><td style="padding:8px 0;border-bottom:1px solid #f0f0f0;"><strong>Stock Number</strong></td><td style="padding:8px 0;border-bottom:1px solid #f0f0f0;">${escapeHtml(stockNo)}</td></tr>`;

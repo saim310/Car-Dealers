@@ -1,104 +1,71 @@
 "use client"
-import React, { useState } from "react"; 
-import shape1 from "../../../public/assets/images/shapes/testimonial-two-shape-1.png";
-import shape2 from "../../../public/assets/images/shapes/testimonial-two-shape-2.png"; 
+import 'swiper/css';
+import 'swiper/css/navigation';
+import React, { useState } from 'react';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import type { Swiper as SwiperType } from 'swiper';
-import { Autoplay, Navigation } from 'swiper/modules'; 
-import Image from "next/image";
-import TextAnimation from "@/components/elements/TextAnimation";
-import { testimonialsTwo } from "@/all-content/testimonials/testimonialsData";
-import Link from "next/link";
-
+import { Autoplay, Navigation } from 'swiper/modules';
+import TextAnimation from '@/components/elements/TextAnimation';
+import { videoTestimonials } from '@/all-content/testimonials/testimonialsData';
 
 const TestimonialTwo: React.FC = () => {
     const [swiperInstance, setSwiperInstance] = useState<SwiperType | null>(null);
+
     return (
-        <section className="testimonial-two">
-            <div className="testimonial-two__shape-1 float-bob-y">
-                <Image src={shape1} width={665} height={520} alt="" />
-            </div>
-
-            <div className="testimonial-two__shape-2 float-bob-x">
-                <Image src={shape2} width={665} height={520} alt="" />
-            </div>
-
+        <section className="pure-image-testimonial" style={{ padding: '80px 0', backgroundColor: '#faf8f5' }}>
             <div className="container">
-                <div className="section-title text-left sec-title-animation animation-style2">
-                  
-
-                    <h2 className="section-title__title title-animation">
-                        <TextAnimation text="What Peoples Say" />
-                        <TextAnimation text="about UKA Japan" />
+                <div className="section-title text-left" style={{ marginBottom: '40px' }}>
+                    <span style={{ color: '#f5b93c', fontWeight: 600, textTransform: 'uppercase', fontSize: '14px', letterSpacing: '2px', display: 'block', marginBottom: '10px' }}>
+                        Client Highlights
+                    </span>
+                    <h2 className="section-title__title">
+                        <TextAnimation text='See What Our Clients' />
+                        <TextAnimation text=' Say About Us' />
                     </h2>
                 </div>
-                <div className="testimonial-two__carousel owl-carousel owl-theme">
-                    <Swiper
-                        slidesPerView={3}
-                        spaceBetween={30}
-                        loop={true}
-                        autoplay={{
-                            delay: 4000,
-                            disableOnInteraction: false,
-                        }}
-                        onSwiper={setSwiperInstance}
-                        speed={1000}
-                        modules={[Navigation, Autoplay]}
-                        breakpoints={{
-                            320: { slidesPerView: 1, spaceBetween: 10 },
-                            640: { slidesPerView: 2, spaceBetween: 20 },
-                            1024: { slidesPerView: 3, spaceBetween: 30 },
-                        }}
-                    >
-                        {testimonialsTwo.map((item) => (
-                            <SwiperSlide key={item.id}>
-                                <div className="item" >
-                                    <div className="testimonial-two__single">
-                                        <div className="testimonial-two__quote">
-                                            <span className="icon-quote"></span>
-                                        </div>
 
-                                        <div className="testimonial-two__img">
-                                            <Image src={item.image} alt={item.name} />
-                                        </div>
-
-                                        <p className="testimonial-two__text">{item.text}</p>
-
-                                        <div className="testimonial-two__client-info">
-                                            <div className="testimonial-two__client-content">
-                                                <h4 className="testimonial-two__client-name">
-                                                    <Link href={item.link}>{item.name}</Link>
-                                                </h4>
-                                                <p className="testimonial-two__client-sub-title">
-                                                    {item.role}
-                                                </p>
-                                            </div>
-
-                                            <div className="testimonial-two__rating">
-                                                {[...Array(5)].map((_, i) => (
-                                                    <span className="icon-star" key={i}></span>
-                                                ))}
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </SwiperSlide>
-                        ))}
-                    </Swiper>
-                    <div className="owl-nav" style={{ zIndex: '105' }}>
-                        <button type="button"
-                            className="owl-prev rotate180"
-                            onClick={() => swiperInstance?.slidePrev()}
-                        >
-                            <span className="far fa-long-arrow-left"></span>
-                        </button>
-                        <button type="button" className="owl-next"
-                            onClick={() => swiperInstance?.slideNext()}
-                        >
-                            <span className="far fa-long-arrow-right"></span>
-                        </button>
-                    </div>
-                </div>
+                <Swiper
+                    slidesPerView={1}
+                    spaceBetween={30}
+                    loop={true}
+                    autoplay={{ delay: 5000, disableOnInteraction: false }}
+                    onSwiper={setSwiperInstance}
+                    speed={800}
+                    modules={[Navigation, Autoplay]}
+                    breakpoints={{
+                        640: { slidesPerView: 1, spaceBetween: 20 },
+                        768: { slidesPerView: 2, spaceBetween: 25 },
+                        1200: { slidesPerView: 3, spaceBetween: 30 },
+                    }}
+                >
+                    {videoTestimonials.map((item) => (
+                        <SwiperSlide key={item.id}>
+                            <div style={{
+                                borderRadius: '15px',
+                                overflow: 'hidden',
+                                boxShadow: '0 10px 30px rgba(0,0,0,0.08)',
+                                background: '#1a1a2e',
+                                width: '100%',
+                                aspectRatio: '1 / 1',
+                                display: 'flex',
+                                alignItems: 'center',
+                                justifyContent: 'center'
+                            }}>
+                                <img 
+                                    src={item.image} 
+                                    alt={item.alt} 
+                                    style={{
+                                        width: '100%',
+                                        height: '100%',
+                                        objectFit: 'contain',
+                                        borderRadius: '15px',
+                                        display: 'block'
+                                    }} 
+                                />
+                            </div>
+                        </SwiperSlide>
+                    ))}
+                </Swiper>
             </div>
         </section>
     );

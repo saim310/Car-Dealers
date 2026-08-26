@@ -117,24 +117,6 @@ export default function ProductGridView({ product }: { product: any }) {
                         {badge.label}
                     </div>
 
-                    {/* Favorite Button */}
-                    <button style={{
-                        position: 'absolute',
-                        top: '12px',
-                        right: '12px',
-                        width: '32px',
-                        height: '32px',
-                        borderRadius: '50%',
-                        background: '#fff',
-                        border: 'none',
-                        display: 'flex',
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                        cursor: 'pointer',
-                        boxShadow: '0 2px 8px rgba(0,0,0,0.12)'
-                    }}>
-                        <i className="far fa-heart" style={{ color: '#666', fontSize: '14px' }}></i>
-                    </button>
                 </div>
 
                 {/* Card Body */}

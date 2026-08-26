@@ -8,12 +8,12 @@ interface ListingsSlidersProps {
 const FALLBACK_IMAGE = "/assets/images/shop/shop-product-1-1.jpg";
 
 export default function ListingsSliders({ car }: ListingsSlidersProps) {
-    // Use the car's real images[] array (whatever length it is) instead of guessing 5 filenames from the stock number.
     const images: string[] = (car?.images && car.images.length > 0)
         ? car.images
         : (car?.image ? [car.image] : [FALLBACK_IMAGE]);
 
     const [activeIndex, setActiveIndex] = useState(0);
+    const [isLightboxOpen, setIsLightboxOpen] = useState(false);
 
     const badge = car?.isNew || car?.status === 'new'
         ? { label: 'JUST ARRIVED', bg: '#ffc107', color: '#1a1a2e' }
@@ -56,35 +56,25 @@ export default function ListingsSliders({ car }: ListingsSlidersProps) {
                     {badge.label}
                 </div>
 
-                {/* Top Right Icons */}
+                {/* Top Right Expand Button */}
                 <div style={{ position: 'absolute', top: '14px', right: '14px', display: 'flex', gap: '8px' }}>
-                    <button style={{
-                        width: '36px',
-                        height: '36px',
-                        borderRadius: '50%',
-                        background: '#fff',
-                        border: 'none',
-                        display: 'flex',
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                        cursor: 'pointer',
-                        boxShadow: '0 2px 8px rgba(0,0,0,0.12)'
-                    }}>
+                    <button 
+                        onClick={() => setIsLightboxOpen(true)}
+                        title="View Fullscreen"
+                        style={{
+                            width: '36px',
+                            height: '36px',
+                            borderRadius: '50%',
+                            background: '#fff',
+                            border: 'none',
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            cursor: 'pointer',
+                            boxShadow: '0 2px 8px rgba(0,0,0,0.12)'
+                        }}
+                    >
                         <i className="fas fa-expand" style={{ color: '#666', fontSize: '14px' }}></i>
-                    </button>
-                    <button style={{
-                        width: '36px',
-                        height: '36px',
-                        borderRadius: '50%',
-                        background: '#fff',
-                        border: 'none',
-                        display: 'flex',
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                        cursor: 'pointer',
-                        boxShadow: '0 2px 8px rgba(0,0,0,0.12)'
-                    }}>
-                        <i className="far fa-heart" style={{ color: '#666', fontSize: '14px' }}></i>
                     </button>
                 </div>
 
@@ -103,7 +93,7 @@ export default function ListingsSliders({ car }: ListingsSlidersProps) {
                     {activeIndex + 1} / {images.length}
                 </div>
 
-                {/* Nav Arrows — only shown when there's more than one image */}
+                {/* Nav Arrows */}
                 {images.length > 1 && (
                     <>
                         <button onClick={() => setActiveIndex((prev) => (prev - 1 + images.length) % images.length)} style={{
@@ -146,7 +136,7 @@ export default function ListingsSliders({ car }: ListingsSlidersProps) {
                 )}
             </div>
 
-            {/* Thumbnails — scrollable row so any number of images (5, 10, 15...) stays readable instead of getting squished */}
+            {/* Thumbnails */}
             {images.length > 1 && (
                 <div style={{
                     display: 'flex',
@@ -180,6 +170,131 @@ export default function ListingsSliders({ car }: ListingsSlidersProps) {
                             />
                         </button>
                     ))}
+                </div>
+            )}
+
+            {/* Fullscreen Lightbox Modal with Navigation */}
+            {isLightboxOpen && (
+                <div style={{
+                    position: 'fixed',
+                    top: 0,
+                    left: 0,
+                    width: '100vw',
+                    height: '100vh',
+                    background: 'rgba(0, 0, 0, 0.95)',
+                    zIndex: 9999,
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    padding: '20px'
+                }}>
+                    {/* Close Button */}
+                    <button 
+                        onClick={() => setIsLightboxOpen(false)}
+                        style={{
+                            position: 'absolute',
+                            top: '20px',
+                            right: '30px',
+                            background: '#fff',
+                            border: 'none',
+                            borderRadius: '50%',
+                            width: '45px',
+                            height: '45px',
+                            fontSize: '18px',
+                            fontWeight: 'bold',
+                            cursor: 'pointer',
+                            zIndex: 10000,
+                            boxShadow: '0 4px 12px rgba(0,0,0,0.3)'
+                        }}
+                    >
+                        &times;
+                    </button>
+
+                    {/* Image Counter inside Lightbox */}
+                    <div style={{
+                        position: 'absolute',
+                        top: '25px',
+                        left: '30px',
+                        color: '#fff',
+                        background: 'rgba(255,255,255,0.15)',
+                        padding: '6px 14px',
+                        borderRadius: '20px',
+                        fontSize: '14px',
+                        fontWeight: 600,
+                        zIndex: 10000
+                    }}>
+                        {activeIndex + 1} / {images.length}
+                    </div>
+
+                    {/* Lightbox Prev Arrow */}
+                    {images.length > 1 && (
+                        <button 
+                            onClick={(e) => {
+                                e.stopPropagation();
+                                setActiveIndex((prev) => (prev - 1 + images.length) % images.length);
+                            }} 
+                            style={{
+                                position: 'absolute',
+                                left: '25px',
+                                top: '50%',
+                                transform: 'translateY(-25px)',
+                                width: '50px',
+                                height: '50px',
+                                borderRadius: '50%',
+                                background: '#fff',
+                                border: 'none',
+                                display: 'flex',
+                                alignItems: 'center',
+                                justifyContent: 'center',
+                                cursor: 'pointer',
+                                zIndex: 10000,
+                                boxShadow: '0 4px 12px rgba(0,0,0,0.3)'
+                            }}
+                        >
+                            <i className="fas fa-chevron-left" style={{ color: '#1a1a2e', fontSize: '16px' }}></i>
+                        </button>
+                    )}
+
+                    {/* Active Image */}
+                    <img
+                        src={images[activeIndex]}
+                        alt="Fullscreen View"
+                        style={{
+                            maxWidth: '85%',
+                            maxHeight: '85vh',
+                            objectFit: 'contain',
+                            borderRadius: '8px'
+                        }}
+                    />
+
+                    {/* Lightbox Next Arrow */}
+                    {images.length > 1 && (
+                        <button 
+                            onClick={(e) => {
+                                e.stopPropagation();
+                                setActiveIndex((prev) => (prev + 1) % images.length);
+                            }} 
+                            style={{
+                                position: 'absolute',
+                                right: '25px',
+                                top: '50%',
+                                transform: 'translateY(-25px)',
+                                width: '50px',
+                                height: '50px',
+                                borderRadius: '50%',
+                                background: '#fff',
+                                border: 'none',
+                                display: 'flex',
+                                alignItems: 'center',
+                                justifyContent: 'center',
+                                cursor: 'pointer',
+                                zIndex: 10000,
+                                boxShadow: '0 4px 12px rgba(0,0,0,0.3)'
+                            }}
+                        >
+                            <i className="fas fa-chevron-right" style={{ color: '#1a1a2e', fontSize: '16px' }}></i>
+                        </button>
+                    )}
                 </div>
             )}
         </div>

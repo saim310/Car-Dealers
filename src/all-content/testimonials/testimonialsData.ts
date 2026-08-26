@@ -1,205 +1,22 @@
-
-import testimonial1 from "../../../public/assets/images/testimonial/testimonial-1-1.jpg";
-import testimonial2 from "../../../public/assets/images/testimonial/testimonial-1-2.jpg";
-import testimonial3 from "../../../public/assets/images/testimonial/testimonial-1-3.jpg";
-import testimonial4 from "../../../public/assets/images/testimonial/testimonial-1-4.jpg";
-import testimonial5 from "../../../public/assets/images/testimonial/testimonial-1-5.jpg";
-import testimonial6 from "../../../public/assets/images/testimonial/testimonial-1-6.jpg";
-import t1 from "../../../public/assets/images/testimonial/testimonial-2-1.jpg";
-import t2 from "../../../public/assets/images/testimonial/testimonial-2-2.jpg";
-import t3 from "../../../public/assets/images/testimonial/testimonial-2-3.jpg";
-import t4 from "../../../public/assets/images/testimonial/testimonial-2-4.jpg";
-import t5 from "../../../public/assets/images/testimonial/testimonial-2-5.jpg";
-import t6 from "../../../public/assets/images/testimonial/testimonial-2-6.jpg";
-import type { TestimonialItem, TestimonialThree, TestimonialTwo } from "./testimonialsType";
-import testi1 from '../../../public/assets/images/testimonial/testimonial-3-1.jpg';
-import testi2 from '../../../public/assets/images/testimonial/testimonial-3-2.jpg';
-import testi3 from '../../../public/assets/images/testimonial/testimonial-3-3.jpg'; 
-
-
-export const testimonialData: TestimonialItem[] = [
-  {
-    id: 1,
-    name: "Adam Smith",
-    role: "Customer",
-    image: testimonial1,
-    text:
-      "maintaining oral health through practices such as the regular check-a ups, cleanings, and treatments for teeth and an gums.",
-    rating: 5,
-    link: "/inner/testimonials",
-  },
-  {
-    id: 2,
-    name: "Adam Milne",
-    role: "Customer",
-    image: testimonial2,
-    text:
-      "maintaining oral health through practices such as the regular check-a ups, cleanings, and treatments for teeth and an gums.",
-    rating: 5,
-    link: "/inner/testimonials",
-  },
-  {
-    id: 3,
-    name: "Marco Janson",
-    role: "Customer",
-    image: testimonial3,
-    text:
-      "maintaining oral health through practices such as the regular check-a ups, cleanings, and treatments for teeth and an gums.",
-    rating: 5,
-    link: "/inner/testimonials",
-  },
-  {
-    id: 4,
-    name: "Look Ronci",
-    role: "Customer",
-    image: testimonial4,
-    text:
-      "maintaining oral health through practices such as the regular check-a ups, cleanings, and treatments for teeth and an gums.",
-    rating: 5,
-    link: "/inner/testimonials",
-  },
-  {
-    id: 5,
-    name: "Harry Broke",
-    role: "Customer",
-    image: testimonial5,
-    text:
-      "maintaining oral health through practices such as the regular check-a ups, cleanings, and treatments for teeth and an gums.",
-    rating: 5,
-    link: "/inner/testimonials",
-  },
-  {
-    id: 6,
-    name: "Jessica Brown",
-    role: "Customer",
-    image: testimonial6,
-    text:
-      "maintaining oral health through practices such as the regular check-a ups, cleanings, and treatments for teeth and an gums.",
-    rating: 5,
-    link: "/inner/testimonials",
-  },
+export const videoTestimonials = [
+    { id: 1, image: "/assets/images/testimonial/test1.jpeg", alt: "Testimonial 1", name: "Client 1", role: "Customer", text: "Great service!", rating: 5, link: "#" },
+    { id: 2, image: "/assets/images/testimonial/test2.jpeg", alt: "Testimonial 2", name: "Client 2", role: "Customer", text: "Amazing!", rating: 5, link: "#" },
+    { id: 3, image: "/assets/images/testimonial/test3.jpeg", alt: "Testimonial 3", name: "Client 3", role: "Customer", text: "Very happy!", rating: 5, link: "#" },
+    { id: 4, image: "/assets/images/testimonial/test4.jpeg", alt: "Testimonial 4", name: "Client 4", role: "Customer", text: "Awesome!", rating: 5, link: "#" },
+    { id: 5, image: "/assets/images/testimonial/test5.jpeg", alt: "Testimonial 5", name: "Client 5", role: "Customer", text: "Smooth process!", rating: 5, link: "#" },
+    { id: 6, image: "/assets/images/testimonial/test6.jpeg", alt: "Testimonial 6", name: "Client 6", role: "Customer", text: "Trusted team.", rating: 5, link: "#" },
+    { id: 7, image: "/assets/images/testimonial/test7.jpeg", alt: "Testimonial 7", name: "Client 7", role: "Customer", text: "Recommended!", rating: 5, link: "#" },
+    { id: 8, image: "/assets/images/testimonial/test8.jpeg", alt: "Testimonial 8", name: "Client 8", role: "Customer", text: "Top quality.", rating: 5, link: "#" },
+    { id: 9, image: "/assets/images/testimonial/test9.jpeg", alt: "Testimonial 9", name: "Client 9", role: "Customer", text: "Excellent!", rating: 5, link: "#" },
+    { id: 10, image: "/assets/images/testimonial/test10.jpeg", alt: "Testimonial 10", name: "Client 10", role: "Customer", text: "Fantastic!", rating: 5, link: "#" },
+    { id: 11, image: "/assets/images/testimonial/test11.jpeg", alt: "Testimonial 11", name: "Client 11", role: "Customer", text: "Very professional.", rating: 5, link: "#" },
+    { id: 12, image: "/assets/images/testimonial/test12.jpeg", alt: "Testimonial 12", name: "Client 12", role: "Customer", text: "Loved it.", rating: 5, link: "#" },
+    { id: 13, image: "/assets/images/testimonial/test13.jpeg", alt: "Testimonial 13", name: "Client 13", role: "Customer", text: "Superb service.", rating: 5, link: "#" },
+    { id: 14, image: "/assets/images/testimonial/test14.jpeg", alt: "Testimonial 14", name: "Client 14", role: "Customer", text: "Best experience.", rating: 5, link: "#" },
+    { id: 15, image: "/assets/images/testimonial/test15.jpeg", alt: "Testimonial 15", name: "Client 15", role: "Customer", text: "Outstanding!", rating: 5, link: "#" }
 ];
 
-
-
-export const testimonialsTwo: TestimonialTwo[] = [
-    {
-        id: 1,
-        name: "Alisa Fox",
-        role: "Auto Dealer",
-        image: t1,
-        link: "/inner/testimonials",
-        text:
-            "A logistic service provider company plays a pivotal role in the global supply chain. A logistic service provider company plays a pivotal role.",
-    },
-    {
-        id: 2,
-        name: "Creas Jordan",
-        role: "Customer",
-        image: t2,
-        link: "/inner/testimonials",
-        text:
-            "A logistic service provider company plays a pivotal role in the global supply chain. A logistic service provider company plays a pivotal role.",
-    },
-    {
-        id: 3,
-        name: "Ass Lee",
-        role: "Senior Consultant",
-        image: t3,
-        link: "/inner/testimonials",
-        text:
-            "A logistic service provider company plays a pivotal role in the global supply chain. A logistic service provider company plays a pivotal role.",
-    },
-    {
-        id: 4,
-        name: "Creas Wokes",
-        role: "Managing Director",
-        image: t4,
-        link: "/inner/testimonials",
-        text:
-            "A logistic service provider company plays a pivotal role in the global supply chain. A logistic service provider company plays a pivotal role.",
-    },
-    {
-        id: 5,
-        name: "Alex Jordan",
-        role: "Customer",
-        image: t5,
-        link: "/inner/testimonials",
-        text:
-            "A logistic service provider company plays a pivotal role in the global supply chain. A logistic service provider company plays a pivotal role.",
-    },
-    {
-        id: 6,
-        name: "Janaton Trot",
-        role: "Auto Dealer",
-        image: t6,
-        link: "/inner/testimonials",
-        text:
-            "A logistic service provider company plays a pivotal role in the global supply chain. A logistic service provider company plays a pivotal role.",
-    },
-];
-
-
-// Data
-export const testimonialsDataThree: TestimonialThree[] = [
-    {
-        id: 1,
-        image: testi1,
-        name: 'Alisa Fox',
-        role: 'Founder',
-        rating: 5,
-        text: `I have been using Rentaly for my Car Rental needs for over 5 years now.
-        I have never had any problems with their service. Their customer support is
-        always responsive and helpful. I would recommend Rentaly to anyone looking
-        for a reliable Car Rental provider.`,
-    },
-    {
-        id: 2,
-        image: testi2,
-        name: 'Robert Son',
-        role: 'Founder',
-        rating: 5,
-        text: `We have been using Rentaly for our trips needs for several years now
-        and have always been happy with their service. Their customer support is
-        Excellent Service! and they are always available to help with any issues
-        we have. Their prices are also very competitive.`,
-    },
-    {
-        id: 3,
-        image: testi3,
-        name: 'Danil Aarth',
-        role: 'Founder',
-        rating: 5,
-        text: `We have been using Rentaly for our trips needs for several years now
-        and have always been happy with their service. Their customer support is
-        Excellent Service! and they are always available to help with any issues
-        we have. Their prices are also very competitive.`,
-    },
-];
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+export const testimonialData = videoTestimonials;
+export const testimonialsDataThree = videoTestimonials;
+export const testimonialsTwo = videoTestimonials;
+export const videoTestimonial = videoTestimonials;

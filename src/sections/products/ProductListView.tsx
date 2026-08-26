@@ -156,7 +156,6 @@ export default function ProductListView({ product }: { product: any }) {
                             e.currentTarget.style.transform = 'scale(1)';
                         }}
                         >
-                            <i className="far fa-heart" style={{ color: '#666', fontSize: '14px' }}></i>
                         </button>
                     </div>
 

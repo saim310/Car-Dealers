@@ -257,7 +257,7 @@ const overviewItems = [
                                                 cursor: 'pointer',
                                                 boxShadow: '0 1px 4px rgba(0,0,0,0.1)'
                                             }}>
-                                                <i className="far fa-heart" style={{ color: '#666', fontSize: '11px' }}></i>
+
                                             </button>
                                         </div>
                                         <div style={{ padding: '12px' }}>

@@ -87,7 +87,7 @@ const WelcomeSection: React.FC = () => {
 
             {/* Trust Bar */}
             <div className="trust-bar">
-              <HighlightItem icon={<IconShield />} title="25+ Years Experience" delay={0.1} />
+              <HighlightItem icon={<IconShield />} title="36+ Years Experience" delay={0.1} />
               <div className="trust-divider" />
               <HighlightItem icon={<IconFileCheck />} title="Export Certified" delay={0.2} />
               <div className="trust-divider" />
@@ -103,19 +103,24 @@ const WelcomeSection: React.FC = () => {
               className="welcome-content"
             >
               <div className="welcome-text">
-                <p>
-                  UKA Japan Motors is a trusted name for Japanese cars in Australia, helping customers across{" "}
-                  <strong>Melbourne, Brisbane</strong>, and surrounding areas find quality vehicles at competitive prices.
-                  With years of experience in the automotive industry, we specialise in sourcing and supplying
-                  reliable <strong>Japanese import cars Australia</strong> drivers can depend on. As direct importers,
-                  we work closely with trusted Japanese auctions, dealerships, and suppliers to provide access to
-                  a wide range of vehicles. Whether you are looking for <strong>Japanese cars for sale</strong>,
-                  fuel-efficient Japanese small cars, family SUVs, commercial vehicles, or performance models,
-                  our team is committed to helping you find the right vehicle for your needs and budget. We make
-                  the process of importing cars to Australia simple and hassle free. From vehicle sourcing and
-                  inspections to shipping, compliance, and delivery, our experienced team manages every stage of
-                  the import process.
-                </p>
+              <p>
+  UKA Japan Motors is a trusted name for Japanese cars in Australia, helping customers across{" "}
+  <strong>
+    <a href="https://www.ukajapan.com.au/inner/products?city=Melbourne">Melbourne</a>
+    ,{" "}
+    <a href="https://www.ukajapan.com.au/inner/products?city=Brisbane">Brisbane</a>
+  </strong>
+  , and surrounding areas find quality vehicles at competitive prices.
+  With years of experience in the automotive industry, we specialise in sourcing and supplying
+  reliable <strong>Japanese import cars Australia</strong> drivers can depend on. As direct importers,
+  we work closely with trusted Japanese auctions, dealerships, and suppliers to provide access to
+  a wide range of vehicles. Whether you are looking for <strong>Japanese cars for sale</strong>,
+  fuel-efficient Japanese small cars, family SUVs, commercial vehicles, or performance models,
+  our team is committed to helping you find the right vehicle for your needs and budget. We make
+  the process of importing cars to Australia simple and hassle free. From vehicle sourcing and
+  inspections to shipping, compliance, and delivery, our experienced team manages every stage of
+  the import process.
+</p>
 
                 <p>
                   Customer satisfaction is at the heart of everything we do. Every vehicle is carefully selected
@@ -124,19 +129,29 @@ const WelcomeSection: React.FC = () => {
                   requirements.
                 </p>
 
-                <p>
-                  At UKA Japan Motors, we are proud to help Australian drivers access quality Japanese import
-                  cars at affordable prices. Whether you're buying your first imported vehicle or expanding your
-                  collection, our team is ready to help you every step of the way.
+               <p>
+  At UKA Japan Motors, we are proud to help Australian drivers access quality Japanese import
+  cars at affordable prices. Whether you're buying your first imported vehicle or expanding your
+  collection, our team is ready to help you every step of the way.
 
-                  <br />
-                  <br />
+  <br />
+  <br />
 
-                  In addition to vehicle sourcing, We provide flexible <strong>finance options</strong> for easy
-                  car ownership, helping customers easily secure affordable payment options. We also support with{" "}
-                  <strong>warranty options, after-sales service, insurance guidance</strong>, and{" "}
-                  <strong>test drive facility</strong> to ensure a smooth and stress-free buying experience.
-                </p>
+  In addition to vehicle sourcing, We provide flexible{" "}
+  <strong>
+    <a href="https://www.ukajapan.com.au/inner/finance/finance-information">finance options</a>
+  </strong>{" "}
+  for easy car ownership, helping customers easily secure affordable payment options. We also support with{" "}
+  <strong>
+    <a href="https://www.ukajapan.com.au/inner/warranty">warranty options</a>
+    , after-sales service, insurance guidance
+  </strong>
+  , and{" "}
+  <strong>
+    <a href="https://www.ukajapan.com.au/inner/products">test drive facility</a>
+  </strong>{" "}
+  to ensure a smooth and stress-free buying experience.
+</p>
 
                 <p>
                   At UKA Japan, we make Japanese import cars in Australia more accessible through simple and

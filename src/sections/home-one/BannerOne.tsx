@@ -68,8 +68,7 @@ const sectionTitleStyle: React.CSSProperties = {
 /* ─── 1. Schedule Test Drive Modal ─── */
 const TestDriveModal = ({ isOpen, onClose }: { isOpen: boolean; onClose: () => void }) => {
     const [form, setForm] = useState({ 
-        name: '', email: '', phone: '', contact: '', date: '', time: '', location: '', message: '', agreed: false,
-        // ─── NEW FIELDS (OPTIONAL) ───
+        name: '', email: '', phone: '', state: '', contact: '', date: '', location: '', message: '', agreed: false,
         licenseNumber: '', customTime: '', customerAddress: '', salesPerson: '', stockNumber: ''
     });
     const [isLoading, setIsLoading] = useState(false);
@@ -93,12 +92,11 @@ const TestDriveModal = ({ isOpen, onClose }: { isOpen: boolean; onClose: () => v
                     name: form.name,
                     email: form.email,
                     phone: form.phone,
+                    state: form.state,
                     contactMethod: form.contact,
                     message: form.message,
                     date: form.date,
-                    time: form.time,
                     location: form.location,
-                    // ─── NEW FIELDS ───
                     licenseNumber: form.licenseNumber,
                     customTime: form.customTime,
                     customerAddress: form.customerAddress,
@@ -152,20 +150,18 @@ const TestDriveModal = ({ isOpen, onClose }: { isOpen: boolean; onClose: () => v
                     <form onSubmit={handleSubmit}>
                         {/* ─── YOUR DETAILS ─── */}
                         <div style={sectionTitleStyle}>Your Details</div>
+                        <div style={{ marginBottom: '12px' }}>
+                            <label style={labelStyle}>Full Name *</label>
+                            <input style={inputStyle} placeholder="Enter your full name" required
+                                value={form.name} onChange={e => setForm({ ...form, name: e.target.value })} />
+                        </div>
+
                         <div className="form-grid" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px', marginBottom: '12px' }}>
-                            <div>
-                                <label style={labelStyle}>Full Name *</label>
-                                <input style={inputStyle} placeholder="Enter your full name" required
-                                    value={form.name} onChange={e => setForm({ ...form, name: e.target.value })} />
-                            </div>
                             <div>
                                 <label style={labelStyle}>Email Address *</label>
                                 <input style={inputStyle} placeholder="Enter your email" type="email" required
                                     value={form.email} onChange={e => setForm({ ...form, email: e.target.value })} />
                             </div>
-                        </div>
-
-                        <div className="form-grid" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px', marginBottom: '16px' }}>
                             <div>
                                 <label style={labelStyle}>Phone Number *</label>
                                 <div style={{ display: 'flex', border: '1px solid #e5e5e5', borderRadius: '8px', overflow: 'hidden' }}>
@@ -176,10 +172,23 @@ const TestDriveModal = ({ isOpen, onClose }: { isOpen: boolean; onClose: () => v
                                         value={form.phone} onChange={e => setForm({ ...form, phone: e.target.value })} />
                                 </div>
                             </div>
-                            <div>
+                        </div>
+
+                        <div className="form-grid" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px', marginBottom: '12px' }}>
+				<div>
+				    <label style={labelStyle}>State *</label>
+				    <input 
+				        style={inputStyle} 
+				        type="text" 
+				        placeholder="Enter your state (e.g. NSW, VIC)" 
+				        required
+				        value={form.state} 
+				        onChange={e => setForm({ ...form, state: e.target.value })} 
+				    />
+				</div>                            <div>
                                 <label style={labelStyle}>Preferred Contact *</label>
                                 <select style={inputStyle} required value={form.contact} onChange={e => setForm({ ...form, contact: e.target.value })}>
-                                    <option value="">Select preferred contact</option>
+                                    <option value="">Select contact method</option>
                                     <option value="phone">Phone</option>
                                     <option value="email">Email</option>
                                     <option value="whatsapp">WhatsApp</option>
@@ -187,9 +196,9 @@ const TestDriveModal = ({ isOpen, onClose }: { isOpen: boolean; onClose: () => v
                             </div>
                         </div>
 
-                        {/* ─── PREFERRED DATE & TIME ─── */}
-                        <div style={sectionTitleStyle}>Preferred Date & Time</div>
-                        <div className="form-grid" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px', marginBottom: '12px' }}>
+                        {/* ─── APPOINTMENT DETAILS ─── */}
+                        <div style={sectionTitleStyle}>Appointment Details</div>
+                        <div className="form-grid" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px', marginBottom: '16px' }}>
                             <div>
                                 <label style={labelStyle}>Preferred Date *</label>
                                 <div style={{ position: 'relative' }}>
@@ -199,29 +208,17 @@ const TestDriveModal = ({ isOpen, onClose }: { isOpen: boolean; onClose: () => v
                                 </div>
                             </div>
                             <div>
- 
-                            <label style={labelStyle}>Test Drive Location *</label>
-                            <select style={inputStyle} required value={form.location} onChange={e => setForm({ ...form, location: e.target.value })}>
-                                <option value="">Select location</option>
-                                <option value="maidstone">Maidstone Yard</option>
-                                <option value="mordialloc">Mordialloc Yard</option>
-                                <option value="brisbane">Brisbane Yard</option>
-                            </select>
-                        </div>
+                                <label style={labelStyle}>Test Drive Location *</label>
+                                <select style={inputStyle} required value={form.location} onChange={e => setForm({ ...form, location: e.target.value })}>
+                                    <option value="">Select location</option>
+                                    <option value="maidstone">Maidstone Yard</option>
+                                    <option value="mordialloc">Mordialloc Yard</option>
+                                    <option value="brisbane">Brisbane Yard</option>
+                                </select>
                             </div>
-                  
-
-                        {/* ─── LOCATION (REQUIRED) ─── */}
-                       
-
-                        {/* ─── MESSAGE ─── */}
-                        <div style={{ marginBottom: '16px' }}>
-                            <label style={labelStyle}>Your Message (Optional)</label>
-                            <textarea style={{ ...inputStyle, minHeight: '80px', resize: 'vertical' }} placeholder="Anything specific you would like us to know?"
-                                value={form.message} onChange={e => setForm({ ...form, message: e.target.value })}></textarea>
                         </div>
 
-                        {/* ─── NEW FIELDS (ALL OPTIONAL) ─── */}
+                        {/* ─── ADDITIONAL INFO ─── */}
                         <div style={{ marginBottom: '16px', paddingTop: '8px', borderTop: '1px solid #eee' }}>
                             <p style={{ fontSize: '13px', color: '#999', marginBottom: '12px', fontWeight: 600 }}>Additional Information (Optional)</p>
                             
@@ -258,13 +255,20 @@ const TestDriveModal = ({ isOpen, onClose }: { isOpen: boolean; onClose: () => v
                             </div>
                         </div>
 
+                        {/* ─── MESSAGE (MOVED TO END) ─── */}
+                        <div style={{ marginBottom: '16px' }}>
+                            <label style={labelStyle}>Your Message (Optional)</label>
+                            <textarea style={{ ...inputStyle, minHeight: '80px', resize: 'vertical' }} placeholder="Anything specific you would like us to know?"
+                                value={form.message} onChange={e => setForm({ ...form, message: e.target.value })}></textarea>
+                        </div>
+
                         {/* ─── TERMS ─── */}
                         <div style={{ display: 'flex', alignItems: 'flex-start', gap: '8px', marginBottom: '16px' }}>
                             <input type="checkbox" id="td-agree" checked={form.agreed}
                                 onChange={e => setForm({ ...form, agreed: e.target.checked })}
                                 style={{ marginTop: '3px', accentColor: '#ffc107', minWidth: '16px', minHeight: '16px' }} />
                             <label htmlFor="td-agree" style={{ fontSize: '13px', color: '#666', lineHeight: 1.4, cursor: 'pointer' }}>
-                                I agree to the <a href="#" style={{ color: '#ffc107', fontWeight: 700, textDecoration: 'none' }}>Privacy Policy</a> and <a href="#" style={{ color: '#ffc107', fontWeight: 700, textDecoration: 'none' }}>Terms & Conditions</a>.
+                                I agree to the <a href="#" style={{ color: '#ffc107',fontWeight: 700, textDecoration: 'none' }}>Privacy Policy</a> and <a href="#" style={{ color: '#ffc107', fontWeight: 700, textDecoration: 'none' }}>Terms & Conditions</a>.
                             </label>
                         </div>
 
@@ -302,7 +306,6 @@ const TestDriveModal = ({ isOpen, onClose }: { isOpen: boolean; onClose: () => v
 const FinanceModal = ({ isOpen, onClose }: { isOpen: boolean; onClose: () => void }) => {
     const [form, setForm] = useState({ 
         name: '', phone: '', email: '', dob: '', employment: '', income: '', term: '', deposit: '', location: '',
-        // ─── NEW FIELDS (OPTIONAL) ───
         licenseNumber: '', customTime: '', customerAddress: '', salesPerson: '', stockNumber: ''
     });
     const [isLoading, setIsLoading] = useState(false);
@@ -321,21 +324,7 @@ const FinanceModal = ({ isOpen, onClose }: { isOpen: boolean; onClose: () => voi
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
                     formType: 'finance',
-                    name: form.name,
-                    email: form.email,
-                    phone: form.phone,
-                    dob: form.dob,
-                    employment: form.employment,
-                    income: form.income,
-                    term: form.term,
-                    deposit: form.deposit,
-                    location: form.location,
-                    // ─── NEW FIELDS ───
-                    licenseNumber: form.licenseNumber,
-                    customTime: form.customTime,
-                    customerAddress: form.customerAddress,
-                    salesPerson: form.salesPerson,
-                    stockNumber: form.stockNumber,
+                    ...form
                 }),
             });
             const data = await response.json();
@@ -382,7 +371,6 @@ const FinanceModal = ({ isOpen, onClose }: { isOpen: boolean; onClose: () => voi
                     </div>
                 ) : (
                     <form onSubmit={handleSubmit}>
-                        {/* ─── PERSONAL DETAILS ─── */}
                         <div style={sectionTitleStyle}>Personal Details</div>
                         <div style={{ marginBottom: '12px' }}>
                             <label style={labelStyle}>Full Name *</label>
@@ -430,7 +418,6 @@ const FinanceModal = ({ isOpen, onClose }: { isOpen: boolean; onClose: () => voi
                             </div>
                         </div>
 
-                        {/* ─── LOCATION (REQUIRED) ─── */}
                         <div style={{ marginBottom: '12px' }}>
                             <label style={labelStyle}>Preferred Location *</label>
                             <select style={inputStyle} required value={form.location} onChange={e => setForm({ ...form, location: e.target.value })}>
@@ -441,7 +428,6 @@ const FinanceModal = ({ isOpen, onClose }: { isOpen: boolean; onClose: () => voi
                             </select>
                         </div>
 
-                        {/* ─── FINANCE DETAILS ─── */}
                         <div style={sectionTitleStyle}>Finance Details</div>
                         <div className="form-grid" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px', marginBottom: '12px' }}>
                             <div>
@@ -476,43 +462,6 @@ const FinanceModal = ({ isOpen, onClose }: { isOpen: boolean; onClose: () => voi
                             </div>
                         </div>
 
-                        {/* ─── NEW FIELDS (ALL OPTIONAL) ─── */}
-                        <div style={{ marginBottom: '16px', paddingTop: '8px', borderTop: '1px solid #eee' }}>
-                            <p style={{ fontSize: '13px', color: '#999', marginBottom: '12px', fontWeight: 600 }}>Additional Information (Optional)</p>
-                            
-                            <div className="form-grid" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px' }}>
-                                <div>
-                                    <label style={labelStyle}>License Number</label>
-                                    <input style={inputStyle} placeholder="Enter license number"
-                                        value={form.licenseNumber} onChange={e => setForm({ ...form, licenseNumber: e.target.value })} />
-                                </div>
-                                <div>
-                                    <label style={labelStyle}>Custom Time</label>
-                                    <input style={inputStyle} type="time"
-                                        value={form.customTime} onChange={e => setForm({ ...form, customTime: e.target.value })} />
-                                </div>
-                            </div>
-
-                            <div className="form-grid" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px', marginTop: '12px' }}>
-                                <div>
-                                    <label style={labelStyle}>Customer Address</label>
-                                    <input style={inputStyle} placeholder="Enter customer address"
-                                        value={form.customerAddress} onChange={e => setForm({ ...form, customerAddress: e.target.value })} />
-                                </div>
-                                <div>
-                                    <label style={labelStyle}>Sales Person Name</label>
-                                    <input style={inputStyle} placeholder="Enter sales person name"
-                                        value={form.salesPerson} onChange={e => setForm({ ...form, salesPerson: e.target.value })} />
-                                </div>
-                            </div>
-
-                            <div style={{ marginTop: '12px' }}>
-                                <label style={labelStyle}>Stock Number</label>
-                                <input style={inputStyle} placeholder="Enter stock number"
-                                    value={form.stockNumber} onChange={e => setForm({ ...form, stockNumber: e.target.value })} />
-                            </div>
-                        </div>
-
                         {error && (
                             <div style={{ marginBottom: '12px', padding: '10px 12px', background: '#fff2f2', borderRadius: '8px', color: '#d32f2f', fontSize: '13px', fontWeight: 600 }}>
                                 <i className="fas fa-exclamation-circle" style={{ marginRight: '6px' }}></i>{error}
@@ -521,8 +470,8 @@ const FinanceModal = ({ isOpen, onClose }: { isOpen: boolean; onClose: () => voi
 
                         <button type="submit" disabled={isLoading} className="btn-primary" style={{
                             width: '100%', padding: '14px', 
-                            background: isLoading ? '#e0e0e0' : '#ffc107', 
-                            color: '#1a1a2e',
+                            background: isLoading ? '#333344' : '#1a1a2e', 
+                            color: '#fff',
                             fontWeight: 800, fontSize: '15px', borderRadius: '8px', border: 'none',
                             cursor: isLoading ? 'not-allowed' : 'pointer', 
                             display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px',
@@ -542,7 +491,6 @@ const FinanceModal = ({ isOpen, onClose }: { isOpen: boolean; onClose: () => voi
 const EnquiryModal = ({ isOpen, onClose }: { isOpen: boolean; onClose: () => void }) => {
     const [form, setForm] = useState({ 
         name: '', phone: '', email: '', interest: '', message: '', location: '',
-        // ─── NEW FIELDS (OPTIONAL) ───
         licenseNumber: '', customTime: '', customerAddress: '', salesPerson: '', stockNumber: ''
     });
     const [contactMethod, setContactMethod] = useState<'phone' | 'email' | 'whatsapp'>('phone');
@@ -562,19 +510,8 @@ const EnquiryModal = ({ isOpen, onClose }: { isOpen: boolean; onClose: () => voi
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
                     formType: 'enquiry',
-                    name: form.name,
-                    email: form.email,
-                    phone: form.phone,
-                    contactMethod: contactMethod,
-                    message: form.message,
-                    interest: form.interest,
-                    location: form.location,
-                    // ─── NEW FIELDS ───
-                    licenseNumber: form.licenseNumber,
-                    customTime: form.customTime,
-                    customerAddress: form.customerAddress,
-                    salesPerson: form.salesPerson,
-                    stockNumber: form.stockNumber,
+                    ...form,
+                    contactMethod: contactMethod
                 }),
             });
             const data = await response.json();
@@ -621,7 +558,6 @@ const EnquiryModal = ({ isOpen, onClose }: { isOpen: boolean; onClose: () => voi
                     </div>
                 ) : (
                     <form onSubmit={handleSubmit}>
-                        {/* ─── YOUR DETAILS ─── */}
                         <div style={sectionTitleStyle}>Your Details</div>
                         <div style={{ marginBottom: '12px' }}>
                             <label style={labelStyle}>Full Name *</label>
@@ -658,7 +594,6 @@ const EnquiryModal = ({ isOpen, onClose }: { isOpen: boolean; onClose: () => voi
                             </select>
                         </div>
 
-                        {/* ─── LOCATION (REQUIRED) ─── */}
                         <div style={{ marginBottom: '12px' }}>
                             <label style={labelStyle}>Preferred Location *</label>
                             <select style={inputStyle} required value={form.location} onChange={e => setForm({ ...form, location: e.target.value })}>
@@ -674,73 +609,6 @@ const EnquiryModal = ({ isOpen, onClose }: { isOpen: boolean; onClose: () => voi
                             <textarea style={{ ...inputStyle, minHeight: '90px', resize: 'vertical' }} placeholder="Type your message here..." required
                                 value={form.message} onChange={e => setForm({ ...form, message: e.target.value })}></textarea>
                         </div>
-
-                        {/* ─── CONTACT METHOD ─── */}
-                        <div style={{ marginBottom: '14px' }}>
-                            <label style={{ ...labelStyle, marginBottom: '8px' }}>Preferred Contact Method</label>
-                            <div className="contact-method-row" style={{ display: 'flex', gap: '8px' }}>
-                                {([
-                                    { key: 'phone', label: 'Phone Call', icon: 'fa-phone-alt' },
-                                    { key: 'email', label: 'Email', icon: 'fa-envelope' },
-                                    { key: 'whatsapp', label: 'WhatsApp', icon: 'fa-whatsapp' }
-                                ] as const).map((m) => (
-                                    <button key={m.key} type="button" onClick={() => setContactMethod(m.key)} style={{
-                                        flex: 1, padding: '10px 6px', borderRadius: '8px',
-                                        border: contactMethod === m.key ? '1.5px solid #ffc107' : '1.5px solid #e5e5e5',
-                                        background: contactMethod === m.key ? '#fff8e1' : '#fff',
-                                        color: contactMethod === m.key ? '#1a1a2e' : '#888',
-                                        fontSize: '13px', fontWeight: 700, cursor: 'pointer',
-                                        display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '5px',
-                                        transition: 'all 0.2s ease'
-                                    }}>
-                                        <i className={`fas ${m.icon}`} style={{ fontSize: '12px' }}></i>{m.label}
-                                    </button>
-                                ))}
-                            </div>
-                        </div>
-
-                        {/* ─── NEW FIELDS (ALL OPTIONAL) ─── */}
-                        <div style={{ marginBottom: '16px', paddingTop: '8px', borderTop: '1px solid #eee' }}>
-                            <p style={{ fontSize: '13px', color: '#999', marginBottom: '12px', fontWeight: 600 }}>Additional Information (Optional)</p>
-                            
-                            <div className="form-grid" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px' }}>
-                                <div>
-                                    <label style={labelStyle}>License Number</label>
-                                    <input style={inputStyle} placeholder="Enter license number"
-                                        value={form.licenseNumber} onChange={e => setForm({ ...form, licenseNumber: e.target.value })} />
-                                </div>
-                                <div>
-                                    <label style={labelStyle}>Custom Time</label>
-                                    <input style={inputStyle} type="time"
-                                        value={form.customTime} onChange={e => setForm({ ...form, customTime: e.target.value })} />
-                                </div>
-                            </div>
-
-                            <div className="form-grid" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px', marginTop: '12px' }}>
-                                <div>
-                                    <label style={labelStyle}>Customer Address</label>
-                                    <input style={inputStyle} placeholder="Enter customer address"
-                                        value={form.customerAddress} onChange={e => setForm({ ...form, customerAddress: e.target.value })} />
-                                </div>
-                                <div>
-                                    <label style={labelStyle}>Sales Person Name</label>
-                                    <input style={inputStyle} placeholder="Enter sales person name"
-                                        value={form.salesPerson} onChange={e => setForm({ ...form, salesPerson: e.target.value })} />
-                                </div>
-                            </div>
-
-                            <div style={{ marginTop: '12px' }}>
-                                <label style={labelStyle}>Stock Number</label>
-                                <input style={inputStyle} placeholder="Enter stock number"
-                                    value={form.stockNumber} onChange={e => setForm({ ...form, stockNumber: e.target.value })} />
-                            </div>
-                        </div>
-
-                        {error && (
-                            <div style={{ marginBottom: '12px', padding: '10px 12px', background: '#fff2f2', borderRadius: '8px', color: '#d32f2f', fontSize: '13px', fontWeight: 600 }}>
-                                <i className="fas fa-exclamation-circle" style={{ marginRight: '6px' }}></i>{error}
-                            </div>
-                        )}
 
                         <button type="submit" disabled={isLoading} className="btn-primary" style={{
                             width: '100%', padding: '14px', 
@@ -778,7 +646,6 @@ const BannerOne: React.FC = () => {
                     background-size: cover !important; 
                     background-position: center !important; 
                 }
-                /* Mobile background overrides */
                 @media (max-width: 640px) {
                     .bgImage-1 .main-slider__bg { background-image: url('/assets/images/backgrounds/mobiless.jpeg') !important; }
                     .bgImage-2 .main-slider__bg { background-image: url('/assets/images/backgrounds/mobile3.jpg') !important; }
@@ -798,10 +665,6 @@ const BannerOne: React.FC = () => {
                     .contact-method-row { flex-direction: column !important; }
                     .contact-method-row button { width: 100% !important; padding: 12px !important; }
                     .btn-primary { padding: 14px !important; font-size: 14px !important; }
-                }
-                @media (max-width: 380px) {
-                    .main-slider__carousel .swiper-slide .item { height: 320px !important; min-height: 320px !important; }
-                    .cta-heading { font-size: 20px !important; }
                 }
             `}</style>
 
@@ -835,7 +698,6 @@ const BannerOne: React.FC = () => {
                         ))}
                     </Swiper>
 
-                    {/* Navigation Arrows */}
                     <div className="owl-nav">
                         <button
                             onClick={() => swiperInstance?.slidePrev()}
@@ -856,7 +718,6 @@ const BannerOne: React.FC = () => {
                     </div>
                 </div>
 
-                {/* Bottom CTA Section */}
                 <section className="cta-section" style={{ background: "#0F0F1B", padding: "80px 0" }}>
                     <div className="container">
                         <div className="row">
@@ -872,15 +733,29 @@ const BannerOne: React.FC = () => {
                                     Premium Japanese Car for Sale in Australia
                                 </h1>
 
-                                <p className="cta-text" style={{
-                                    fontSize: "16px",
-                                    lineHeight: 1.8,
-                                    color: "#A1A1AA",
-                                    maxWidth: "800px",
-                                    marginBottom: "35px"
-                                }}>
-                                    At UKA Japan Motors, we offer a wide selection of premium Japanese cars for sale in Australia, including reliable used cars, fuel efficient vehicles, automatic cars, and compact Japanese small cars. Whether you are looking for a family SUV or an everyday city car, we help you find the perfect Japanese car to match your lifestyle and budget.
-                                </p>
+ <p className="cta-text" style={{
+    fontSize: "16px",
+    lineHeight: 1.8,
+    color: "#A1A1AA",
+    maxWidth: "800px",
+    marginBottom: "35px"
+}}>
+    At UKA Japan Motors, we offer a wide selection of{" "}
+    <a 
+        href="https://www.ukajapan.com.au/inner/products" 
+        style={{ color: "#A1A1AA", textDecoration: "underline" }}
+    >
+        premium Japanese cars for sale in Australia
+    </a>
+    , including reliable used cars, fuel efficient vehicles, automatic cars, and compact Japanese small cars. Whether you are looking for a family SUV or an everyday city car, we help you find the perfect{" "}
+    <a 
+        href="https://www.ukajapan.com.au/inner/blog" 
+        style={{ color: "#A1A1AA", textDecoration: "underline" }}
+    >
+        Japanese car to match your lifestyle
+    </a>{" "}
+    and budget.
+</p>
 
                                 <div className="cta-btn-row" style={{
                                     display: "flex",
@@ -897,28 +772,14 @@ const BannerOne: React.FC = () => {
                                             borderRadius: "10px",
                                             fontSize: "14px",
                                             fontWeight: 700,
-                                            textDecoration: "none",
-                                            textAlign: "center",
                                             textTransform: "uppercase",
-                                            transition: "all 0.3s",
+                                            cursor: 'pointer',
                                             display: "inline-flex",
                                             alignItems: "center",
                                             justifyContent: "center",
-                                            gap: "8px",
-                                            whiteSpace: "nowrap",
-                                            cursor: 'pointer'
-                                        }}
-                                        onMouseEnter={(e) => {
-                                            e.currentTarget.style.background = "#fff";
-                                            e.currentTarget.style.borderColor = "#fff";
-                                        }}
-                                        onMouseLeave={(e) => {
-                                            e.currentTarget.style.background = "#F5B818";
-                                            e.currentTarget.style.color = "#0F0F1B";
-                                            e.currentTarget.style.borderColor = "#F5B818";
+                                            gap: "8px"
                                         }}
                                     >
-                                        <span className="icon-right-arrow" style={{ fontSize: "12px" }}></span>
                                         Apply for Finance
                                     </button>
 
@@ -932,25 +793,12 @@ const BannerOne: React.FC = () => {
                                             borderRadius: "10px",
                                             fontSize: "14px",
                                             fontWeight: 700,
-                                            textDecoration: "none",
-                                            textAlign: "center",
                                             textTransform: "uppercase",
-                                            transition: "all 0.3s",
+                                            cursor: 'pointer',
                                             display: "inline-flex",
                                             alignItems: "center",
                                             justifyContent: "center",
-                                            gap: "8px",
-                                            whiteSpace: "nowrap",
-                                            cursor: 'pointer'
-                                        }}
-                                        onMouseEnter={(e) => {
-                                            e.currentTarget.style.background = "#F5B818";
-                                            e.currentTarget.style.color = "#0F0F1B";
-                                        }}
-                                        onMouseLeave={(e) => {
-                                            e.currentTarget.style.background = "transparent";
-                                            e.currentTarget.style.color = "#fff";
-                                            e.currentTarget.style.borderColor = "#F5B818";
+                                            gap: "8px"
                                         }}
                                     >
                                         Give Us a Call
@@ -966,25 +814,12 @@ const BannerOne: React.FC = () => {
                                             borderRadius: "10px",
                                             fontSize: "14px",
                                             fontWeight: 700,
-                                            textDecoration: "none",
-                                            textAlign: "center",
                                             textTransform: "uppercase",
-                                            transition: "all 0.3s",
+                                            cursor: 'pointer',
                                             display: "inline-flex",
                                             alignItems: "center",
                                             justifyContent: "center",
-                                            gap: "8px",
-                                            whiteSpace: "nowrap",
-                                            cursor: 'pointer'
-                                        }}
-                                        onMouseEnter={(e) => {
-                                            e.currentTarget.style.background = "#F5B818";
-                                            e.currentTarget.style.color = "#0F0F1B";
-                                        }}
-                                        onMouseLeave={(e) => {
-                                            e.currentTarget.style.background = "transparent";
-                                            e.currentTarget.style.color = "#fff";
-                                            e.currentTarget.style.borderColor = "#F5B818";
+                                            gap: "8px"
                                         }}
                                     >
                                         Book a Test Drive
@@ -996,7 +831,6 @@ const BannerOne: React.FC = () => {
                 </section>
             </section>
 
-            {/* ─── Modals ─── */}
             <TestDriveModal isOpen={modal === 'testdrive'} onClose={() => setModal(null)} />
             <FinanceModal isOpen={modal === 'finance'} onClose={() => setModal(null)} />
             <EnquiryModal isOpen={modal === 'enquiry'} onClose={() => setModal(null)} />

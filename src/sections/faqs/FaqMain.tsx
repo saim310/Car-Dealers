@@ -2,15 +2,17 @@
 import React, { useState } from 'react';
 import { motion } from "framer-motion"
 import { faqsOne, faqsTwo } from '@/all-content/faq/faqData';
+
 const FaqMain: React.FC = () => {
     const [isActiveFaq, setIsActiveFaq] = useState<number | null>(2);
+
     return (
         <div className="faq-one faq-page">
             <div className="container">
                 <div className="row">
                     <div className="col-xl-6 col-lg-6">
                         <div className="faq-page__left">
-                            <div className="accrodion-grp faq-one-accrodion" >
+                            <div className="accrodion-grp faq-one-accrodion">
                                 {
                                     faqsOne.map((item) => (
                                         <motion.div
@@ -35,9 +37,11 @@ const FaqMain: React.FC = () => {
                                                     ease: "easeOut"
                                                 }}
                                                 viewport={{ amount: 0.05 }}
-                                                className="accrodion-content" style={{ display: `${isActiveFaq === item.id ? "block" : "none"}` }}>
+                                                className="accrodion-content"
+                                                style={{ display: `${isActiveFaq === item.id ? "block" : "none"}` }}
+                                            >
                                                 <div className="inner">
-                                                    <p> {(item as any)?.description}</p>
+                                                    <p>{item.answer}</p>   {/* ✅ fixed */}
                                                 </div>
                                             </motion.div>
                                         </motion.div>
@@ -46,9 +50,10 @@ const FaqMain: React.FC = () => {
                             </div>
                         </div>
                     </div>
+
                     <div className="col-xl-6 col-lg-6">
                         <div className="faq-page__right">
-                            <div className="accrodion-grp faq-one-accrodion" >
+                            <div className="accrodion-grp faq-one-accrodion">
                                 {
                                     faqsTwo.map((item) => (
                                         <motion.div
@@ -73,9 +78,11 @@ const FaqMain: React.FC = () => {
                                                     ease: "easeOut"
                                                 }}
                                                 viewport={{ amount: 0.05 }}
-                                                className="accrodion-content" style={{ display: `${isActiveFaq === item.id ? "block" : "none"}` }}>
+                                                className="accrodion-content"
+                                                style={{ display: `${isActiveFaq === item.id ? "block" : "none"}` }}
+                                            >
                                                 <div className="inner">
-                                                    <p> {(item as any)?.description}</p>
+                                                    <p>{item.answer}</p>   {/* ✅ fixed */}
                                                 </div>
                                             </motion.div>
                                         </motion.div>

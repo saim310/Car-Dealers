@@ -730,7 +730,7 @@ const BannerOne: React.FC = () => {
                                     lineHeight: 1.2,
                                     marginBottom: "20px"
                                 }}>
-                                    Premium Japanese Car for Sale in Australia
+                                    Premium Japanese Cars for Sale in Australia
                                 </h1>
 
  <p className="cta-text" style={{

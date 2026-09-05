@@ -1,7 +1,11 @@
 "use client"
-import React from 'react'; 
+import React, { useState, useEffect } from 'react'; 
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Autoplay, Navigation } from 'swiper/modules'; 
+
+import 'swiper/css';
+import 'swiper/css/navigation';
+
 import { productsList } from '@/all-content/products/productData';
 import TextAnimation from '@/components/elements/TextAnimation';
 import Link from 'next/link';
@@ -10,101 +14,119 @@ interface ListingOneProps {
     filteredData?: any[];
 }
 
-const 
+const formatNumber = (num: string | number) => {
+    const cleaned = String(num).replace(/[^0-9]/g, '');
+    return cleaned ? cleaned.replace(/\B(?=(\d{3})+(?!\d))/g, ',') : '0';
+};
 
+const formatPrice = (price: number | string) => {
+    if (!price || price === 'Contact for Price') return 'Contact for Price';
+    
+    const rawNum = typeof price === 'string' ? parseFloat(price.replace(/[^0-9.]/g, '')) : price;
+    if (isNaN(rawNum) || rawNum <= 0) return 'Contact for Price';
 
+    const actualPrice = rawNum > 1000000 ? rawNum / 100 : rawNum;
+    return '$' + Math.round(actualPrice).toLocaleString('en-US');
+};
 
+const getStatusBadge = (item: any) => {
+    const rawStatus = (
+        item.stockStatus ||
+        item.stock_status ||
+        item.availability ||
+        item.stock ||
+        item.tag ||
+        item.badge ||
+        (typeof item.status === 'string' && !['new', 'used'].includes(item.status.toLowerCase()) ? item.status : '') ||
+        ''
+    );
+    const statusVal = String(rawStatus).toLowerCase().trim();
 
+    if (statusVal.includes('offer') || item.onOffer) {
+        return { label: 'ON OFFER', bg: '#0284c7', color: '#fff', icon: 'fa-tags' };
+    }
+    if (statusVal.includes('order') || item.onOrder) {
+        return { label: 'ON ORDER', bg: '#0284c7', color: '#fff', icon: 'fa-truck-moving' };
+    }
+    if (statusVal.includes('reserved') || statusVal.includes('deposit') || item.isReserved) {
+        return { label: 'RESERVED', bg: '#f59e0b', color: '#fff', icon: 'fa-clock' };
+    }
+    if (statusVal.includes('sold') || item.isSold) {
+        return { label: 'SOLD OUT', bg: '#dc3545', color: '#fff', icon: 'fa-ban' };
+    }
 
+    return { label: 'IN STOCK', bg: '#28a745', color: '#fff', icon: 'fa-check-circle' };
+};
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-ListingOne: React.FC<ListingOneProps> = ({ filteredData }) => {
+const ListingOne: React.FC<ListingOneProps> = ({ filteredData }) => {
     const dataToDisplay = filteredData || productsList;
 
     const validCars = dataToDisplay.filter((item: any) => {
-        return item.image && item.price && item.price !== "Contact for Price" && item.price !== "";
+        return item?.image && item?.price && item?.price !== "Contact for Price" && item?.price !== "";
     });
 
-    const formatPrice = (price: string | number) => {
-        const num = typeof price === 'string' ? parseInt(price.replace(/,/g, '')) : price;
-        if (isNaN(num)) return price;
-        return num.toLocaleString('en-US');
-    };
+    const [cityOverride, setCityOverride] = useState<string | null>(null);
 
-    const formatNumber = (num: string | number) => {
-        const cleaned = String(num).replace(/[^0-9]/g, '');
-        return cleaned.replace(/\B(?=(\d{3})+(?!\d))/g, ',');
-    };
+    useEffect(() => {
+        if (typeof window !== 'undefined') {
+            const params = new URLSearchParams(window.location.search);
+            setCityOverride(params.get('city'));
+        }
+    }, []);
 
-    const getStatusBadge = (item: any) => {
-        if (item.fuel === 'Hybrid') return { label: 'HYBRID', icon: 'fa-leaf' };
-        if (item.price && parseInt(String(item.price).replace(/,/g, '')) < 16000) return { label: 'HOT DEAL', icon: 'fa-fire' };
-        if (item.bodyType?.toLowerCase().includes('hatch')) return { label: 'FUEL SAVER', icon: 'fa-gas-pump' };
-        return { label: 'POPULAR', icon: 'fa-star' };
+    const getYardLocation = (product: any) => {
+        if (cityOverride === 'Melbourne') return 'Melbourne';
+        if (cityOverride === 'Brisbane') return 'Brisbane';
+        
+        const yardStr = String(product.yard || product.Yard || '');
+        if (yardStr === '1') return 'Maidstone';
+        if (yardStr === '2') return 'Mordialloc';
+        if (yardStr === '4') return 'Slacks Creek';
+        
+        return product.city || 'N/A';
     };
 
     return (
-        <section className="listing-one" id='cars' style={{ padding: '50px 0 40px', background: '#ffffff', position: 'relative', overflow: 'hidden' }}>
-            {/* Decorative dot pattern — top-left */}
-            <div style={{ position: 'absolute', top: '30px', left: '30px', display: 'grid', gridTemplateColumns: 'repeat(5, 6px)', gap: '6px', opacity: 0.3 }}>
-                {Array.from({ length: 15 }).map((_, i) => (
-                    <div key={i} style={{ width: '6px', height: '6px', background: '#ffc107', borderRadius: '50%' }}></div>
-                ))}
-            </div>
-
-            {/* Decorative diagonal lines — top-right */}
-            <div style={{ position: 'absolute', top: '30px', right: '30px', opacity: 0.15 }}>
-                <svg width="50" height="50" viewBox="0 0 60 60">
-                    <line x1="0" y1="0" x2="60" y2="60" stroke="#ffc107" strokeWidth="2" />
-                    <line x1="10" y1="0" x2="60" y2="50" stroke="#ffc107" strokeWidth="2" />
-                    <line x1="20" y1="0" x2="60" y2="40" stroke="#ffc107" strokeWidth="2" />
-                    <line x1="30" y1="0" x2="60" y2="30" stroke="#ffc107" strokeWidth="2" />
-                </svg>
-            </div>
-
+        <section className="listing-one" id="cars" style={{ padding: '50px 0 40px', background: '#ffffff', position: 'relative', overflow: 'hidden' }}>
             <div className="container" style={{ position: 'relative', zIndex: 1 }}>
-                {/* Section Header */}
+                
+                {/* Header Section */}
                 <div className="text-center" style={{ marginBottom: '28px' }}>
+                    
+                    {/* Glowing Red HOT DEALS Badge */}
                     <div style={{ 
                         display: 'inline-flex', 
                         alignItems: 'center', 
                         gap: '6px', 
-                        background: '#ffc107', 
-                        color: '#1a1a2e', 
-                        padding: '6px 14px', 
+                        background: '#dc3545', 
+                        color: '#ffffff', 
+                        padding: '6px 16px', 
                         borderRadius: '20px', 
                         fontSize: '11px', 
                         fontWeight: '800',
                         textTransform: 'uppercase',
-                        letterSpacing: '0.5px',
-                        marginBottom: '12px'
+                        letterSpacing: '0.8px',
+                        marginBottom: '12px',
+                        boxShadow: '0 0 12px rgba(220, 53, 69, 0.6), 0 0 24px rgba(220, 53, 69, 0.3)'
                     }}>
-                        <i className="fas fa-star" style={{ fontSize: '10px' }}></i>
-                        BEST SELLERS
+                        <i className="fas fa-fire" style={{ fontSize: '11px' }}></i>
+                        HOT DEALS
                     </div>
+
+                    {/* Main Title Updated for Hot Deals */}
                     <h2 className="section-title__title" style={{ fontSize: '34px', fontWeight: '900', color: '#1a1a2e', marginBottom: '10px', textTransform: 'uppercase', letterSpacing: '0.5px' }}>
-                        <TextAnimation text='Explore Our Most Popular Cars' />
+                        <TextAnimation text="Explore Our Hottest Deals" />
                     </h2>
+
+                    {/* Subtitle Updated for Hot Deals */}
                     <p style={{ color: '#6c757d', fontSize: '15px', marginBottom: '12px', fontWeight: '500' }}>
-                        High quality Japanese imports • Trusted by 1000+ Aussie customers • Warranty included
+                        Unbeatable prices on Japanese imports • Limited time special offers • Warranty included
                     </p>
-                    <div style={{ width: '50px', height: '3px', background: '#ffc107', margin: '0 auto' }}></div>
+
+                    <div style={{ width: '50px', height: '3px', background: '#dc3545', margin: '0 auto', borderRadius: '2px' }}></div>
                 </div>
 
+                {/* Swiper Slider Wrapper */}
                 <div className="listing-one__carousel" style={{ marginBottom: '10px' }}>
                     {validCars.length === 0 ? (
                         <div className="text-center py-4">
@@ -116,222 +138,215 @@ ListingOne: React.FC<ListingOneProps> = ({ filteredData }) => {
                             spaceBetween={20}
                             loop={true}
                             autoplay={{ delay: 4000, disableOnInteraction: false }}
-                            pagination={false}
                             speed={1000}
                             modules={[Navigation, Autoplay]}
                             breakpoints={{ 
-                                792: { slidesPerView: 2, spaceBetween: 20 },
-                                1024: { slidesPerView: 3, spaceBetween: 20 },
-                                1324: { slidesPerView: 4, spaceBetween: 20 },
+                                576: { slidesPerView: 2, spaceBetween: 16 },
+                                992: { slidesPerView: 3, spaceBetween: 20 },
+                                1200: { slidesPerView: 4, spaceBetween: 20 },
                             }}
                         >
-                            {validCars.map((item: any) => {
-                                const status = getStatusBadge(item);
+                            {validCars.map((product: any) => {
+                                const carId = product.id || product.stockNumber || product.vin || '1';
+                                const badge = getStatusBadge(product);
+
+                                const originalPrice = product.previousPrice || product.price || product.Price || 0;
+                                const salePrice = product.salePrice;
+                                const hasSale = Boolean(salePrice && Number(salePrice) < Number(originalPrice));
+                                
+                                const displayPriceVal = hasSale ? salePrice : originalPrice;
+                                const formattedPrice = formatPrice(displayPriceVal);
+                                const formattedOriginalPrice = formatPrice(originalPrice);
+                                const hasPrice = formattedPrice !== 'Contact for Price';
 
                                 return (
-                                    <SwiperSlide key={item.id}> 
-                                        <div style={{ 
-                                            background: '#fff', 
-                                            borderRadius: '14px', 
+                                    <SwiperSlide key={carId}>
+                                        <div style={{
+                                            background: '#fff',
+                                            borderRadius: '14px',
                                             overflow: 'hidden',
                                             boxShadow: '0 2px 16px rgba(0,0,0,0.06)',
                                             border: '1px solid #f0f0f0',
-                                            height: '100%',
                                             display: 'flex',
-                                            flexDirection: 'column'
+                                            flexDirection: 'column',
+                                            height: '100%'
                                         }}>
-                                            {/* Image Area */}
-                                            <div style={{ 
-                                                height: '190px', 
-                                                position: 'relative',
-                                                background: '#f5f5f5'
-                                            }}>
-                                                <Link href={`/inner/listing-single/${item.id}`}>                                            
-                                                    <img 
-                                                        src={item.image} 
-                                                        alt={item.title} 
+                                            {/* Image */}
+                                            <div style={{ position: 'relative', height: '200px', background: '#f5f5f5' }}>
+                                                <Link href={`/inner/listing-single/${carId}`}>
+                                                    <img
+                                                        src={product.image || "/assets/images/shop/shop-product-1-1.jpg"}
+                                                        alt={product.title || "Car"}
                                                         style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }}
                                                     />
                                                 </Link>
 
-                                                {/* Status Badge — top-left */}
-                                                <div style={{ 
-                                                    position: 'absolute', 
-                                                    top: '10px', 
-                                                    left: '10px', 
+                                                {/* Status Badge */}
+                                                <div style={{
+                                                    position: 'absolute',
+                                                    top: '10px',
+                                                    left: '10px',
                                                     display: 'flex',
                                                     alignItems: 'center',
                                                     gap: '4px',
-                                                    background: '#ffc107', 
-                                                    color: '#1a1a2e', 
-                                                    padding: '4px 8px', 
-                                                    borderRadius: '4px', 
-                                                    fontSize: '10px', 
-                                                    fontWeight: '800',
+                                                    background: badge.bg,
+                                                    color: badge.color,
+                                                    padding: '4px 8px',
+                                                    borderRadius: '6px',
+                                                    fontSize: '9.5px',
+                                                    fontWeight: 800,
                                                     textTransform: 'uppercase',
-                                                    letterSpacing: '0.3px'
+                                                    letterSpacing: '0.4px',
+                                                    zIndex: 2
                                                 }}>
-                                                    <i className={`fas ${status.icon}`} style={{ fontSize: '9px' }}></i>
-                                                    {status.label}
+                                                    <i className={`fas ${badge.icon}`} style={{ fontSize: '9px' }}></i>
+                                                    {badge.label}
                                                 </div>
 
-                                                {/* Heart — top-right */}
-                                                <button style={{ 
-                                                    position: 'absolute', 
-                                                    top: '10px', 
-                                                    right: '10px', 
-                                                    width: '30px',
-                                                    height: '30px',
-                                                    borderRadius: '50%',
-                                                    background: '#fff',
-                                                    border: '1px solid #e0e0e0',
-                                                    display: 'flex',
-                                                    alignItems: 'center',
-                                                    justifyContent: 'center',
-                                                    cursor: 'pointer',
-                                                    boxShadow: '0 2px 6px rgba(0,0,0,0.08)'
-                                                }}>
-                                                </button>
-                                            </div>
-
-                                            {/* Brand Badge */}
-                                            <div style={{ padding: '0 16px', marginTop: '-10px', position: 'relative', zIndex: 2 }}>
-                                                <span style={{ 
-                                                    display: 'inline-block',
-                                                    background: '#ffc107', 
-                                                    color: '#1a1a2e', 
-                                                    padding: '3px 10px', 
-                                                    borderRadius: '4px', 
-                                                    fontSize: '11px', 
-                                                    fontWeight: '800',
-                                                    boxShadow: '0 2px 6px rgba(0,0,0,0.08)'
-                                                }}>
-                                                    {item.brand || item.model || 'Toyota'}
-                                                </span>
+                                                {/* Hot Sale Badge */}
+                                                {hasSale && (
+                                                    <div style={{
+                                                        position: 'absolute',
+                                                        top: '10px',
+                                                        right: '10px',
+                                                        display: 'flex',
+                                                        alignItems: 'center',
+                                                        gap: '4px',
+                                                        background: '#dc3545',
+                                                        color: '#fff',
+                                                        padding: '4px 8px',
+                                                        borderRadius: '6px',
+                                                        fontSize: '9.5px',
+                                                        fontWeight: 800,
+                                                        textTransform: 'uppercase',
+                                                        letterSpacing: '0.4px',
+                                                        zIndex: 2,
+                                                        boxShadow: '0 2px 8px rgba(220, 53, 69, 0.35)'
+                                                    }}>
+                                                        <i className="fas fa-fire" style={{ fontSize: '9px' }}></i>
+                                                        HOT SALE
+                                                    </div>
+                                                )}
                                             </div>
 
                                             {/* Card Body */}
-                                            <div style={{ padding: '10px 16px 16px', flex: 1, display: 'flex', flexDirection: 'column' }}>
-                                                {/* Title */}
-                                                <h4 style={{ 
-                                                    fontSize: '16px', 
-                                                    fontWeight: '800', 
-                                                    color: '#1a1a2e', 
-                                                    marginBottom: '4px',
-                                                    lineHeight: 1.3
-                                                }}>
-                                                    <Link href={`/inner/listing-single/${item?.id}`} style={{ color: 'inherit', textDecoration: 'none' }}>
-                                                        {item?.title}
+                                            <div style={{ padding: '14px', flex: 1, display: 'flex', flexDirection: 'column' }}>
+                                                <h4 style={{ fontSize: '15px', fontWeight: 800, color: '#1a1a2e', marginBottom: '8px', lineHeight: 1.3 }}>
+                                                    <Link href={`/inner/listing-single/${carId}`} style={{ color: 'inherit', textDecoration: 'none' }}>
+                                                        {product.title || ((product.brand || '') + " " + (product.model || ''))}
                                                     </Link>
                                                 </h4>
 
-                                                {/* Yard / City */}
-                                                <div style={{ display: 'flex', alignItems: 'center', gap: '6px', marginBottom: '10px' }}>
-                                                    <i className="fas fa-map-marker-alt" style={{ color: '#ffc107', fontSize: '12px' }}></i>
-                                                    <span style={{ fontSize: '13px', color: '#666', fontWeight: '600' }}>
-                                                        Yard: {item?.city || "N/A"}
+                                                <div style={{
+                                                    display: 'flex',
+                                                    alignItems: 'center',
+                                                    justifyContent: 'space-between',
+                                                    marginBottom: '10px',
+                                                    flexWrap: 'wrap',
+                                                    gap: '4px'
+                                                }}>
+                                                    <div style={{ display: 'flex', alignItems: 'center', gap: '5px' }}>
+                                                        <i className="fas fa-map-marker-alt" style={{ color: '#dc3545', fontSize: '12px' }}></i>
+                                                        <span style={{ fontSize: '12px', color: '#555', fontWeight: 600 }}>
+                                                            Yard {product.yard || product.Yard || 'N/A'}: {getYardLocation(product)}
+                                                        </span>
+                                                    </div>
+
+                                                    <span style={{
+                                                        background: '#f1f5f9',
+                                                        color: '#475569',
+                                                        fontSize: '10px',
+                                                        fontWeight: 700,
+                                                        padding: '2px 6px',
+                                                        borderRadius: '4px',
+                                                        border: '1px solid #e2e8f0'
+                                                    }}>
+                                                        #{product.stockNumber || product.id}
                                                     </span>
                                                 </div>
 
                                                 {/* Price */}
-                                                <div style={{ 
-                                                    fontSize: '22px', 
-                                                    fontWeight: '900', 
-                                                    color: '#1a1a2e', 
-                                                    marginBottom: '14px' 
-                                                }}>
-                                                    ${formatPrice(item?.price)}
+                                                <div style={{ marginBottom: '10px' }}>
+                                                    <div style={{ display: 'flex', alignItems: 'center', gap: '6px', flexWrap: 'wrap' }}>
+                                                        {hasSale && formattedOriginalPrice !== 'Contact for Price' && (
+                                                            <span style={{
+                                                                fontSize: '13px',
+                                                                fontWeight: 700,
+                                                                color: '#888',
+                                                                textDecoration: 'line-through'
+                                                            }}>
+                                                                {formattedOriginalPrice}
+                                                            </span>
+                                                        )}
+
+                                                        <span style={{ fontSize: '20px', fontWeight: 900, color: '#1a1a2e' }}>
+                                                            {formattedPrice}
+                                                        </span>
+
+                                                        {hasPrice && (
+                                                            <span style={{
+                                                                background: '#ffc107',
+                                                                color: '#1a1a2e',
+                                                                fontSize: '9.5px',
+                                                                fontWeight: 800,
+                                                                padding: '2px 6px',
+                                                                borderRadius: '4px'
+                                                            }}>
+                                                                AUD
+                                                            </span>
+                                                        )}
+                                                    </div>
+
+                                                    {hasPrice && (
+                                                        <span style={{ display: 'block', fontSize: '10px', color: '#777', fontWeight: 500, marginTop: '1px' }}>
+                                                            Excl. Govt. Charges
+                                                        </span>
+                                                    )}
                                                 </div>
 
-                                                {/* Specs Grid */}
-                                                <div style={{ 
-                                                    display: 'grid', 
-                                                    gridTemplateColumns: '1fr 1fr', 
-                                                    gap: '8px',
-                                                    marginBottom: '14px',
-                                                    paddingBottom: '14px',
-                                                    borderBottom: '1px solid #f0f0f0'
+                                                {/* Specifications */}
+                                                <div style={{
+                                                    display: 'flex',
+                                                    alignItems: 'center',
+                                                    gap: '10px',
+                                                    marginBottom: '12px',
+                                                    flexWrap: 'wrap'
                                                 }}>
-                                                    <div style={{ display: 'flex', alignItems: 'center', gap: '6px', fontSize: '12px', color: '#555', fontWeight: '600' }}>
-                                                        <i className="fas fa-tachometer-alt" style={{ color: '#888', fontSize: '12px', width: '14px' }}></i>
-                                                        <span>{item?.mileage ? `${formatNumber(item.mileage)} km` : "N/A"}</span>
+                                                    <div style={{ display: 'flex', alignItems: 'center', gap: '4px', fontSize: '11.5px', color: '#555', fontWeight: 600 }}>
+                                                        <i className="fas fa-cogs" style={{ color: '#888', fontSize: '11px' }}></i>
+                                                        <span>{product.transmission || 'Auto'}</span>
                                                     </div>
-                                                    <div style={{ display: 'flex', alignItems: 'center', gap: '6px', fontSize: '12px', color: '#555', fontWeight: '600' }}>
-                                                        <i className="fas fa-cogs" style={{ color: '#888', fontSize: '12px', width: '14px' }}></i>
-                                                        <span>{item?.transmission || "Auto"}</span>
+                                                    <div style={{ display: 'flex', alignItems: 'center', gap: '4px', fontSize: '11.5px', color: '#555', fontWeight: 600 }}>
+                                                        <i className={`fas ${product.fuel === 'Hybrid' ? 'fa-leaf' : 'fa-gas-pump'}`} style={{ color: product.fuel === 'Hybrid' ? '#28a745' : '#888', fontSize: '11px' }}></i>
+                                                        <span>{product.fuel || 'Petrol'}</span>
                                                     </div>
-                                                    <div style={{ display: 'flex', alignItems: 'center', gap: '6px', fontSize: '12px', color: '#555', fontWeight: '600' }}>
-                                                        <i className="fas fa-gas-pump" style={{ color: '#888', fontSize: '12px', width: '14px' }}></i>
-                                                        <span>{item?.fuel || "Petrol"}</span>
-                                                    </div>
-                                                    <div style={{ display: 'flex', alignItems: 'center', gap: '6px', fontSize: '12px', color: '#555', fontWeight: '600' }}>
-                                                        <i className="fas fa-car-side" style={{ color: '#888', fontSize: '12px', width: '14px' }}></i>
-                                                        <span>{item?.bodyType || "Car"}</span>
+                                                    <div style={{ display: 'flex', alignItems: 'center', gap: '4px', fontSize: '11.5px', color: '#555', fontWeight: 600 }}>
+                                                        <i className="fas fa-tachometer-alt" style={{ color: '#888', fontSize: '11px' }}></i>
+                                                        <span>{product.mileage ? `${formatNumber(product.mileage)} km` : 'N/A'}</span>
                                                     </div>
                                                 </div>
 
-                                                {/* Action Buttons */}
-                                                <div style={{ marginTop: 'auto', display: 'flex', flexDirection: 'column', gap: '8px' }}>
-                                                    <Link 
-                                                        href={`/inner/listing-single/${item?.id}`} 
-                                                        style={{ 
-                                                            width: "100%", 
-                                                            textAlign: "center", 
-                                                            padding: "11px", 
-                                                            background: "#ffc107", 
-                                                            color: "#1a1a2e", 
-                                                            fontWeight: "800", 
-                                                            borderRadius: "8px", 
-                                                            textDecoration: "none", 
-                                                            display: "flex",
+                                                {/* Button */}
+                                                <div style={{ marginTop: 'auto' }}>
+                                                    <Link
+                                                        href={`/inner/listing-single/${carId}`}
+                                                        style={{
+                                                            display: 'flex',
                                                             alignItems: 'center',
                                                             justifyContent: 'center',
                                                             gap: '6px',
-                                                            fontSize: '13px',
-                                                            transition: "all 0.3s ease",
-                                                            border: 'none'
-                                                        }}
-                                                        onMouseEnter={(e) => { 
-                                                            e.currentTarget.style.color = "#ffffff"; 
-                                                            e.currentTarget.style.background = "#1a1a2e"; 
-                                                        }}
-                                                        onMouseLeave={(e) => { 
-                                                            e.currentTarget.style.color = "#1a1a2e"; 
-                                                            e.currentTarget.style.background = "#ffc107"; 
+                                                            width: '100%',
+                                                            padding: '10px',
+                                                            background: '#ffc107',
+                                                            color: '#1a1a2e',
+                                                            fontWeight: 800,
+                                                            fontSize: '12.5px',
+                                                            borderRadius: '8px',
+                                                            textDecoration: 'none',
+                                                            transition: 'all 0.3s ease'
                                                         }}
                                                     >
-                                                        View Details <i className="fas fa-arrow-right" style={{ fontSize: '11px' }}></i>
-                                                    </Link>
-
-                                                    <Link 
-                                                        href={`/inner/listing-single/${item?.id}`} 
-                                                        style={{ 
-                                                            width: "100%", 
-                                                            textAlign: "center", 
-                                                            padding: "11px", 
-                                                            background: "#fff", 
-                                                            color: "#555", 
-                                                            fontWeight: "700", 
-                                                            borderRadius: "8px", 
-                                                            textDecoration: "none", 
-                                                            display: "flex",
-                                                            alignItems: 'center',
-                                                            justifyContent: 'center',
-                                                            gap: '6px',
-                                                            fontSize: '13px',
-                                                            transition: "all 0.3s ease",
-                                                            border: '1px solid #e0e0e0'
-                                                        }}
-                                                        onMouseEnter={(e) => { 
-                                                            e.currentTarget.style.color = "#1a1a2e"; 
-                                                            e.currentTarget.style.borderColor = "#1a1a2e"; 
-                                                        }}
-                                                        onMouseLeave={(e) => { 
-                                                            e.currentTarget.style.color = "#555"; 
-                                                            e.currentTarget.style.borderColor = "#e0e0e0"; 
-                                                        }}
-                                                    >
-                                                        <i className="far fa-file-alt" style={{ fontSize: '12px' }}></i> View More Info
+                                                        View Details <i className="fas fa-arrow-right" style={{ fontSize: '10px' }}></i>
                                                     </Link>
                                                 </div>
                                             </div>
@@ -343,31 +358,22 @@ ListingOne: React.FC<ListingOneProps> = ({ filteredData }) => {
                     )}
                 </div>
 
-                {/* View All Vehicles */}
+                {/* Bottom CTA Button */}
                 <div className="text-center" style={{ marginTop: '20px' }}>
                     <Link 
-                        href="/inner/products" 
+                        href="/inner/hot-deals" 
                         style={{ 
                             display: 'inline-flex',
                             alignItems: 'center',
                             gap: '8px',
-                            padding: '11px 28px',
+                            padding: '10px 24px',
                             background: '#fff',
                             color: '#ffc107',
                             fontWeight: '800',
                             fontSize: '13px',
                             borderRadius: '8px',
                             textDecoration: 'none',
-                            border: '2px solid #ffc107',
-                            transition: 'all 0.3s ease'
-                        }}
-                        onMouseEnter={(e) => {
-                            e.currentTarget.style.background = '#ffc107';
-                            e.currentTarget.style.color = '#1a1a2e';
-                        }}
-                        onMouseLeave={(e) => {
-                            e.currentTarget.style.background = '#fff';
-                            e.currentTarget.style.color = '#ffc107';
+                            border: '2px solid #ffc107'
                         }}
                     >
                         View All Vehicles <i className="fas fa-arrow-right" style={{ fontSize: '11px' }}></i>

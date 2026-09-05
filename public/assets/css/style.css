@@ -22812,15 +22812,79 @@ Product Description
   }
 }
 
+/* ==========================================
+   SLEEK HOT DEALS MENU LINK
+   ========================================== */
+@keyframes subtlePulse {
+  0%, 100% {
+    box-shadow: 0 0 4px rgba(255, 69, 0, 0.4);
+    transform: scale(1);
+  }
+  50% {
+    box-shadow: 0 0 10px rgba(255, 69, 0, 0.7);
+    transform: scale(1.03);
+  }
+}
+
+@keyframes flameFlicker {
+  0%, 100% { transform: scale(1) rotate(-2deg); }
+  50% { transform: scale(1.2) rotate(3deg); }
+}
+
+.hot-deals-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 4px 10px;
+  border-radius: 12px;
+  background: linear-gradient(135deg, #ff4500 0%, #ff8c00 100%);
+  color: #ffffff !important;
+  font-weight: 700;
+  font-size: 11px;
+  letter-spacing: 0.3px;
+  text-transform: uppercase;
+  text-decoration: none;
+  animation: subtlePulse 2.5s infinite ease-in-out;
+  transition: all 0.2s ease;
+  line-height: 1;
+}
+
+.hot-deals-btn:hover {
+  background: linear-gradient(135deg, #e63946 0%, #ff4500 100%);
+  color: #ffffff !important;
+  transform: translateY(-1px);
+}
+
+.hot-deals-icon {
+  font-size: 12px;
+  animation: flameFlicker 1.5s infinite ease-in-out;
+  display: inline-block;
+}
 
 
+/* Clean Mobile Hot Deals Alignment */
+.mobile-hot-deals-item {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  width: 100% !important;
+  padding-right: 15px !important;
+}
 
-
-
-
-
-
-
+.mobile-hot-badge {
+  background: linear-gradient(135deg, #ff4500, #ff8c00);
+  color: #ffffff;
+  font-size: 9px;
+  font-weight: 800;
+  padding: 3px 7px;
+  border-radius: 4px;
+  letter-spacing: 0.3px;
+  text-transform: uppercase;
+  line-height: 1;
+  display: inline-flex;
+  align-items: center;
+  white-space: nowrap;
+}
 
 
 

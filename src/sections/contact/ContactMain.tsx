@@ -1,7 +1,6 @@
 "use client"
 import React, { useState } from 'react';
 import { motion } from "framer-motion";
-import Link from 'next/link';
 
 interface LocationData {
     id: string;
@@ -14,6 +13,10 @@ interface LocationData {
     directionsUrl: string;
     license: string;
     abn: string;
+    openingHours: {
+        monSat: string;
+        sunday: string;
+    };
 }
 
 const locations: LocationData[] = [
@@ -27,7 +30,11 @@ const locations: LocationData[] = [
         mapUrl: "https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d25226.597478793476!2d144.866819!3d-37.78243!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x6ad65f483d70ac55%3A0xe1aaed36e5020905!2sNJ%20Japan%20Motors%20-%20Maidstone%20-%20Melbourne!5e0!3m2!1sen!2sau!4v1767938640908!5m2!1sen!2sau",
         directionsUrl: "https://maps.app.goo.gl/mro1EoXZtAkH1udS8",
         license: "LMCT0012708",
-        abn: "89 671 445 248"
+        abn: "89 671 445 248",
+        openingHours: {
+            monSat: "Monday - Saturday: 9:00 AM - 5:30 PM",
+            sunday: "Sunday: 10:00 AM - 3:00 PM"
+        }
     },
     {
         id: "mordialloc",
@@ -39,7 +46,11 @@ const locations: LocationData[] = [
         mapUrl: "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3144.348351864389!2d145.1067597!3d-37.9923344!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x6ad66d0ed73e94c1%3A0x67c4c303bc9a70fb!2sNJ%20Japan%20Motors%20-%20Mordialloc!5e0!3m2!1sen!2sau!4v1767833115720!5m2!1sen!2sau",
         directionsUrl: "https://maps.app.goo.gl/QQzx2J9NpfAKKuQA8",
         license: "LMCT0012708",
-        abn: "89 671 445 248"
+        abn: "89 671 445 248",
+        openingHours: {
+            monSat: "Monday - Saturday: 9:00 AM - 5:30 PM",
+            sunday: "Sunday: 10:00 AM - 3:00 PM"
+        }
     },
     {
         id: "brisbane",
@@ -51,7 +62,11 @@ const locations: LocationData[] = [
         mapUrl: "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3534.965720758846!2d153.1211416!3d-27.625578299999997!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x6b914319f0539a1d%3A0xe2164c4f045509cb!2sNJ%20Japan%20Motors%20-%20Brisbane!5e0!3m2!1sen!2sau!4v1770075890792!5m2!1sen!2sau",
         directionsUrl: "https://maps.app.goo.gl/5YbyzyC7zCd3hr2s8",
         license: "LMCT4933717",
-        abn: "89 671 445 248"
+        abn: "89 671 445 248",
+        openingHours: {
+            monSat: "Monday - Saturday: 9:00 AM - 5:30 PM",
+            sunday: "Sunday: Closed"
+        }
     }
 ];
 
@@ -114,7 +129,7 @@ const ContactMain: React.FC = () => {
         }
     };
 
-    const fadeInUp: any =  {
+    const fadeInUp: any = {
         initial: { y: 40, opacity: 0 },
         whileInView: { y: 0, opacity: 1 },
         transition: { duration: 0.6, ease: "easeOut" },
@@ -299,10 +314,10 @@ const ContactMain: React.FC = () => {
                                             Opening Hours
                                         </h3>
                                         <p style={{ margin: '0 0 4px', color: '#555', fontSize: '14px' }}>
-                                            Monday - Saturday: 9:00 AM - 5:30 PM
+                                            {loc.openingHours.monSat}
                                         </p>
-                                        <p style={{ margin: 0, color: '#555', fontSize: '14px' }}>
-                                            Sunday: 10:00 AM - 3:00 PM
+                                        <p style={{ margin: 0, color: loc.id === 'brisbane' ? '#d9534f' : '#555', fontSize: '14px', fontWeight: loc.id === 'brisbane' ? 600 : 400 }}>
+                                            {loc.openingHours.sunday}
                                         </p>
                                     </div>
 
@@ -533,8 +548,8 @@ const ContactMain: React.FC = () => {
                                             <span className="icon-call" style={{ color: '#1a1a1a', fontSize: '20px' }}></span>
                                         </div>
                                         <div>
-                                            <p style={{ margin: 0, fontSize: '13px', color: '#999', textTransform: 'uppercase', letterSpacing: '1px' }}>Call Us</p>
-                                            <a href="tel:61485889402" style={{ color: '#1a1a1a', textDecoration: 'none', fontWeight: 600 }}>1800 006 256</a>
+                                            <p style={{ margin: 0, fontSize: '13px', color: '#999', textTransform: 'uppercase', letterSpacing: '1px' }}>Toll Free Call</p>
+                                            <a href="tel:1800006256" style={{ color: '#1a1a1a', textDecoration: 'none', fontWeight: 600 }}>1800 006 256</a>
                                         </div>
                                     </div>
                                 </div>
@@ -542,181 +557,113 @@ const ContactMain: React.FC = () => {
 
                             <div className="col-lg-7">
                                 <form onSubmit={handleSubmit}>
-                                    <div className="row" style={{ marginBottom: '20px' }}>
-                                        <div className="col-md-4" style={{ marginBottom: '20px' }}>
-                                            <label style={{
-                                                display: 'block',
-                                                fontSize: '12px',
-                                                fontWeight: 700,
-                                                color: '#1a1a1a',
-                                                textTransform: 'uppercase',
-                                                letterSpacing: '1px',
-                                                marginBottom: '8px'
-                                            }}>
-                                                Name
-                                            </label>
+                                    <div className="row">
+                                        <div className="col-md-6" style={{ marginBottom: '20px' }}>
                                             <input
                                                 type="text"
                                                 name="name"
-                                                placeholder="Name *"
+                                                placeholder="Your Full Name *"
+                                                required
                                                 value={formData.name}
                                                 onChange={handleChange}
-                                                required
                                                 style={{
                                                     width: '100%',
-                                                    padding: '14px 18px',
-                                                    border: '2px solid #e0e0e0',
+                                                    padding: '16px 20px',
                                                     borderRadius: '10px',
-                                                    fontSize: '14px',
+                                                    border: '1px solid #e0e0e0',
+                                                    backgroundColor: '#fafafa',
+                                                    fontSize: '15px',
                                                     outline: 'none',
-                                                    transition: 'border-color 0.3s',
-                                                    background: '#fafafa'
+                                                    transition: 'all 0.3s ease'
                                                 }}
-                                                onFocus={(e) => e.currentTarget.style.borderColor = '#f5b93c'}
-                                                onBlur={(e) => e.currentTarget.style.borderColor = '#e0e0e0'}
                                             />
                                         </div>
-                                        <div className="col-md-4" style={{ marginBottom: '20px' }}>
-                                            <label style={{
-                                                display: 'block',
-                                                fontSize: '12px',
-                                                fontWeight: 700,
-                                                color: '#1a1a1a',
-                                                textTransform: 'uppercase',
-                                                letterSpacing: '1px',
-                                                marginBottom: '8px'
-                                            }}>
-                                                Phone
-                                            </label>
+                                        <div className="col-md-6" style={{ marginBottom: '20px' }}>
                                             <input
                                                 type="tel"
                                                 name="phone"
-                                                placeholder="Phone *"
+                                                placeholder="Phone Number *"
+                                                required
                                                 value={formData.phone}
                                                 onChange={handleChange}
-                                                required
                                                 style={{
                                                     width: '100%',
-                                                    padding: '14px 18px',
-                                                    border: '2px solid #e0e0e0',
+                                                    padding: '16px 20px',
                                                     borderRadius: '10px',
-                                                    fontSize: '14px',
+                                                    border: '1px solid #e0e0e0',
+                                                    backgroundColor: '#fafafa',
+                                                    fontSize: '15px',
                                                     outline: 'none',
-                                                    transition: 'border-color 0.3s',
-                                                    background: '#fafafa'
+                                                    transition: 'all 0.3s ease'
                                                 }}
-                                                onFocus={(e) => e.currentTarget.style.borderColor = '#f5b93c'}
-                                                onBlur={(e) => e.currentTarget.style.borderColor = '#e0e0e0'}
-                                            />
-                                        </div>
-                                        <div className="col-md-4" style={{ marginBottom: '20px' }}>
-                                            <label style={{
-                                                display: 'block',
-                                                fontSize: '12px',
-                                                fontWeight: 700,
-                                                color: '#1a1a1a',
-                                                textTransform: 'uppercase',
-                                                letterSpacing: '1px',
-                                                marginBottom: '8px'
-                                            }}>
-                                                Email
-                                            </label>
-                                            <input
-                                                type="email"
-                                                name="email"
-                                                placeholder="Email *"
-                                                value={formData.email}
-                                                onChange={handleChange}
-                                                required
-                                                style={{
-                                                    width: '100%',
-                                                    padding: '14px 18px',
-                                                    border: '2px solid #e0e0e0',
-                                                    borderRadius: '10px',
-                                                    fontSize: '14px',
-                                                    outline: 'none',
-                                                    transition: 'border-color 0.3s',
-                                                    background: '#fafafa'
-                                                }}
-                                                onFocus={(e) => e.currentTarget.style.borderColor = '#f5b93c'}
-                                                onBlur={(e) => e.currentTarget.style.borderColor = '#e0e0e0'}
                                             />
                                         </div>
                                     </div>
-
-                                    <div style={{ marginBottom: '25px' }}>
-                                        <label style={{
-                                            display: 'block',
-                                            fontSize: '12px',
-                                            fontWeight: 700,
-                                            color: '#1a1a1a',
-                                            textTransform: 'uppercase',
-                                            letterSpacing: '1px',
-                                            marginBottom: '8px'
-                                        }}>
-                                            Message
-                                        </label>
+                                    <div style={{ marginBottom: '20px' }}>
+                                        <input
+                                            type="email"
+                                            name="email"
+                                            placeholder="Email Address *"
+                                            required
+                                            value={formData.email}
+                                            onChange={handleChange}
+                                            style={{
+                                                width: '100%',
+                                                padding: '16px 20px',
+                                                borderRadius: '10px',
+                                                border: '1px solid #e0e0e0',
+                                                backgroundColor: '#fafafa',
+                                                fontSize: '15px',
+                                                outline: 'none',
+                                                transition: 'all 0.3s ease'
+                                            }}
+                                        />
+                                    </div>
+                                    <div style={{ marginBottom: '20px' }}>
                                         <textarea
                                             name="message"
                                             placeholder="Your Message *"
+                                            rows={5}
+                                            required
                                             value={formData.message}
                                             onChange={handleChange}
-                                            required
-                                            rows={5}
                                             style={{
                                                 width: '100%',
-                                                padding: '14px 18px',
-                                                border: '2px solid #e0e0e0',
+                                                padding: '16px 20px',
                                                 borderRadius: '10px',
-                                                fontSize: '14px',
+                                                border: '1px solid #e0e0e0',
+                                                backgroundColor: '#fafafa',
+                                                fontSize: '15px',
                                                 outline: 'none',
-                                                transition: 'border-color 0.3s',
-                                                background: '#fafafa',
                                                 resize: 'vertical',
-                                                fontFamily: 'inherit'
+                                                transition: 'all 0.3s ease'
                                             }}
-                                            onFocus={(e) => e.currentTarget.style.borderColor = '#f5b93c'}
-                                            onBlur={(e) => e.currentTarget.style.borderColor = '#e0e0e0'}
-                                        />
+                                        ></textarea>
                                     </div>
 
-                                    {/* reCAPTCHA Placeholder */}
-                                    <div style={{ 
-                                        marginBottom: '25px',
-                                        padding: '15px',
-                                        background: '#f5f5f5',
-                                        borderRadius: '8px',
-                                        textAlign: 'center',
-                                        fontSize: '12px',
-                                        color: '#888'
-                                    }}>
-                                        reCAPTCHA verification required
-                                    </div>
-
-                                    {success && (
-                                        <div style={{ 
-                                            marginBottom: '15px', 
-                                            padding: '12px 16px', 
-                                            background: '#d4edda', 
-                                            borderRadius: '8px', 
-                                            color: '#155724',
-                                            fontWeight: 600,
+                                    {error && (
+                                        <div style={{
+                                            padding: '12px 20px',
+                                            backgroundColor: '#ffeeee',
+                                            color: '#d9534f',
+                                            borderRadius: '8px',
+                                            marginBottom: '20px',
                                             fontSize: '14px'
                                         }}>
-                                            ✅ Enquiry sent successfully!
+                                            {error}
                                         </div>
                                     )}
-                                    {error && (
-                                        <div style={{ 
-                                            marginBottom: '15px', 
-                                            padding: '12px 16px', 
-                                            background: '#f8d7da', 
-                                            borderRadius: '8px', 
-                                            color: '#721c24',
-                                            fontWeight: 600,
+
+                                    {success && (
+                                        <div style={{
+                                            padding: '12px 20px',
+                                            backgroundColor: '#e6fffa',
+                                            color: '#2e7d32',
+                                            borderRadius: '8px',
+                                            marginBottom: '20px',
                                             fontSize: '14px'
                                         }}>
-                                            ❌ {error}
+                                            Thank you! Your message has been sent successfully.
                                         </div>
                                     )}
 
@@ -725,36 +672,20 @@ const ContactMain: React.FC = () => {
                                         disabled={isLoading}
                                         style={{
                                             padding: '16px 40px',
-                                            background: isLoading ? '#ccc' : '#f5b93c',
+                                            background: '#f5b93c',
                                             color: '#1a1a1a',
                                             border: 'none',
                                             borderRadius: '10px',
-                                            fontSize: '14px',
                                             fontWeight: 700,
+                                            fontSize: '14px',
                                             textTransform: 'uppercase',
-                                            letterSpacing: '2px',
+                                            letterSpacing: '1.5px',
                                             cursor: isLoading ? 'not-allowed' : 'pointer',
-                                            transition: 'all 0.3s ease',
-                                            display: 'inline-flex',
-                                            alignItems: 'center',
-                                            gap: '10px',
-                                            opacity: isLoading ? 0.6 : 1
-                                        }}
-                                        onMouseEnter={(e) => {
-                                            if (!isLoading) {
-                                                e.currentTarget.style.background = '#1a1a1a';
-                                                e.currentTarget.style.color = '#f5b93c';
-                                            }
-                                        }}
-                                        onMouseLeave={(e) => {
-                                            if (!isLoading) {
-                                                e.currentTarget.style.background = '#f5b93c';
-                                                e.currentTarget.style.color = '#1a1a1a';
-                                            }
+                                            opacity: isLoading ? 0.7 : 1,
+                                            transition: 'all 0.3s ease'
                                         }}
                                     >
-                                        {isLoading ? 'Sending...' : 'Send Enquiry'}
-                                        <span className="icon-right-arrow" style={{ fontSize: '12px' }}></span>
+                                        {isLoading ? 'Sending...' : 'Send Message'}
                                     </button>
                                 </form>
                             </div>

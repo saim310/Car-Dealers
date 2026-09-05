@@ -1,11 +1,12 @@
 "use client"
 import React, { useState } from 'react';
-import { usePathname } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 import useGorentContext from '../context/useGorentContext';
 
 const MobileManuList: React.FC = () => {
     const { setIsMobileManu } = useGorentContext();
     const pathName = usePathname();
+    const router = useRouter();
 
     const [isViewStock, setIsViewStock] = useState<boolean>(false);
     const [isMelbourne, setIsMelbourne] = useState<boolean>(false);
@@ -13,11 +14,11 @@ const MobileManuList: React.FC = () => {
     const [isFinance, setIsFinance] = useState<boolean>(false);
     const [isMore, setIsMore] = useState<boolean>(false);
 
-    // Forces mobile browser to reload with the chosen URL query filter
+    // Handles mobile navigation and drawer closing
     const handleMobileNav = (e: React.MouseEvent, href: string) => {
         e.preventDefault();
 
-        // Close mobile drawer
+        // Close mobile drawer and reset dropdown states
         setIsMobileManu(false);
         setIsViewStock(false);
         setIsMelbourne(false);
@@ -25,8 +26,8 @@ const MobileManuList: React.FC = () => {
         setIsFinance(false);
         setIsMore(false);
 
-        // Force navigate to URL with city/yard filters
-        window.location.href = href;
+        // Client-side routing
+        router.push(href);
     };
 
     return (
@@ -118,9 +119,12 @@ const MobileManuList: React.FC = () => {
                 </ul>
             </li>
 
-            {/* ON SALE CARS */}
-            <li className={`${pathName === "/inner/cars" ? "current" : ""}`}>
-                <a href="/inner/cars?sale=true" onClick={(e) => handleMobileNav(e, "/inner/cars?sale=true")}>On Sale Cars</a>
+            {/* HOT DEALS */}
+            <li className={`${pathName === "/inner/hot-deals" ? "current" : ""}`}>
+                <a href="/inner/hot-deals" onClick={(e) => handleMobileNav(e, "/inner/hot-deals")} className="mobile-hot-deals-item">
+                    <span>Hot Deals</span>
+                    <span className="mobile-hot-badge">% Discounts</span>
+                </a>
             </li>
 
             {/* WHOLESALE */}
@@ -145,7 +149,7 @@ const MobileManuList: React.FC = () => {
 
             {/* MORE */}
             <li className="dropdown">
-                <a href="#" className={`${isMore || pathName.startsWith("/inner/more") || pathName === "/inner/blog" || pathName === "/inner/TradeIn" || pathName === "/inner/faqs" ? "expanded" : ""}`}>
+                <a href="#" className={`${isMore || pathName.startsWith("/inner/more") || pathName === "/inner/blog" || pathName === "/inner/TradeIn" || pathName === "/inner/faq" ? "expanded" : ""}`}>
                     More
                     <button className={`${isMore ? "expanded" : ""}`} onClick={(e) => { e.preventDefault(); setIsMore((pre) => (!pre)); }}>
                         <i className="fa fa-angle-down"></i>
@@ -158,7 +162,7 @@ const MobileManuList: React.FC = () => {
                     <li className={`${pathName === "/inner/TradeIn" ? "current" : ""}`}>
                         <a href="/inner/TradeIn" onClick={(e) => handleMobileNav(e, "/inner/TradeIn")}>TradeIn</a>
                     </li>
-                    <li className={`${pathName === "/inner/faqs" ? "current" : ""}`}>
+                    <li className={`${pathName === "/inner/faq" ? "current" : ""}`}>
                         <a href="/inner/faq" onClick={(e) => handleMobileNav(e, "/inner/faq")}>FAQs</a>
                     </li>
                 </ul>

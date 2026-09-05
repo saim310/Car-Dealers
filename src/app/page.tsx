@@ -16,6 +16,8 @@ import VideoTestimonial from '../sections/home-one/VideoTestimonial';
 import WhychooseOne from '../sections/home-one/WhychooseOne';
 import SearchSection from '../sections/common/Search';
 import { productsList } from '@/all-content/products/productData';
+import HotDealsSection from '../sections/common/HotDealsSection';
+
 
 const Page: React.FC = () => {
   const [filteredData, setFilteredData] = useState<any[]>(productsList);
@@ -107,8 +109,17 @@ const Page: React.FC = () => {
       <Header />
       <BannerOne />
       <BrandOne />
-      <SearchSection onSearch={handleSearch} resultCount={filteredData.length} />
-      <ListingOne filteredData={filteredData} />
+     <SearchSection onSearch={handleSearch} resultCount={filteredData.length} />
+  <ListingOne 
+  filteredData={filteredData?.filter((item) => {
+    const originalPrice = item.previousPrice || item.price || item.Price || 0;
+    const salePrice = item.salePrice;
+    const hasSale = Boolean(salePrice && Number(salePrice) < Number(originalPrice));
+    const statusVal = String(item.stockStatus || item.status || item.tag || '').toLowerCase();
+    
+    return hasSale || item.isSale === true || item.isHotDeal === true || statusVal.includes('sale') || statusVal.includes('hot');
+  })} 
+/>
       <WelcomeSection />
       <AboutOne />
       <WhychooseOne />

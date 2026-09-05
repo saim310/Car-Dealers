@@ -404,19 +404,13 @@ const FinancePage: React.FC = () => {
               Quick & Easy <span>Vehicle Finance</span>
             </h1>
 
-            <p className="uka-finance-hero__desc">
-              At UKA Group, we make vehicle financing simple and stress-free. Whether you are 
-              self-employed or work 9-5, we will tailor a finance package that fits your budget 
-              and lifestyle.
-            </p>
+         <p className="uka-finance-hero__desc">
+    At UKA Japan Motors, we make <a href="https://www.ukajapan.com.au/inner/finance/apply-for-finance" style={{ color: 'inherit', textDecoration: 'underline' }}>used car finance</a> simple and flexible.<br /> Whether you need vehicle finance or car finance for your next vehicle, our trusted finance providers can help you explore suitable options across Australia.
+</p>
 
-            <p className="uka-finance-hero__note">
-              We partner with trusted finance providers and are committed to responsible lending. 
-              Our goal is to help you make an informed choice that you are confident with. 
-              Each vehicle may show example repayment info including interest rate, deposit, and term 
-              so you can see how it all adds up.
-            </p>
-
+       <p className="uka-finance-hero__note">
+    We also offer used vehicle finance and Japanese car finance, with finance solutions available to customers Australia-wide. Whether you're looking for <a href="https://www.ukajapan.com.au/inner/finance/finance-information" style={{ color: 'inherit', textDecoration: 'underline' }}>used car finance Melbourne</a> or <a href="https://www.ukajapan.com.au/inner/finance/finance-calculator" style={{ color: 'inherit', textDecoration: 'underline' }}>used car finance Brisbane</a>, our team is ready to help you find a finance solution that suits your budget and needs.
+</p>
             <div className="uka-finance-partners">
               {partners.map((p) => (
                 <Link key={p.name} href={p.url} target="_blank" rel="noopener noreferrer" className="uka-finance-partner">

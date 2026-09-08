@@ -4,16 +4,16 @@ import Link from "next/link";
 
 const AboutInner: React.FC = () => {
   const flags = [
-    { code: "AU", name: "Australia", flag: "🇦🇺" },
-    { code: "JM", name: "Jamaica", flag: "🇯🇲" },
-    { code: "JP", name: "Japan", flag: "🇯🇵" },
-    { code: "KE", name: "Kenya", flag: "🇰🇪" },
-    { code: "NZ", name: "New Zealand", flag: "🇳🇿" },
-    { code: "PK", name: "Pakistan", flag: "🇵🇰" },
-    { code: "TZ", name: "Tanzania", flag: "🇹🇿" },
-    { code: "AE", name: "UAE", flag: "🇦🇪" },
-    { code: "GB", name: "UK", flag: "🇬🇧" },
-    { code: "UG", name: "Uganda", flag: "🇺🇬" },
+    { code: "au", name: "Australia" },
+    { code: "jm", name: "Jamaica" },
+    { code: "jp", name: "Japan" },
+    { code: "ke", name: "Kenya" },
+    { code: "nz", name: "New Zealand" },
+    { code: "pk", name: "Pakistan" },
+    { code: "tz", name: "Tanzania" },
+    { code: "ae", name: "UAE" },
+    { code: "gb", name: "UK" },
+    { code: "ug", name: "Uganda" },
   ];
 
   return (
@@ -57,23 +57,31 @@ const AboutInner: React.FC = () => {
                 boxShadow: "0 20px 40px rgba(0,0,0,0.5)"
               }}
             >
-              {/* Brand Header */}
+              {/* Brand Header with Centered Large Logo */}
               <div className="d-flex align-items-center justify-content-between mb-4 pb-3 border-bottom border-secondary border-opacity-25">
-                <div>
-                  <div className="text-warning mb-1" style={{ fontSize: "14px", letterSpacing: "2px" }}>
-                    ★★★★★
+                <div className="d-flex flex-column align-items-center text-center flex-grow-1 me-3">
+                  <div className="mb-2 w-100 d-flex justify-content-center">
+                    <img 
+                      src="/assets/images/resources/footer-logo1.png" 
+                      alt="UKA Group Logo" 
+                      style={{ 
+                        height: "110px", 
+                        maxWidth: "280px", 
+                        objectFit: "contain",
+                        display: "block",
+                        margin: "0 auto"
+                      }} 
+                    />
                   </div>
-                  <h2 className="fw-black m-0 text-white" style={{ fontSize: "32px", letterSpacing: "-1px" }}>
-                    UKA <span className="text-warning" style={{ fontSize: "14px", letterSpacing: "3px" }}>GROUP</span>
-                  </h2>
-                  <small className="text-secondary text-uppercase fw-bold" style={{ fontSize: "9px", letterSpacing: "1px" }}>
+
+                  <small className="text-secondary text-uppercase fw-bold d-block" style={{ fontSize: "10px", letterSpacing: "1.5px" }}>
                     Committed to Excellence
                   </small>
                 </div>
                 
                 {/* 30+ Years Badge */}
                 <div 
-                  className="rounded-3 px-3 py-2 text-center"
+                  className="rounded-3 px-3 py-2 text-center flex-shrink-0"
                   style={{ backgroundColor: "#ffc107", color: "#0b0f19" }}
                 >
                   <div className="fw-black lh-1" style={{ fontSize: "22px" }}>30+</div>
@@ -88,18 +96,24 @@ const AboutInner: React.FC = () => {
                 </p>
                 <div className="d-flex flex-wrap gap-2">
                   {flags.map((item, i) => (
-                    <span 
+                    <div 
                       key={i} 
                       title={item.name}
-                      className="px-2 py-1 rounded-2 d-inline-flex align-items-center"
+                      className="px-2 py-1.5 rounded-2 d-inline-flex align-items-center gap-1.5"
                       style={{ 
                         backgroundColor: "rgba(255, 255, 255, 0.06)", 
-                        border: "1px solid rgba(255, 255, 255, 0.1)",
-                        fontSize: "18px" 
+                        border: "1px solid rgba(255, 255, 255, 0.12)"
                       }}
                     >
-                      {item.flag}
-                    </span>
+                      <img 
+                        src={`https://flagcdn.com/w40/${item.code}.png`} 
+                        alt={`${item.name} flag`}
+                        style={{ width: "20px", height: "14px", objectFit: "cover", borderRadius: "2px" }}
+                      />
+                      <span className="text-light fw-semibold" style={{ fontSize: "11px", letterSpacing: "0.5px" }}>
+                        {item.code.toUpperCase()}
+                      </span>
+                    </div>
                   ))}
                 </div>
               </div>

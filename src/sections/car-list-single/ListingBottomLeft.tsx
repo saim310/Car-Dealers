@@ -136,7 +136,7 @@ const overviewItems = [
                     {[
                         { icon: 'fa-gavel', label: 'Auction Grade', value: '3.5 & Above' },
                         { icon: 'fa-check-circle', label: 'Odometer', value: 'Certified' },
-                        { icon: 'fa-user', label: 'One Owner', value: 'From Japan' },
+                        { icon: 'fa-user', label: 'Warranty', value: '90 Days Included' },
                     ].map((h, i) => (
                         <div key={i} style={{
                             display: 'flex',

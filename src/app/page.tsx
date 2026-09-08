@@ -16,7 +16,6 @@ import VideoTestimonial from '../sections/home-one/VideoTestimonial';
 import WhychooseOne from '../sections/home-one/WhychooseOne';
 import SearchSection from '../sections/common/Search';
 import { productsList } from '@/all-content/products/productData';
-import HotDealsSection from '../sections/common/HotDealsSection';
 
 
 const Page: React.FC = () => {

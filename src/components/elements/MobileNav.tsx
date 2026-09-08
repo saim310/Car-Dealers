@@ -1,6 +1,6 @@
 "use client"
 import React from 'react';
-import logoTwo from "../../../public/assets/images/resources/logo-2.png";
+import footerLogo from "../../../public/assets/images/resources/footer-logo1.png";
 import useGorentContext from '../context/useGorentContext';
 import { usePathname } from 'next/navigation';
 import Link from 'next/link';
@@ -22,7 +22,18 @@ const MobileNav: React.FC = () => {
 
                 <div className="logo-box">
                     <Link href="/" aria-label="logo image" onClick={() => setIsMobileManu((pre) => (!pre))}>
-                        <Image src={logoTwo} alt="Logo" />
+                        <Image 
+                            src={footerLogo} 
+                            alt="UKA Group Logo" 
+                            width={160}
+                            height={50}
+                            style={{ 
+                                height: "auto", 
+                                width: "100px", 
+                                objectFit: "contain",
+                                display: "block"
+                            }} 
+                        />
                     </Link>
                 </div>
                 <div className="mobile-nav__container">
@@ -44,10 +55,37 @@ const MobileNav: React.FC = () => {
                 </ul>
                 <div className="mobile-nav__top">
                     <div className="mobile-nav__social">
-                        <a href="#" className="fab fa-twitter"></a>
-                        <a href="#" className="fab fa-facebook-square"></a>
-                        <a href="#" className="fab fa-pinterest-p"></a>
-                        <a href="#" className="fab fa-instagram"></a>
+                        <a 
+                            href="https://www.instagram.com/uka_japanmotors_australia/" 
+                            target="_blank" 
+                            rel="noopener noreferrer" 
+                            className="fab fa-instagram"
+                            aria-label="Instagram"
+                        ></a>
+                        <a 
+                            href="https://www.facebook.com/profile.php?id=61593809579972" 
+                            target="_blank" 
+                            rel="noopener noreferrer" 
+                            className="fab fa-facebook-square"
+                            aria-label="Facebook"
+                        ></a>
+                        <a 
+                            href="https://www.tiktok.com/@ukajapanaustralia" 
+                            target="_blank" 
+                            rel="noopener noreferrer" 
+                            style={{ display: "inline-flex", alignItems: "center", justifyContent: "center" }}
+                            aria-label="TikTok"
+                        >
+                            <svg 
+                                xmlns="http://www.w3.org/2000/svg" 
+                                viewBox="0 0 448 512" 
+                                width="14" 
+                                height="14" 
+                                fill="currentColor"
+                            >
+                                <path d="M448 209.91a210.06 210.06 0 0 1-122.77-39.25V349.38A162.55 162.55 0 1 1 185 188.31V258.2a90.08 90.08 0 1 0 57.83 84.71V0h72.23a137.81 137.81 0 0 0 132.94 132.85v77.06z"/>
+                            </svg>
+                        </a>
                     </div>
                 </div>
             </div>

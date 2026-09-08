@@ -21,7 +21,6 @@ const formatPrice = (price: number | string) => {
 };
 
 // ─── Reusable Modal Shell with Portal ───
-// maxWidth reduced now that the side info panel is gone — forms are single-column.
 const Modal = ({ isOpen, onClose, children }: { isOpen: boolean; onClose: () => void; children: React.ReactNode }) => {
     const [mounted, setMounted] = useState(false);
     const isMobile = useIsMobile();
@@ -103,8 +102,6 @@ const sectionTitleStyle: React.CSSProperties = {
 };
 
 // ─── Shared Submit Handler Factory ───
-// Automatically attaches the car's own yard + city so the API can route the email
-// to the right sales inbox — no manual yard/location selection needed anymore.
 const useEmailSubmit = (formType: string, onClose: () => void, car?: any) => {
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState('');
@@ -112,7 +109,6 @@ const useEmailSubmit = (formType: string, onClose: () => void, car?: any) => {
 
     const carYard = car?.yard || car?.Yard || car?.YardCode || car?.YardName || car?.city || car?.City || '';
     
-    // Car ka title multiple variations se dhoond kar nikalayen
     const resolvedCarTitle = car?.Title || car?.title || car?.name || car?.Name || 
         (car?.Make && car?.Model ? `${car.Make} ${car.Model} ${car.Year || ''}`.trim() : '') || 'N/A';
 
@@ -158,15 +154,12 @@ const useEmailSubmit = (formType: string, onClose: () => void, car?: any) => {
 // ─── 1. Schedule Test Drive Modal ───
 const TestDriveModal = ({ isOpen, onClose, car }: { isOpen: boolean; onClose: () => void; car?: any }) => {
     const isMobile = useIsMobile();
-    // "location" (manual yard picker) removed — routing now uses the car's own yard automatically.
     const [form, setForm] = useState({ name: '', email: '', phone: '', contact: '', date: '', time: '', message: '', agreed: false });
     const { isLoading, error, submitted, sendEmail } = useEmailSubmit('testdrive', onClose, car);
 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
-        if (!form.agreed) {
-            return;
-        }
+        if (!form.agreed) return;
         sendEmail({
             name: form.name,
             email: form.email,
@@ -740,11 +733,31 @@ const EnquiryModal = ({ isOpen, onClose, car }: { isOpen: boolean; onClose: () =
     );
 };
 
-// ─── Main Sidebar Component (price box, calculator, need-help card, buttons) ───
+// ─── Main Sidebar Component ───
 export default function ListingBottomRight({ car }: { car?: any }) {
     const isMobile = useIsMobile();
-    const price = car?.Price || car?.price || car?.SpecialPrice || 0;
+
+    // Discount & Normal Price Parse Logic
+    const rawPrice = Number(car?.Price || car?.price || 0);
+    const rawDiscountPrice = Number(car?.SpecialPrice || car?.specialPrice || car?.DiscountPrice || car?.discountPrice || 0);
+    const rawOriginalPrice = Number(car?.OriginalPrice || car?.originalPrice || car?.WasPrice || car?.wasPrice || 0);
+
+    let price = rawPrice;
+    let oldPrice = 0;
+
+    if (rawDiscountPrice > 0 && (rawPrice > rawDiscountPrice || rawOriginalPrice > rawDiscountPrice)) {
+        price = rawDiscountPrice;
+        oldPrice = rawOriginalPrice > rawPrice ? rawOriginalPrice : rawPrice;
+    } else if (rawOriginalPrice > rawPrice && rawPrice > 0) {
+        oldPrice = rawOriginalPrice;
+    }
+
     const hasPrice = price > 0;
+    const isDiscounted = oldPrice > price && price > 0;
+
+    const discountPercentage = isDiscounted 
+        ? Math.round(((oldPrice - price) / oldPrice) * 100)
+        : 0;
 
     const [modal, setModal] = useState<'testdrive' | 'finance' | 'enquiry' | null>(null);
 
@@ -783,28 +796,44 @@ export default function ListingBottomRight({ car }: { car?: any }) {
         <>
             <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
 
-                {/* Price Box */}
-                <div style={{ background: '#fff', borderRadius: '12px', padding: '24px', boxShadow: '0 1px 4px rgba(0,0,0,0.04)', border: '1px solid #eee' }}>
-                    <div style={{ fontSize: '12px', color: '#999', fontWeight: 700, marginBottom: '4px', textTransform: 'uppercase', letterSpacing: '0.5px' }}>
-                        Our Price
-                    </div>
-                    <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '8px', flexWrap: 'wrap' }}>
-                        <span style={{ fontSize: '30px', fontWeight: 900, color: '#1a1a2e' }}>
-                            {hasPrice ? `$${formatPrice(price)}` : 'Contact for Price'}
-                        </span>
-                        {hasPrice && (
-                            <span style={{ background: '#ffc107', color: '#1a1a2e', fontSize: '10px', fontWeight: 800, padding: '3px 6px', borderRadius: '4px' }}>
-                                AUD
-                            </span>
-                        )}
-                    </div>
+             {/* Price Box */}
+<div style={{ background: '#fff', borderRadius: '12px', padding: '24px', boxShadow: '0 1px 4px rgba(0,0,0,0.04)', border: '1px solid #eee' }}>
+    <div style={{ fontSize: '12px', color: '#999', fontWeight: 700, marginBottom: '4px', textTransform: 'uppercase', letterSpacing: '0.5px' }}>
+        Our Price
+    </div>
+    
+    <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '8px', flexWrap: 'wrap' }}>
+        {/* Color changed to green (#28a745) */}
+        <span style={{ fontSize: '30px', fontWeight: 900, color: isDiscounted ? '#28a745' : '#1a1a2e' }}>
+            {hasPrice ? `$${formatPrice(price)}` : 'Contact for Price'}
+        </span>
+
+        {isDiscounted && (
+            <span style={{ fontSize: '18px', fontWeight: 700, color: '#999', textDecoration: 'line-through' }}>
+                ${formatPrice(oldPrice)}
+            </span>
+        )}
+
+        {hasPrice && (
+            <span style={{ background: '#ffc107', color: '#1a1a2e', fontSize: '10px', fontWeight: 800, padding: '3px 6px', borderRadius: '4px' }}>
+                AUD
+            </span>
+        )}
+
+        {isDiscounted && discountPercentage > 0 && (
+            /* Badge background changed to green (#28a745) */
+            <span style={{ background: '#28a745', color: '#fff', fontSize: '11px', fontWeight: 800, padding: '3px 8px', borderRadius: '4px' }}>
+                SAVE {discountPercentage}%
+            </span>
+        )}
+    </div>
                     <div style={{ marginBottom: '14px', fontSize: '12px', color: '#888', fontWeight: 500 }}>
                         Excluding Government Charges
                     </div>
 
                     <ul style={{ listStyle: 'none', padding: 0, margin: '0 0 16px 0', display: 'flex', flexDirection: 'column', gap: '8px' }}>
                         {[
-                            { icon: 'fa-dollar-sign', text: 'Finance from $165/week*' },
+                            { icon: 'fa-dollar-sign', text: `Finance from $${weeklyRepayment}/week*` },
                             { icon: 'fa-shield-alt', text: '1-5 Year Warranty Options' },
                             { icon: 'fa-file-alt', text: 'Auction Sheet Verified' },
                             { icon: 'fa-truck', text: 'Australia Wide Delivery' },

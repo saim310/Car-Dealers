@@ -3,6 +3,7 @@
 import React, { useState } from "react";
 import { motion } from "framer-motion";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 
 // =========================================
 // ICONS
@@ -54,6 +55,8 @@ const FadeIn = ({ children, delay = 0 }: { children: React.ReactNode; delay?: nu
 // =========================================
 
 const FinancePage: React.FC = () => {
+  const router = useRouter();
+
   const [formData, setFormData] = useState({
     loanAmount: "", loanDuration: "", loanType: "", employmentStatus: "",
     residencyStatus: "", propertyOwner: "", financeBefore: "", creditHistory: "",
@@ -96,13 +99,28 @@ const FinancePage: React.FC = () => {
       });
       const data = await response.json();
       if (!data.success) throw new Error(data.error || 'Failed to send');
+
+      // 1. Push GTM Event
+      if (typeof window !== "undefined") {
+        (window as any).dataLayer = (window as any).dataLayer || [];
+        (window as any).dataLayer.push({
+          event: 'generate_lead',
+          form_type: 'Finance Application'
+        });
+      }
+
       setSuccess(true);
       setFormData({
         loanAmount: "", loanDuration: "", loanType: "", employmentStatus: "",
         residencyStatus: "", propertyOwner: "", financeBefore: "", creditHistory: "",
         name: "", phone: "", email: "", message: "",
       });
-      setTimeout(() => setSuccess(false), 3000);
+
+      // 2. Redirect to /thank-you after 1.5 seconds
+      setTimeout(() => {
+        router.push('/thank-you');
+      }, 1500);
+
     } catch (err: any) {
       setError(err.message || 'Something went wrong');
     } finally {
@@ -404,13 +422,13 @@ const FinancePage: React.FC = () => {
               Quick & Easy <span>Vehicle Finance</span>
             </h1>
 
-         <p className="uka-finance-hero__desc">
-    At UKA Japan Motors, we make <a href="https://www.ukajapan.com.au/inner/finance/apply-for-finance" style={{ color: 'inherit', textDecoration: 'underline' }}>used car finance</a> simple and flexible.<br /> Whether you need vehicle finance or car finance for your next vehicle, our trusted finance providers can help you explore suitable options across Australia.
-</p>
+            <p className="uka-finance-hero__desc">
+              At UKA Japan Motors, we make <a href="https://www.ukajapan.com.au/inner/finance/apply-for-finance" style={{ color: 'inherit', textDecoration: 'underline' }}>used car finance</a> simple and flexible.<br /> Whether you need vehicle finance or car finance for your next vehicle, our trusted finance providers can help you explore suitable options across Australia.
+            </p>
 
-       <p className="uka-finance-hero__note">
-    We also offer used vehicle finance and Japanese car finance, with finance solutions available to customers Australia-wide. Whether you're looking for <a href="https://www.ukajapan.com.au/inner/finance/finance-information" style={{ color: 'inherit', textDecoration: 'underline' }}>used car finance Melbourne</a> or <a href="https://www.ukajapan.com.au/inner/finance/finance-calculator" style={{ color: 'inherit', textDecoration: 'underline' }}>used car finance Brisbane</a>, our team is ready to help you find a finance solution that suits your budget and needs.
-</p>
+            <p className="uka-finance-hero__note">
+              We also offer used vehicle finance and Japanese car finance, with finance solutions available to customers Australia-wide. Whether you're looking for <a href="https://www.ukajapan.com.au/inner/finance/finance-information" style={{ color: 'inherit', textDecoration: 'underline' }}>used car finance Melbourne</a> or <a href="https://www.ukajapan.com.au/inner/finance/finance-calculator" style={{ color: 'inherit', textDecoration: 'underline' }}>used car finance Brisbane</a>, our team is ready to help you find a finance solution that suits your budget and needs.
+            </p>
             <div className="uka-finance-partners">
               {partners.map((p) => (
                 <Link key={p.name} href={p.url} target="_blank" rel="noopener noreferrer" className="uka-finance-partner">
@@ -577,7 +595,7 @@ const FinancePage: React.FC = () => {
                           fontWeight: 600,
                           fontSize: '14px'
                         }}>
-                          ✅ Application submitted successfully!
+                          ✅ Application submitted successfully! Redirecting...
                         </div>
                       )}
                       {error && (

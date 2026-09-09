@@ -2,6 +2,7 @@
 import React, { useState } from 'react';
 import { motion } from "framer-motion";
 import Link from 'next/link';
+import { useRouter } from "next/navigation";
 import {
     CheckCircle2,
     FileText,
@@ -108,7 +109,10 @@ const FinancePage: React.FC = () => {
                 income: '',
                 message: ''
             });
-            setTimeout(() => setSuccess(false), 3000);
+            const router = useRouter();
+           setTimeout(() => {
+  router.push('/thank-you');
+}, 1500);
         } catch (err: any) {
             setError(err.message || 'Something went wrong');
         } finally {

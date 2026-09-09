@@ -1,6 +1,7 @@
 "use client";
 import React, { useState, useEffect, useMemo } from 'react';
 import ReactDOM from 'react-dom';
+import { useRouter } from 'next/navigation';
 
 // ─── Responsive Hook ───
 const useIsMobile = (breakpoint = 768) => {
@@ -103,6 +104,7 @@ const sectionTitleStyle: React.CSSProperties = {
 
 // ─── Shared Submit Handler Factory ───
 const useEmailSubmit = (formType: string, onClose: () => void, car?: any) => {
+    const router = useRouter(); // Next.js Router
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState('');
     const [submitted, setSubmitted] = useState(false);
@@ -136,11 +138,16 @@ const useEmailSubmit = (formType: string, onClose: () => void, car?: any) => {
                 throw new Error(data.error || 'Failed to send');
             }
 
+
             setSubmitted(true);
+
+            // Modal close ho aur 1.5 seconds baad Thank You page par redirect ho
             setTimeout(() => {
                 setSubmitted(false);
                 onClose();
-            }, 2500);
+                router.push('/thank-you'); // Thank You Page Redirect
+            }, 1500);
+
         } catch (err: any) {
             setError(err.message || 'Email send nahi hui. Dobara try karein.');
         } finally {

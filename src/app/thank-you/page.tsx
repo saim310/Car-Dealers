@@ -1,10 +1,7 @@
+'use client';
+
 import React from 'react';
 import Link from 'next/link';
-
-export const metadata = {
-  title: "Thank You | UKA Japan Motors",
-  description: "Thank you for reaching out. We will get back to you shortly.",
-};
 
 export default function ThankYouPage() {
   return (
@@ -26,7 +23,6 @@ export default function ThankYouPage() {
         textAlign: 'center',
         border: '1px solid #eef2f6'
       }}>
-        {/* Success Tick Circle */}
         <div style={{
           width: '70px',
           height: '70px',
@@ -59,8 +55,7 @@ export default function ThankYouPage() {
             borderRadius: '30px',
             fontWeight: 800,
             fontSize: '14px',
-            textDecoration: 'none',
-            transition: 'all 0.2s ease'
+            textDecoration: 'none'
           }}
         >
           Explore More Vehicles &rarr;

@@ -13,8 +13,19 @@ interface AllProductsProps {
   initialMake?: string;
   initialModel?: string;
   initialBodyStyle?: string;
-  initialStockStatus?: string; // <-- ADDED PROP TYPE
+  initialStockStatus?: string;
 }
+
+// Map for Location Names formatting
+const locationNames: Record<string, string> = {
+  default: "Australia",
+  melbourne: "Melbourne",
+  maidstone: "Maidstone",
+  mordialloc: "Mordialloc",
+  brisbane: "Brisbane",
+  "slack creek": "Slacks Creek",
+  slack: "Slacks Creek"
+};
 
 const Pagination = ({ currentPage, totalPages, onPageChange }: { currentPage: number; totalPages: number; onPageChange: (p: number) => void }) => {
   const getPages = () => {
@@ -142,7 +153,7 @@ export default function AllProducts({
   initialMake = '',
   initialModel = '',
   initialBodyStyle = '',
-  initialStockStatus = '' // <-- ACCEPT PROP
+  initialStockStatus = ''
 }: AllProductsProps) {
   const searchParams = useSearchParams();
 
@@ -164,7 +175,7 @@ export default function AllProducts({
     location: '',
     fuelType: '',
     transmission: '',
-    stockStatus: initialStockStatus, // <-- LINK INITIAL STOCK STATUS
+    stockStatus: initialStockStatus,
   });
 
   // Sync initial props/slugs when updated
@@ -202,6 +213,20 @@ export default function AllProducts({
   useEffect(() => {
     setCurrentPage(1);
   }, [filters, urlFilters, badgeFilter]);
+
+  // Dynamic Heading Calculation (Location + Make)
+  const currentCityParam = (urlFilters.city || searchParams.get('city') || '').toLowerCase().trim();
+  const currentYardParam = (urlFilters.yard || searchParams.get('yard') || '').toLowerCase().trim();
+  const activeLocationKey = currentCityParam || currentYardParam;
+  const activeLocationName = locationNames[activeLocationKey] || locationNames.default;
+
+  const activeMake = (filters.make && filters.make !== 'ALL MAKES' ? filters.make : initialMake).trim();
+  const formattedMake = activeMake ? `${activeMake.charAt(0).toUpperCase() + activeMake.slice(1)} ` : '';
+
+  const dynamicH1 = `Affordable ${formattedMake}Used Cars in ${activeLocationName}`;
+  const dynamicH2 = activeMake 
+    ? `Explore our quality pre-owned ${activeMake} vehicles available in ${activeLocationName}.`
+    : `Explore our wide range of quality imported Japanese vehicles across ${activeLocationName}.`;
 
   const ITEMS_PER_PAGE = 12;
 
@@ -269,7 +294,7 @@ export default function AllProducts({
       });
     }
 
-    // BODY STYLE FILTER (Case-Insensitive Fix)
+    // BODY STYLE FILTER
     if (filters.bodyStyle && filters.bodyStyle !== 'All Body Styles') {
       const targetBody = filters.bodyStyle.replace(/[-_]/g, ' ').toLowerCase().trim();
       list = list.filter((item: any) => {
@@ -278,7 +303,7 @@ export default function AllProducts({
       });
     }
 
-    // MAKE / BRAND FILTER (Case-Insensitive Fix)
+    // MAKE / BRAND FILTER
     if (filters.make && filters.make !== 'ALL MAKES') {
       const targetMake = filters.make.toLowerCase().trim();
       list = list.filter((item: any) => {
@@ -287,7 +312,7 @@ export default function AllProducts({
       });
     }
 
-    // MODEL FILTER (Case-Insensitive Fix)
+    // MODEL FILTER
     if (filters.model && filters.model !== 'All Models') {
       const targetModel = filters.model.toLowerCase().trim();
       list = list.filter((item: any) => {
@@ -381,6 +406,27 @@ export default function AllProducts({
   return (
     <section style={{ padding: '30px 0 60px', background: '#fff' }}>
       <div className="container">
+        
+        {/* Dynamic H1 and H2 Section */}
+        <div style={{ marginBottom: '20px' }}>
+          <h1 style={{ 
+            fontSize: '28px', 
+            fontWeight: '800', 
+            color: '#1a1a2e', 
+            marginBottom: '8px' 
+          }}>
+            {dynamicH1}
+          </h1>
+          <h2 style={{ 
+            fontSize: '16px', 
+            fontWeight: '400', 
+            color: '#666', 
+            margin: 0 
+          }}>
+            {dynamicH2}
+          </h2>
+        </div>
+
         {/* Breadcrumb */}
         <div style={{ marginBottom: '20px' }}>
           <nav style={{ fontSize: '13px', color: '#888' }}>

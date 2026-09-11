@@ -137,8 +137,6 @@ const useEmailSubmit = (formType: string, onClose: () => void, car?: any) => {
             if (!data.success) {
                 throw new Error(data.error || 'Failed to send');
             }
-
-
             setSubmitted(true);
 
             // Modal close ho aur 1.5 seconds baad Thank You page par redirect ho
